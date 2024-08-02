@@ -21,14 +21,14 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ msg: "Email already exists" });
     }
 
-    const newUser = await User.create({
+    const user = await User.create({
       name,
       email,
       password,
       role,
     });
 
-    if (user) {
+    if (User) {
       res.status(201).json({
         _id: user._id,
         name: user.name,
