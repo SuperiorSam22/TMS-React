@@ -15,7 +15,7 @@ const getTicket = async (req, res) => {
 //Create a new ticket
 //route POST /api/tickets
 const createNewTicket = async (req, res) => {
-  const { title, description, severity, date } = req.body;
+  const { title, description, severity } = req.body;
   const userId = req.user._id;
 
   try {
@@ -23,7 +23,6 @@ const createNewTicket = async (req, res) => {
       title,
       description,
       severity,
-      date,
       user: userId,
     });
     const ticket = await newTicket.save();
