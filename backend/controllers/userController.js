@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
+
 //generate jwt
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -12,7 +13,12 @@ const generateToken = (id) => {
 
 //Register a new user
 const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { 
+    name,
+    email,
+    password,
+    role
+  } = req.body;
 
   try {
     //check for existing user email
@@ -28,7 +34,7 @@ const registerUser = async (req, res) => {
       role,
     });
 
-    if (User) {
+    if (user) {
       res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -40,7 +46,8 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
-    res.status(500).json({ message: "server error" });
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -65,6 +72,7 @@ const loginUser = async (req, res) => {
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "server error" });
   }
 };
@@ -81,6 +89,7 @@ const userProfile = async (req, res) => {
         }
 
     } catch (error) {
+      console.log(error);
         res.status(500).json({message: "server error"});
     }
 }
