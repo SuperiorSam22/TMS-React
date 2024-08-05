@@ -1,4 +1,5 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const {
     getTicket,
@@ -12,15 +13,15 @@ const {
 const TicketRouter = express.Router();
 
 TicketRouter.route('/AAAA')
-    .get(getTicket)
-    .post(createNewTicket);
+    .get(authMiddleware, getTicket)
+    .post(authMiddleware, createNewTicket);
 
 TicketRouter.route('/:id')
-    .get(getTicketById)
-    .put(updateTicket)
-    .delete(deleteTicket)
+    .get(authMiddleware, getTicketById)
+    .put(authMiddleware, updateTicket)
+    .delete(authMiddleware, deleteTicket)
 
 TicketRouter.route('/:id/comments')
-    .post(addCommentToTicket);
+    .post(authMiddleware, addCommentToTicket);
 
 module.exports = TicketRouter;

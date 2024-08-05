@@ -1,4 +1,5 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const {
     registerUser,
@@ -12,6 +13,6 @@ userRouter.post('/register', registerUser);
 
 userRouter.post('/login', loginUser);
 
-userRouter.get('/:id', userProfile );
+userRouter.get('/profile', authMiddleware, userProfile );
 
 module.exports = userRouter;

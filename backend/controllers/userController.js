@@ -22,8 +22,8 @@ const registerUser = async (req, res) => {
 
   try {
     //check for existing user email
-    const existingUser = await User.find({ email: email });
-    if (existingUser) {
+    const existingUser = await User.find({ email });
+    if (!existingUser) {
       return res.status(400).json({ msg: "Email already exists" });
     }
 
@@ -40,8 +40,9 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        // token: generateToken(user._id)
+        token: generateToken(user._id)
       });
+      console.log("Created user: " + user);
     } else {
       res.status(400).json({ message: "Invalid user data" });
     }
@@ -51,6 +52,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+
 //authenticate a user and get token
 //route POST /api/users/login
 const loginUser = async (req, res) => {
@@ -58,25 +60,59 @@ const loginUser = async (req, res) => {
 
   try {
     //check for user email
-    const user = await User.find({ email });
-    // const passBcrypt = await bcrypt.compare(password, user.password);
-    if (user) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        // token: generateToken(user._id),
-      });
-      console.log(user);
-    } else {
-      res.status(404).json({ message: "User not found" });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '1h',
+          });
+    const passBcrypt = await bcrypt.compare(password, user.password);
+    if (!passBcrypt) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+    });
+    console.log(user);
+    console.log(token);
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: "server error" });
   }
 };
+// const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     //check for user email
+//     const user = await User.find({ email });
+//     const passBcrypt = await bcrypt.compare(password, user.password);
+//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//       expiresIn: '1h',
+//     });
+//     if (user) {
+//       res.json({
+//         _id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//         token: generateToken(user._id),
+//       });
+//       console.log(user);
+//     } else {
+//       res.status(404).json({ message: "User not found" });
+//     }
+//   } catch (error) {
+//     console.log(error)
+//     res.status(500).json({ message: "server error" });
+//   }
+// };
 
 
 const userProfile = async (req, res) => {
