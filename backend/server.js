@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const TicketRouter = require('./routes/ticketRoutes')
+const userRouter = require("./routes/userRoutes");
 
 dotenv.config();
 
@@ -16,12 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //database connection
 connectDB();
 
-//Simple route
-app.get('/api/test', (req, res) => {
-    res.send('Api is working');
-})
-
+//routes
 app.use('/api/tickets', TicketRouter);
+app.use('/api/users', userRouter);
 
 const PORT = process.env.PORT;
 //start the server
