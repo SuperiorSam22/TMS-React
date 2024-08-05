@@ -5,7 +5,8 @@ const User = require("../models/User");
 //route GET /api/tickets
 const getTicket = async (req, res) => {
   try {
-    const tickets = await Ticket.find().populate("user", "name email");
+    const userId = req.params.userId;
+    const tickets = await Ticket.find({user: userId}).populate("user", "name email");
     res.status(200).json(tickets);
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
@@ -14,7 +15,7 @@ const getTicket = async (req, res) => {
 
 //Create a new ticket
 //route POST /api/tickets
-const createNewTicket = async (req, res) => {
+const createNewTicket =async (req, res) => {
   const { title, description, severity } = req.body;
   const userId = req.user._id;
 
@@ -26,6 +27,7 @@ const createNewTicket = async (req, res) => {
       user: userId,
     });
     const ticket = await newTicket.save();
+    console.log(ticket);
     res.status(200).json(ticket);
   } catch (error) {
     res.status(400).json({ message: "Invalid Ticket Data" });
@@ -38,14 +40,14 @@ const updateTicket = async (req, res) => {
   const { severity, status, date } = req.body;
 
   try {
-    const ticket = await Ticket.findbyId(req.params.id);
+    const ticket = await Ticket.findById(req.params.id);
 
     if (!ticket) {
       return res.status(404).json({ message: "Ticket not found" });
     }
     ticket.severity = severity || ticket.severity;
     ticket.status = status || ticket.status;
-    ticket.date = date || ticket.date;
+    ticket.date = date || Date.now();
 
     const updatedTicket = await ticket.save();
     res.json(updatedTicket);

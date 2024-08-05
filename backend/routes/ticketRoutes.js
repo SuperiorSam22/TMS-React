@@ -12,16 +12,26 @@ const {
 
 const TicketRouter = express.Router();
 
-TicketRouter.route('/AAAA')
-    .get(authMiddleware, getTicket)
-    .post(authMiddleware, createNewTicket);
+TicketRouter.route('/tickets')
+    .get(
+        // authMiddleware, 
+        getTicket)
+    .post(
+        authMiddleware, 
+        createNewTicket);
 
 TicketRouter.route('/:id')
-    .get(authMiddleware, getTicketById)
-    .put(authMiddleware, updateTicket)
+    .get(
+        // authMiddleware,
+        getTicketById)
+    .put(
+        // authMiddleware,
+        updateTicket)
     .delete(authMiddleware, deleteTicket)
 
 TicketRouter.route('/:id/comments')
-    .post(authMiddleware, addCommentToTicket);
+    .post(
+        // authMiddleware, 
+        addCommentToTicket);
 
 module.exports = TicketRouter;
