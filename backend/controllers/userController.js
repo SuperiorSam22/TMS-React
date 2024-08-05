@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
 
   try {
     //check for existing user email
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.find({ email: email });
     if (existingUser) {
       return res.status(400).json({ msg: "Email already exists" });
     }
@@ -51,16 +51,17 @@ const loginUser = async (req, res) => {
 
   try {
     //check for user email
-    const user = await User.findOne({ email });
-    const passBcrypt = await bcrypt.compare(password, user.password);
-    if (user && passBcrypt) {
+    const user = await User.find({ email });
+    // const passBcrypt = await bcrypt.compare(password, user.password);
+    if (user) {
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
-        token: generateToken(user._id),
+        // token: generateToken(user._id),
       });
+      console.log(user);
     } else {
       res.status(404).json({ message: "User not found" });
     }
