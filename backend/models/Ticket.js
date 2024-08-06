@@ -28,11 +28,11 @@ const ticketSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  comments: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+  comments: [{
+      userId: 
+      { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
       },
       text: {
         type: String,
@@ -47,6 +47,5 @@ const ticketSchema = new mongoose.Schema({
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 
-module.exports = {
-    Ticket,
-}
+module.exports = Ticket;
+
