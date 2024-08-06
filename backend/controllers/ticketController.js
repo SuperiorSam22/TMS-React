@@ -134,6 +134,7 @@ const getTicketByTicketId = async (req, res) => {
 const addCommentToTicket = async (req, res) => {
     try {
         const user = req.user.id;
+        const role = req.user.role;
         const ticket = await Ticket.findById(req.params.id);
         if (!ticket) {
             return res.status(404).json({ message: "Ticket not found" });
@@ -142,6 +143,7 @@ const addCommentToTicket = async (req, res) => {
         const newComment = {
             user: user,
             text: req.body.text,
+            role: role,
         }
 
         ticket.comments.push(newComment);
