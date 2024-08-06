@@ -2,36 +2,56 @@ const express = require('express');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const {
-    getTicket,
+    getAllTickets,
+    getTicketByUserId,
     createNewTicket,
     updateTicket,
     deleteTicket,
-    getTicketById,
+    getTicketByTicketId,
     addCommentToTicket,
+    getCommentsByTicketId
 } = require('../controllers/ticketController');
 
 const TicketRouter = express.Router();
 
-TicketRouter.route('/tickets')
+TicketRouter.route('/getAll')
     .get(
-        // authMiddleware, 
-        getTicket)
+        authMiddleware,
+        getAllTickets
+    );
+
+TicketRouter.route('/:userId')
+    .get(
+        authMiddleware, 
+        getTicketByUserId)
     .post(
         authMiddleware, 
-        createNewTicket);
+        createNewTicket
+    );
+
 
 TicketRouter.route('/:id')
     .get(
-        // authMiddleware,
-        getTicketById)
+        authMiddleware,
+        getTicketByTicketId
+    )
     .put(
-        // authMiddleware,
-        updateTicket)
-    .delete(authMiddleware, deleteTicket)
+        authMiddleware,
+        updateTicket
+    )
+    .delete(
+        authMiddleware,
+        deleteTicket
+    )
 
 TicketRouter.route('/:id/comments')
+    .get(
+        authMiddleware, 
+        getCommentsByTicketId,
+    )
     .post(
-        // authMiddleware, 
-        addCommentToTicket);
+        authMiddleware, 
+        addCommentToTicket
+    )
 
 module.exports = TicketRouter;

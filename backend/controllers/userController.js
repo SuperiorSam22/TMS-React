@@ -86,34 +86,6 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 };
-// const loginUser = async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     //check for user email
-//     const user = await User.find({ email });
-//     const passBcrypt = await bcrypt.compare(password, user.password);
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: '1h',
-//     });
-//     if (user) {
-//       res.json({
-//         _id: user._id,
-//         name: user.name,
-//         email: user.email,
-//         role: user.role,
-//         token: generateToken(user._id),
-//       });
-//       console.log(user);
-//     } else {
-//       res.status(404).json({ message: "User not found" });
-//     }
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: "server error" });
-//   }
-// };
-
 
 const userProfile = async (req, res) => {
     try {

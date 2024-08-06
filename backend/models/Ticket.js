@@ -28,11 +28,11 @@ const ticketSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  comments: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+  comments: [{
+      userId: 
+      { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
       },
       text: {
         type: String,
