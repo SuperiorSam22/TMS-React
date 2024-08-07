@@ -1,6 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const Ticket = require("../models/Ticket");
-
+const transporter = require('../utils/email')
+const dotenv = require('dotenv');
+dotenv.config();
 //get all tickets of all users 
 const getAllTickets = async(req, res) => {
   try {
@@ -135,6 +137,8 @@ const addCommentToTicket = async (req, res) => {
     try {
         const user = req.user.id;
         const role = req.user.role;
+        const email = req.user.email;
+        console.log("user email", email)
         const ticket = await Ticket.findById(req.params.id);
         if (!ticket) {
             return res.status(404).json({ message: "Ticket not found" });
@@ -149,10 +153,32 @@ const addCommentToTicket = async (req, res) => {
         ticket.comments.push(newComment);
         await ticket.save();
 
+        if(!email){
+          return res.status(404).json({message: "no recipient email address found"});
+        }
+
+        //send an email to the user 
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject:  `Ticket #${ticket._id} updated`,
+          text: `A new comment has been added to ticket #${ticket._id}: ${newComment.text}`,
+        }
+        console.log("mail options",mailOptions)
+
+        
+
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log('Email sent successfully!');
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
+
         return res.status(200).json(ticket);
 
     } catch (error) {
-        return res.json(400).json({message: 'Failed to add comment'});
+        return res.stauts(400).json({message: 'Failed to add comment'});
     }
 }
 
