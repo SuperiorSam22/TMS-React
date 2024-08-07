@@ -136,6 +136,7 @@ const getTicketByTicketId = async (req, res) => {
 const addCommentToTicket = async (req, res) => {
     try {
         const user = req.user.id;
+        const username = req.user.name;
         const role = req.user.role;
         const email = req.user.email;
         console.log("user email", email)
@@ -162,7 +163,15 @@ const addCommentToTicket = async (req, res) => {
           from: process.env.EMAIL_USER,
           to: email,
           subject:  `Ticket #${ticket._id} updated`,
-          text: `A new comment has been added to ticket #${ticket._id}: ${newComment.text}`,
+          text: `Dear ${username},
+
+          A new comment has been added to ticket #${ticket._id},
+          Description: ${ticket.description}
+          Comment: ${newComment.text}
+          If you have any further questions or concerns, please don't hesitate to reach out to us.
+          Thank you for your patience and cooperation.
+          Best regards,
+          [Credex Technology Team]`
         }
         console.log("mail options",mailOptions)
 
