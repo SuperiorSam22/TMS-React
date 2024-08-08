@@ -45,17 +45,48 @@ const getTicketByUserId = async (req, res) => {
 //route POST /api/tickets
 const createNewTicket = async (req, res) => {
   const { title, description, severity } = req.body;
-  const userId = req.user._id;
+  const { id: user, name: username, role, email } = req.user;
 
   try {
     const newTicket = new Ticket({
       title,
       description,
       severity,
-      user: userId,
+      user: user,
     });
     const ticket = await newTicket.save();
     console.log(ticket);
+
+    // Send email notification to the user
+    const companyName = process.env.COMPANY_NAME;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: 'sandeep.lal@credextechnology.com',
+      subject: `New Ticket Created: ${title}`,
+      text: `
+        Dear ${username},
+
+        A new ticket has been created with the following details:
+        Title: ${title}
+        Description: ${description}
+        Severity: ${severity}
+
+        If you have any further questions or concerns, please don't hesitate to reach out to us.
+        Thank you for your patience and cooperation.
+
+        Best regards,
+        ${companyName} Team
+      `,
+    };
+    console.log("mail options", mailOptions);
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+
     res.status(200).json(ticket);
   } catch (error) {
     res.status(400).json({ message: "Invalid Ticket Data" });
@@ -78,7 +109,7 @@ const updateTicket = async (req, res) => {
     ticket.date = date || Date.now();
 
     const updatedTicket = await ticket.save();
-    res.json(updatedTicket);
+    res.status(200).json(updatedTicket);
   } catch (error) {
     res.status(400).json({ message: "Invalid Ticket data" });
   }
@@ -88,11 +119,11 @@ const updateTicket = async (req, res) => {
 //route DELETE /api/tickets/:id
 const deleteTicket = async (req, res) => {
   try {
-    if (req.user.role !== "operator") {
-      return res
-        .status(403)
-        .json({ message: "you dont have permission to delete ticket" });
-    }
+    // if (req.user.role !== "operator") {
+    //   return res
+    //     .status(403)
+    //     .json({ message: "you dont have permission to delete ticket" });
+    // }
 
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -155,19 +186,23 @@ const addCommentToTicket = async (req, res) => {
     }
 
     //send an email to the user
+    const companyName = process.env.COMPANY_NAME;
     const mailOptions = {
+      
       from: process.env.EMAIL_USER,
-      to: email,
+      to: 'sandeeplal.credexTechonoloy',
       subject: `Ticket #${ticket._id} updated`,
-      text: `Dear ${username},
+      text: 
+      `Dear ${username},
 
-          A new comment has been added to ticket #${ticket._id},
-          Description: ${ticket.description}
-          Comment: ${newComment.text}
-          If you have any further questions or concerns, please don't hesitate to reach out to us.
-          Thank you for your patience and cooperation.
-          Best regards,
-          [Credex Technology Team]`,
+A new comment has been added to ticket #${ticket._id}
+Description: ${ticket.description}
+Comment: ${newComment.text}
+If you have any further questions or concerns, please don't hesitate to reach out to us.
+Thank you for your patience and cooperation.
+
+Best regards,
+${companyName} Team`,
     };
     console.log("mail options", mailOptions);
 
@@ -180,7 +215,7 @@ const addCommentToTicket = async (req, res) => {
 
     return res.status(200).json(ticket);
   } catch (error) {
-    return res.stauts(400).json({ message: "Failed to add comment" });
+    return res.status(400).json({ message: `Failed to add comment : ${error}` });
   }
 };
 
