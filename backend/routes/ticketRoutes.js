@@ -46,7 +46,7 @@ TicketRouter.route('/:id')
 
 TicketRouter.route('/:id/comments')
     .get(
-        // authMiddleware, 
+        authMiddleware, 
         getCommentsByTicketId,
     )
     .post(

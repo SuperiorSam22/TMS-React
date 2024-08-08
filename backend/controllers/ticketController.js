@@ -62,14 +62,14 @@ const createNewTicket = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: 'sandeep.lal@credextechnology.com',
-      subject: `New Ticket Created: ${title}`,
+      subject: `New Ticket Created: ${newTicket.title}`,
       text: `
         Dear ${username},
 
         A new ticket has been created with the following details:
-        Title: ${title}
-        Description: ${description}
-        Severity: ${severity}
+        Title: ${newTicket.title}
+        Description: ${newTicket.description}
+        Severity: ${newTicket.severity}
 
         If you have any further questions or concerns, please don't hesitate to reach out to us.
         Thank you for your patience and cooperation.
@@ -89,7 +89,7 @@ const createNewTicket = async (req, res) => {
 
     res.status(200).json(ticket);
   } catch (error) {
-    res.status(400).json({ message: "Invalid Ticket Data" });
+    res.status(400).json({ message: `Invalid Ticket Data` });
   }
 };
 
@@ -177,7 +177,7 @@ const addCommentToTicket = async (req, res) => {
     };
 
     ticket.comments.push(newComment);
-    await ticket.save();
+    const ticketSave = await ticket.save();
 
     if (!email) {
       return res
@@ -190,12 +190,12 @@ const addCommentToTicket = async (req, res) => {
     const mailOptions = {
       
       from: process.env.EMAIL_USER,
-      to: 'sandeeplal.credexTechonoloy',
+      to: 'sandeep.lal@credextechnology.com',
       subject: `Ticket #${ticket._id} updated`,
       text: 
       `Dear ${username},
 
-A new comment has been added to ticket #${ticket._id}
+A new comment has been added to ticket #${ticket.title}
 Description: ${ticket.description}
 Comment: ${newComment.text}
 If you have any further questions or concerns, please don't hesitate to reach out to us.
