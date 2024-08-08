@@ -16,6 +16,8 @@ userRouter
     .post('/login', loginUser);
 
 userRouter
-    .get('/profile', authMiddleware, userProfile );
+    .get('/profile', 
+        // authMiddleware,
+         userProfile );
 
 module.exports = userRouter;
