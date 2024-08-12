@@ -16,13 +16,13 @@ const TicketRouter = express.Router();
 
 TicketRouter.route('/getAll')
     .get(
-        authMiddleware,
+        // authMiddleware,
         getAllTickets
     );
 
 TicketRouter.route('/:userId')
     .get(
-        authMiddleware, 
+        // authMiddleware, 
         getTicketByUserId)
     .post(
         authMiddleware, 
@@ -32,7 +32,7 @@ TicketRouter.route('/:userId')
 
 TicketRouter.route('/:id')
     .get(
-        authMiddleware,
+        // authMiddleware,
         getTicketByTicketId
     )
     .patch(
@@ -40,7 +40,7 @@ TicketRouter.route('/:id')
         updateTicket
     )
     .delete(
-        authMiddleware,
+        // authMiddleware,
         deleteTicket
     )
 

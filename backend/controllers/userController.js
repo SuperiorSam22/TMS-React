@@ -103,8 +103,20 @@ const userProfile = async (req, res) => {
     }
 }
 
+const logoutUser = async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Logout failed, please try again' });
+    }
+
+    res.clearCookie('connect.sid'); // Clears the session ID cookie
+    res.status(200).json({ message: 'Logout successful' });
+  });
+}
+
 module.exports = {
     registerUser,
     loginUser,
     userProfile,
+    logoutUser
 }

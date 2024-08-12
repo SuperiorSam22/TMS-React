@@ -24,19 +24,24 @@ const getAllTickets = async (req, res) => {
 //get all tickets of a specific user
 //route GET /api/tickets
 const getTicketByUserId = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const tickets = await Ticket.find({ user: userId }).populate(
-      "user",
-      "name email"
-    );
 
-    if (!tickets || tickets.length === 0) {
-      return res.json(404).json({ message: "no tickets found for the user" });
+    try {
+      const userId = req.params.userId;
+      const sort = req.query.sort;
+      const order = req.query.order;
+      const tickets = await Ticket.find({ user: userId }).populate(
+        "user",
+        "name email"
+      );
+      if (!tickets || tickets.length === 0) {
+        return res.json(404).json({ message: "no tickets found for the user" });
+      }
+      if (sort === 'date' && order === 'desc') {
+        tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
+      res.status(200).json(tickets);
     }
-
-    res.status(200).json(tickets);
-  } catch (err) {
+    catch (err) {
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -96,7 +101,7 @@ const createNewTicket = async (req, res) => {
 //Upadate a ticket
 //route PUT /api/tickets/:id
 const updateTicket = async (req, res) => {
-  const { severity, status, date } = req.body;
+  const { severity, status, title, description } = req.body;
 
   try {
     const ticket = await Ticket.findById(req.params.id);
@@ -106,7 +111,9 @@ const updateTicket = async (req, res) => {
     }
     ticket.severity = severity || ticket.severity;
     ticket.status = status || ticket.status;
-    ticket.date = date || Date.now();
+    // ticket.date = date || Date.now();
+    ticket.title = title || ticket.title;
+    ticket.description = description || ticket.description;
 
     const updatedTicket = await ticket.save();
     res.status(200).json(updatedTicket);
@@ -177,7 +184,7 @@ const addCommentToTicket = async (req, res) => {
     };
 
     ticket.comments.push(newComment);
-    const ticketSave = await ticket.save();
+    await ticket.save();
 
     if (!email) {
       return res

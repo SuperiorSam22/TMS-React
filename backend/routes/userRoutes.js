@@ -5,6 +5,7 @@ const {
     registerUser,
     loginUser,
     userProfile,
+    logoutUser,
 } = require('../controllers/userController')
 
 const userRouter = express.Router();
@@ -17,7 +18,9 @@ userRouter
 
 userRouter
     .get('/profile', 
-        // authMiddleware,
+        authMiddleware,
          userProfile );
+
+userRouter.post('/logout', logoutUser);
 
 module.exports = userRouter;
