@@ -16,7 +16,7 @@ const ticketSchema = new mongoose.Schema({
   },
   severity: {
     type: String,
-    enum: ["low", "medium", "high", "critical"],
+    enum: ["low", "medium", "high"],
     default: "low",
   },
   status: {

@@ -72,15 +72,15 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    res.json({
+     return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
       token: generateToken(user._id),
     });
-    console.log(user);
-    console.log(token);
+      console.log(user);
+      console.log(token);
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: "server error" });

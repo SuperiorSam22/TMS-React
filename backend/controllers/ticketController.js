@@ -6,7 +6,7 @@ dotenv.config();
 //get all tickets of all users
 const getAllTickets = async (req, res) => {
   try {
-    //check if the logged in person is operator
+    // check if the logged in person is operator
     if (req.user.role !== "operator") {
       return res
         .status(403)
