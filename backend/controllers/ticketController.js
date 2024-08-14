@@ -9,8 +9,8 @@ const getAllTickets = async (req, res) => {
     // check if the logged in person is operator
     if (req.user.role !== "operator") {
       return res
-        .status(403)
-        .json({ message: "You do not have permissoin to view all tickets" });
+      .status(403)
+      .json({ message: "You do not have permissoin to view all tickets" });
     }
 
     const tickets = await Ticket.find().populate("user", "name email");
