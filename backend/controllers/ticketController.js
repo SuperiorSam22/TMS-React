@@ -48,17 +48,70 @@ const getTicketByUserId = async (req, res) => {
 
 //Create a new ticket
 //route POST /api/tickets
+// const createNewTicket = async (req, res) => {
+//   const { title, description, severity } = req.body;
+//   const { id: user, name: username, role, email } = req.user;
+
+//   try {
+//     const newTicket = new Ticket({
+//       title,
+//       description,
+//       severity,
+//       user: user,
+//     });
+//     const ticket = await newTicket.save();
+//     console.log(ticket);
+
+//     // Send email notification to the user
+//     const companyName = process.env.COMPANY_NAME;
+//     const mailOptions = {
+//       from: process.env.EMAIL_USER,
+//       to: 'sandeep.lal@credextechnology.com',
+//       subject: `New Ticket Created: ${newTicket.title}`,
+//       text: `
+//         Dear ${username},
+
+//         A new ticket has been created with the following details:
+//         Title: ${newTicket.title}
+//         Description: ${newTicket.description}
+//         Severity: ${newTicket.severity}
+
+//         If you have any further questions or concerns, please don't hesitate to reach out to us.
+//         Thank you for your patience and cooperation.
+
+//         Best regards,
+//         ${companyName} Team
+//       `,
+//     };
+//     console.log("mail options", mailOptions);
+
+//     try {
+//       await transporter.sendMail(mailOptions);
+//       console.log("Email sent successfully!");
+//     } catch (error) {
+//       console.error("Error sending email:", error);
+//     }
+
+//     res.status(200).json(ticket);
+//   } catch (error) {
+//     res.status(400).json({ message: `Invalid Ticket Data` });
+//   }
+// };
 const createNewTicket = async (req, res) => {
   const { title, description, severity } = req.body;
   const { id: user, name: username, role, email } = req.user;
 
   try {
+    // Create a new ticket instance
     const newTicket = new Ticket({
       title,
       description,
       severity,
       user: user,
+      image: req.file ? req.file.filename : null // Save the image filename if it exists
     });
+
+    // Save the new ticket to the database
     const ticket = await newTicket.save();
     console.log(ticket);
 
@@ -66,7 +119,7 @@ const createNewTicket = async (req, res) => {
     const companyName = process.env.COMPANY_NAME;
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'sandeep.lal@credextechnology.com',
+      to: "sandeep.lal@credextechnology.com", // Adjust this as needed
       subject: `New Ticket Created: ${newTicket.title}`,
       text: `
         Dear ${username},
@@ -92,11 +145,14 @@ const createNewTicket = async (req, res) => {
       console.error("Error sending email:", error);
     }
 
+    // Send the newly created ticket as the response
     res.status(200).json(ticket);
   } catch (error) {
+    console.error("Error creating ticket:", error);
     res.status(400).json({ message: `Invalid Ticket Data` });
   }
 };
+
 
 //Upadate a ticket
 //route PUT /api/tickets/:id

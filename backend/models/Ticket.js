@@ -28,11 +28,14 @@ const ticketSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  comments: [{
-      userId: 
-      { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User' 
+  image: {
+    type: String,
+  },
+  comments: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
       text: {
         type: String,
@@ -41,11 +44,10 @@ const ticketSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
-      role: 
-      {
+      role: {
         type: String,
-        enum: ['user', 'operator'],
-      }
+        enum: ["user", "operator"],
+      },
     },
   ],
 });
@@ -53,4 +55,3 @@ const ticketSchema = new mongoose.Schema({
 const Ticket = mongoose.model("Ticket", ticketSchema);
 
 module.exports = Ticket;
-
