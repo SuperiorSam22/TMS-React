@@ -1,0 +1,45 @@
+.header,
+.notify,
+.header-group,
+.profile {
+  display: flex;
+}
+.header,
+.content {
+  padding: 20px 40px 20px 20px;
+}
+.header {
+  justify-content: space-between;
+  .MuiOutlinedInput-notchedOutline {
+    border: none;
+  }
+  .header-group {
+    gap: 20px;
+    .notify {
+      width: 40px;
+    }
+    .profile {
+      gap: 5px;
+      padding: 0px 10px;
+      p {
+        font-size: 12px;
+      }
+    }
+    .notify,
+    .profile {
+      align-items: center;
+      justify-content: center;
+    }
+    .notify,
+    .MuiOutlinedInput-root,
+    .profile {
+      box-shadow: 0px 1px 50px rgba(0, 0, 0, 0.07999999821186066);
+      background: var(--background-white);
+      border-radius: 30px;
+      border: unset;
+    }
+    svg {
+      color: var(--secondary-text-color);
+    }
+  }
+}

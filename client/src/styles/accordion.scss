@@ -1,0 +1,25 @@
+:root {
+  --logo-color: #de8628;
+  --selected-text-color: #de8628;
+  --text-white: #fff;
+  --background-white: #fff;
+  --sidebar-color: #060606;
+  --primary-text-color: #000;
+  --secondary-text-color: #707070;
+}
+
+.Accordion {
+  .MuiPaper-root {
+    margin-bottom: 10px;
+    background: #eef2f5;
+    box-shadow: none;
+  }
+  .Mui-expanded {
+    .MuiAccordionSummary-content {
+      .MuiTypography-root {
+        color: var(--selected-text-color);
+        font-weight: bold;
+      }
+    }
+  }
+}

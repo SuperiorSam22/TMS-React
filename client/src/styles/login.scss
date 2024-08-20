@@ -1,0 +1,61 @@
+.login-signup {
+    .grid-container{
+      height: 100%;
+    }
+    .auth-section{
+      .auth-box{
+        width: 60%;
+        .input-fields{
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          gap: 20px;
+          button{
+            text-transform: none;
+          }
+          .login-btn{
+            border-color: #1976d2;
+            color: #1976d2;
+          }
+          .login-btn:hover{
+            background: #1976d2;
+            color: white;
+          }
+          .MuiTypography-root{
+            font-size: 14px;
+            color: #303030;
+            span{
+              cursor: pointer;
+              color: #1976d2;
+            }
+          }
+        }
+      }
+    }
+    .img-section {
+      background:#1976d2;
+      width: 100%;
+      .glassmorphism {
+        width: 60%;
+        height: 60%;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        img{
+          width: auto;
+          height: inherit;
+  
+        }
+      }
+      
+    }
+    .auth-section, .img-section, .glassmorphism{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
