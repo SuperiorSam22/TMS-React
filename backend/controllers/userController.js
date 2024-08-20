@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
   try {
     //check for existing user email
     const existingUser = await User.find({ email });
-    if (!existingUser) {
+    if (!existingUser && existingUser.length > 0) {
       return res.status(400).json({ msg: "Email already exists" });
     }
 
@@ -77,7 +77,7 @@ const loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token: generateToken(user._id, user.role, user.name, user.email),
     });
       console.log(user);
       console.log(token);
