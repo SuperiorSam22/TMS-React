@@ -1,6 +1,8 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/authMiddleware');
 
+const upload = require('../utils/multer');
+
+const authMiddleware = require('../middlewares/authMiddleware');
 const {
     getAllTickets,
     getTicketByUserId,
@@ -14,6 +16,23 @@ const {
 
 const TicketRouter = express.Router();
 
+
+
+// Configure multer for image upload
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, 'uploads/'); // Specify the upload directory
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, Date.now() + '-' + file.originalname); // Customize the filename
+//     }
+//   });
+  
+//   const upload = multer({ storage: storage });
+
+
+
+
 TicketRouter.route('/getAll')
     .get(
         authMiddleware,
@@ -25,14 +44,15 @@ TicketRouter.route('/:userId')
         // authMiddleware, 
         getTicketByUserId)
     .post(
-        authMiddleware, 
+        authMiddleware,
+        upload.single('image'), 
         createNewTicket
     );
 
 
-TicketRouter.route('/:id')
+TicketRouter.route('/:ticketId')
     .get(
-        // authMiddleware,
+        authMiddleware,
         getTicketByTicketId
     )
     .patch(

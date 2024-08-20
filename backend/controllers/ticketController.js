@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Ticket = require("../models/Ticket");
 const transporter = require("../utils/email");
+const uploads = require("../utils/multer");
 const dotenv = require("dotenv");
 dotenv.config();
 //get all tickets of all users
@@ -9,8 +10,8 @@ const getAllTickets = async (req, res) => {
     // check if the logged in person is operator
     if (req.user.role !== "operator") {
       return res
-      .status(403)
-      .json({ message: "You do not have permissoin to view all tickets" });
+        .status(403)
+        .json({ message: "You do not have permissoin to view all tickets" });
     }
 
     const tickets = await Ticket.find().populate("user", "name email");
@@ -24,24 +25,22 @@ const getAllTickets = async (req, res) => {
 //get all tickets of a specific user
 //route GET /api/tickets
 const getTicketByUserId = async (req, res) => {
-
-    try {
-      const userId = req.params.userId;
-      const sort = req.query.sort;
-      const order = req.query.order;
-      const tickets = await Ticket.find({ user: userId }).populate(
-        "user",
-        "name email"
-      );
-      if (!tickets || tickets.length === 0) {
-        return res.json(404).json({ message: "no tickets found for the user" });
-      }
-      if (sort === 'date' && order === 'desc') {
-        tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      }
-      res.status(200).json(tickets);
+  try {
+    const userId = req.params.userId;
+    const sort = req.query.sort;
+    const order = req.query.order;
+    const tickets = await Ticket.find({ user: userId }).populate(
+      "user",
+      "name email"
+    );
+    if (!tickets || tickets.length === 0) {
+      return res.json(404).json({ message: "no tickets found for the user" });
     }
-    catch (err) {
+    if (sort === "date" && order === "desc") {
+      tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    res.status(200).json(tickets);
+  } catch (err) {
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -53,12 +52,16 @@ const createNewTicket = async (req, res) => {
   const { id: user, name: username, role, email } = req.user;
 
   try {
+    // Create a new ticket instance
     const newTicket = new Ticket({
       title,
       description,
       severity,
       user: user,
+      image: req.file ? req.file.filename : null // Save the image filename if it exists
     });
+
+    // Save the new ticket to the database
     const ticket = await newTicket.save();
     console.log(ticket);
 
@@ -66,7 +69,7 @@ const createNewTicket = async (req, res) => {
     const companyName = process.env.COMPANY_NAME;
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'sandeep.lal@credextechnology.com',
+      to: "sandeep.lal@credextechnology.com", // Adjust this as needed
       subject: `New Ticket Created: ${newTicket.title}`,
       text: `
         Dear ${username},
@@ -92,8 +95,10 @@ const createNewTicket = async (req, res) => {
       console.error("Error sending email:", error);
     }
 
+    // Send the newly created ticket as the response
     res.status(200).json(ticket);
   } catch (error) {
+    console.error("Error creating ticket:", error);
     res.status(400).json({ message: `Invalid Ticket Data` });
   }
 };
@@ -161,9 +166,9 @@ const getTicketByTicketId = async (req, res) => {
       return res.status(404).json({ message: "Ticket not found" });
     }
 
-    res.status(200).json(ticket);
+    return res.status(200).json(ticket);
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -195,12 +200,10 @@ const addCommentToTicket = async (req, res) => {
     //send an email to the user
     const companyName = process.env.COMPANY_NAME;
     const mailOptions = {
-      
       from: process.env.EMAIL_USER,
-      to: 'sandeep.lal@credextechnology.com',
+      to: "sandeep.lal@credextechnology.com",
       subject: `Ticket #${ticket._id} updated`,
-      text: 
-      `Dear ${username},
+      text: `Dear ${username},
 
 A new comment has been added to ticket #${ticket.title}
 Description: ${ticket.description}
@@ -222,7 +225,9 @@ ${companyName} Team`,
 
     return res.status(200).json(ticket);
   } catch (error) {
-    return res.status(400).json({ message: `Failed to add comment : ${error}` });
+    return res
+      .status(400)
+      .json({ message: `Failed to add comment : ${error}` });
   }
 };
 
