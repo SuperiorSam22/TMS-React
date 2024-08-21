@@ -55,7 +55,7 @@ const getTicketByUserId = async (req, res) => {
 //Create a new ticket
 //route POST /api/tickets
 const createNewTicket = async (req, res) => {
-  const { title, description, severity, dueDate } = req.body;
+  const { title, description, severity, dueDate, startDate } = req.body;
   const { id: user, name: username, role, email } = req.user;
   const ticketId = uuid.v4().slice(0,8);
 
@@ -68,7 +68,7 @@ const createNewTicket = async (req, res) => {
       severity,
       user: user,
       image: req.file ? req.file.filename : null, // Save the image filename if it exists
-      startDate: new Date(),
+      startDate: startDate,
       dueDate: dueDate,
     });
 

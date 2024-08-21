@@ -17,6 +17,7 @@ import { Delete } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import TicketViewDetails from "../ticketView/ticketViewDetails";
 
+
 const getAllUserTickets = async () => {
   try {
     const userId =  JSON.parse(sessionStorage.getItem('user')).id;
@@ -270,6 +271,12 @@ const handleDelete = async (ticketId) => {
                         label={ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
                         sx={{ background: getStatusColor(ticket.status) }}
                       />
+                    </TableCell>
+                    <TableCell>
+                    {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.startDate))}
+                    </TableCell>
+                    <TableCell>
+                    {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.dueDate))}
                     </TableCell>
                     {/* <TableCell>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

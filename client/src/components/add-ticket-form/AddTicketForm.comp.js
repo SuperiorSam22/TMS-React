@@ -118,6 +118,14 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
+    // if (name === 'startDate') {
+    //   const currentDate = new Date();
+    //   if (value < currentDate) {
+    //     toast.error("Start date cannot be earlier than today's date");
+    //     return;
+    //   }
+    // }
+
     setFrmData({
       ...frmData,
       [name]: value,
