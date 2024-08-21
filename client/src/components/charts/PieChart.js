@@ -7,8 +7,9 @@ function MyPieChart() {
 
   useEffect(() => {
     const fetchTickets = async () => {
+      const userId =  JSON.parse(sessionStorage.getItem('user')).id;
       try {
-        const response = await axios.get("http://localhost:8000/api/tickets/66a8b803d6d0770e4036263c");
+        const response = await axios.get(`http://localhost:8000/api/tickets/${userId}`);
         const tickets = response.data;
         const pieChartData = [
           { id: 0, value: tickets.filter(ticket => ticket.status === "open").length, label: "Open" },
