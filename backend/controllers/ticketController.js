@@ -1,8 +1,14 @@
 const { default: mongoose } = require("mongoose");
 const Ticket = require("../models/Ticket");
 const transporter = require("../utils/email");
+const uuid = require('uuid');
 const dotenv = require("dotenv");
 dotenv.config();
+
+
+
+
+
 //get all tickets of all users
 const getAllTickets = async (req, res) => {
   try {
@@ -48,62 +54,15 @@ const getTicketByUserId = async (req, res) => {
 
 //Create a new ticket
 //route POST /api/tickets
-// const createNewTicket = async (req, res) => {
-//   const { title, description, severity } = req.body;
-//   const { id: user, name: username, role, email } = req.user;
-
-//   try {
-//     const newTicket = new Ticket({
-//       title,
-//       description,
-//       severity,
-//       user: user,
-//     });
-//     const ticket = await newTicket.save();
-//     console.log(ticket);
-
-//     // Send email notification to the user
-//     const companyName = process.env.COMPANY_NAME;
-//     const mailOptions = {
-//       from: process.env.EMAIL_USER,
-//       to: 'sandeep.lal@credextechnology.com',
-//       subject: `New Ticket Created: ${newTicket.title}`,
-//       text: `
-//         Dear ${username},
-
-//         A new ticket has been created with the following details:
-//         Title: ${newTicket.title}
-//         Description: ${newTicket.description}
-//         Severity: ${newTicket.severity}
-
-//         If you have any further questions or concerns, please don't hesitate to reach out to us.
-//         Thank you for your patience and cooperation.
-
-//         Best regards,
-//         ${companyName} Team
-//       `,
-//     };
-//     console.log("mail options", mailOptions);
-
-//     try {
-//       await transporter.sendMail(mailOptions);
-//       console.log("Email sent successfully!");
-//     } catch (error) {
-//       console.error("Error sending email:", error);
-//     }
-
-//     res.status(200).json(ticket);
-//   } catch (error) {
-//     res.status(400).json({ message: `Invalid Ticket Data` });
-//   }
-// };
 const createNewTicket = async (req, res) => {
   const { title, description, severity } = req.body;
   const { id: user, name: username, role, email } = req.user;
+  const ticketId = uuid.v4().slice(0,8);
 
   try {
     // Create a new ticket instance
     const newTicket = new Ticket({
+      ticketId,
       title,
       description,
       severity,

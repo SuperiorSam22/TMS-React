@@ -79,7 +79,6 @@ const getAllComments = async (ticketId) => {
     };
     
     const response = await axios.request(config);
-    console.log(response)
     return response.data;
   } catch (error) {
     console.log(error);
@@ -158,7 +157,6 @@ export default function ListView({newTicket, setNewTicket}) {
   React.useEffect(() => {
     const user = sessionStorage.getItem('user');
     const userRole = JSON.parse(user).role;
-    console.log(userRole)
 
     if(userRole === 'operator'){
       const fetchTickets = async() => {
@@ -180,7 +178,6 @@ export default function ListView({newTicket, setNewTicket}) {
 
   React.useEffect(() => {
     const fetchComments = async () => {
-      console.log('TICKET: ', ticketVal);
       const comments = await getAllComments(ticketVal._id);
       setComments(comments);  
     };

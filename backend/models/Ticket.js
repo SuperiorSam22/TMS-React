@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
+const uuid = require('uuid');
 
 const ticketSchema = new mongoose.Schema({
+  ticketId: {
+    type: String,
+    default: uuid.v4,
+    unique: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

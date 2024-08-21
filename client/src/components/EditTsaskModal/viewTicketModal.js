@@ -162,7 +162,7 @@ export default function ViewTaskModal({
               color="textSecondary"
               sx={{ fontSize: 18 }}
             >
-              Ticket Id: {ticket._id}
+              Ticket Id: {ticket.ticketId}
             </Typography>
             <Close onClick={handleCloseModal} />
             <Button onClick={handleViewClick}>View</Button>
