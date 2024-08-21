@@ -1,8 +1,15 @@
-# React + Vite
+This project is part of a YouTube tutorial Create CRM ticket system with MERN stack from scratch to deploy to AWS
+Here is the playlist https://youtube.com/playlist?list=PLtPNAX49WUFN8yq2vEuAY6AhM5EJOXQQ0
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Start project
 
-Currently, two official plugins are available:
+`npm start`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+If you need code before adding Redux in the project , clone from before-redux/toolkit
+
+`git clone -b before-redux/toolkit git@github.com:DentedCode/crm-frontend.git`
+
+### Backend API
+
+Backend api for this app is in the following repo:
+`https://github.com/DentedCode/client-api`

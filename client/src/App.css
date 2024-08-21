@@ -1,42 +1,53 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.default-layout {
+  display: gird;
+  grid-template-rows: 80px auto 3rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App {
+  min-height: 100vh;
+  display: grid;
+  /* background: #f5f5f5; */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  font-family: "Mulish", sans-serif;
+  margin-top: 0 !important;
+  margin-bottom: 0.5px !important;
 }
 
-.card {
-  padding: 2em;
+header {
+  grid-area: header;
 }
 
-.read-the-docs {
-  color: #888;
+main {
+  grid-area: main;
+  min-height: 88vh;
 }
+
+footer {
+  grid-area: footer;
+  background: black;
+  padding: 1rem;
+  color: white;
+}
+
+@import "./styles/dashboardLayout.scss";
+@import "./styles/dashboard.scss";
+@import "./styles/header.scss";
+@import "./styles/board.scss";
+@import "./styles/accordion.scss";
+@import "./styles/login.scss";
+@import "./styles/viewTicket.scss";

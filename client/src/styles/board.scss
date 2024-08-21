@@ -1,0 +1,137 @@
+.main-dashboard {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  .MuiGrid-root,
+  .board {
+    height: 100%;
+  }
+  .content {
+    .heading {
+      display: flex;
+      justify-content: space-between;
+    }
+    .project-block,
+    .project-title {
+      display: flex;
+      justify-content: space-between;
+    }
+    .project-block {
+      align-items: center;
+      .project-title {
+        gap: 10px;
+        .icon {
+          padding: 5px;
+          width: 40px;
+          height: 40px;
+          border: 1px solid #707070;
+          border-radius: 10px;
+          svg {
+            color: #ff9b9b;
+          }
+        }
+      }
+    }
+    .filter-section,
+    .assigne-filter,
+    .view-toggle,
+    .toggle-button {
+      display: flex;
+      align-items: center;
+    }
+    .filter-section {
+      gap: 20px;
+      .priority-filter {
+        padding: 5px 10px;
+        border: 0.5px solid #707070;
+        border-radius: 10px;
+        p {
+          font-size: 14px;
+          span {
+            color: #707070;
+            cursor: pointer;
+          }
+        }
+      }
+      .assigne-filter {
+        p {
+          font-size: 14px;
+        }
+      }
+
+      .view-toggle {
+        cursor: pointer;
+        gap: 30px;
+        margin-right: 20px;
+        .toggle-button {
+          gap: 5px;
+
+          color: #707070;
+        }
+
+        .selected {
+          border-bottom: 2px solid #de8628;
+          p {
+            color: #de8628;
+          }
+        }
+      }
+    }
+    .board {
+      .task-grid {
+        border-radius: 10px;
+        background: #eef2f5;
+        height: 100%;
+        padding: 30px;
+
+        .task-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          p {
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
+        .task-card {
+          background: #fff;
+          padding: 20px;
+          border-radius: 20px;
+          margin-bottom: 10px;
+          .title {
+            font-size: 18px;
+            font-weight: 500;
+          }
+          .detail {
+            font-size: 14px;
+            color: #707070;
+          }
+
+          .card-footer {
+            display: flex;
+            gap: 10px;
+            .priority,
+            .status {
+              width: fit-content;
+              padding: 5px 12px;
+              border-radius: 20px;
+              p {
+                font-size: 14px;
+                color: #707070;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.MuiPopper-root {
+  .MuiPaper-root {
+    border: 0.5px solid #707070;
+  }
+  hr {
+    border: 1px solid #707070;
+    margin: 10px 0px;
+  }
+}
