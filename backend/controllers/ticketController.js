@@ -122,7 +122,7 @@ const createNewTicket = async (req, res) => {
       to: "sandeep.lal@credextechnology.com", // Adjust this as needed
       subject: `New Ticket Created: ${newTicket.title}`,
       text: `
-        Dear ${username},
+        Dear ${username}
 
         A new ticket has been created with the following details:
         Title: ${newTicket.title}
@@ -138,12 +138,8 @@ const createNewTicket = async (req, res) => {
     };
     console.log("mail options", mailOptions);
 
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully!");
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully!");
 
     // Send the newly created ticket as the response
     res.status(200).json(ticket);
