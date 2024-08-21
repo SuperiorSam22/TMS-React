@@ -30,6 +30,13 @@ const ticketSchema = new mongoose.Schema({
     enum: ["open", "closed", "in progress"],
     default: "open",
   },
+  startDate: {
+    type: Date,
+    default: Date.now,
+  },
+  dueDate: {
+    type: Date,
+  },
   date: {
     type: Date,
     default: Date.now,
