@@ -46,7 +46,7 @@ export default function ViewTaskModal({
   const [editedStartDate, setEditedStartDate] = React.useState(
     ticket.startDate ? dayjs(ticket.startDate) : dayjs() // Initialize with a valid date value
   );
-  
+
   const [editedDueDate, setEditedDueDate] = React.useState(
     ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() // Initialize with a valid date value
   );
@@ -260,11 +260,11 @@ export default function ViewTaskModal({
                 },
               }}
             />
-            <Box
+            {/* <Box
               className="info"
               mt={1}
               display="flex"
-              justifyContent="space-around"
+              justifyContent="space-between"
               gap={1}
               sx={{
                 backgroundColor: "#f7f7f7",
@@ -369,6 +369,121 @@ export default function ViewTaskModal({
                   name="dueDate"
                   disabled={!isEditMode}
                 />
+              </Box>
+            </Box> */}
+            <Box
+              className="info"
+              mt={1}
+              display="flex"
+              flexDirection="column"
+              gap={1}
+              sx={{
+                backgroundColor: "#f7f7f7",
+                padding: 1,
+                borderRadius: 1,
+                width: 550,
+              }}
+            >
+              <Box display="flex" justifyContent="space-between">
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Select Status
+                  </Typography>
+                  <TextField
+                    select
+                    value={editedStatus}
+                    onChange={(e) => setEditedStatus(e.target.value)}
+                    fullWidth={false}
+                    defaultValue={ticket.status}
+                    disabled={!isEditMode}
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                      },
+                      "& .MuiInputBase-input": {
+                        height: 20, // adjust the height to your liking
+                      },
+                    }}
+                  >
+                    <MenuItem value="open">Open</MenuItem>
+                    <MenuItem value="closed">Closed</MenuItem>
+                    <MenuItem value="in progress">In Progress</MenuItem>
+                  </TextField>
+                </Box>
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Select Severity
+                  </Typography>
+                  <Select
+                    value={editedSeverity}
+                    onChange={(e) => setEditedSeverity(e.target.value)}
+                    fullWidth={false}
+                    defaultValue={ticket.severity}
+                    disabled={!isEditMode}
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
+                  >
+                    <MenuItem value="low">Low</MenuItem>
+                    <MenuItem value="medium">Medium</MenuItem>
+                    <MenuItem value="high">High</MenuItem>
+                  </Select>
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Start Date
+                  </Typography>
+                  <BasicDateField
+                    value={editedStartDate}
+                    onChange={(e) => setEditedStartDate(e.target.value)}
+                    name="startDate"
+                    disabled={!isEditMode}
+                  />
+                </Box>
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Due Date
+                  </Typography>
+                  <BasicDateField
+                    value={editedDueDate}
+                    onChange={(e) => setEditedDueDate(e.target.value)}
+                    name="dueDate"
+                    disabled={!isEditMode}
+                  />
+                </Box>
               </Box>
             </Box>
 
