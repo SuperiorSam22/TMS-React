@@ -12,6 +12,8 @@ import { openNewTicket } from "./addTicketAction";
 import { shortText } from "../../utils/validation";
 import { restSuccessMSg } from "./addTicketSlicer";
 
+import BasicDateField from "../../components/date/basicDateField";
+
 import "./add-ticket-form.style.css";
 import {
   alpha,
@@ -32,10 +34,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
 import { Close, PhotoCamera } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 const initialFrmDt = {
   severity: "low",
-  image: "", 
+  image: "",
+  startDate: new Date(),
+  dueDate: new Date(),
 };
 const initialFrmError = {
   subject: false,
@@ -97,14 +102,12 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
 
   //file upload
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileName, setFileName] = useState('');
-
+  const [fileName, setFileName] = useState("");
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
-
 
   useEffect(() => {
     return () => {
@@ -121,38 +124,69 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
     });
   };
 
+  // const handleOnChange = (e) => {
+  //   const { name, value } = e.target;
+  //   console.log("value: ",value)
+  //   if (name === 'startDate') {
+  //     // Set the start date to the current date and time
+  //     setFrmData({
+  //       ...frmData,
+  //       startDate: new Date(),
+  //     });
+  //   } else if (name === 'dueDate') {
+  //     // Update the due date with the selected value
+  //     setFrmData({
+  //       ...frmData,
+  //       dueDate: value.toString(),
+  //     });
+  //   } else {
+  //     // Update other fields as usual
+  //     setFrmData({
+  //       ...frmData,
+  //       [name]: value,
+  //     });
+  //   }
+  // };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     setIsSpinning(true);
     const authToken = sessionStorage.getItem("accessJWT");
     const userId = JSON.parse(sessionStorage.getItem("user")).id;
-  
+
     // Create a FormData object
     const formData = new FormData();
-  
+
     // Append form data to the FormData object
     formData.append("title", frmData.title);
     formData.append("severity", frmData.severity);
     formData.append("description", frmData.description);
-  
+    formData.append("startDate", frmData.startDate);
+    formData.append("dueDate", frmData.dueDate);
+
     // Append the selected file to the FormData object
     if (selectedFile) {
       formData.append("image", selectedFile); // 'image' is the key expected by your backend
     }
-  
+
+    console.log("Form Data: ", frmData);
+
     try {
-      const res = await axios.post(`http://localhost:8000/api/tickets/${userId}`, formData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "multipart/form-data",
+      const res = await axios.post(
+        `http://localhost:8000/api/tickets/${userId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
-      
+      );
+
       console.log(res.data);
       if (res.status === 200) {
-        toast.success('Ticket added successfully!', {
-          position: 'top-right',
+        toast.success("Ticket added successfully!", {
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -165,7 +199,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
       }
       dispatch(openNewTicket({ ...frmData, sender: name }));
     } catch (error) {
-      toast.error('Error adding ticket!');
+      toast.error("Error adding ticket!");
       console.error(error);
     } finally {
       setIsSpinning(false);
@@ -197,30 +231,76 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                 onChange={handleOnChange}
               />
             </FormControl>
-            <Box mt={2} sx={{ display: "flex", gap: "20px" }}>
-              <Box>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Severity
-                </InputLabel>
-                <TextField
-                  id="outlined-select-currency"
-                  select
-                  size="small"
-                  value={frmData.severity}
-                  name="severity"
-                  onChange={handleOnChange}
-                  sx={{ width: "120px" }}
-                >
-                  <MenuItem key={"low"} value={"low"}>
-                    Low
-                  </MenuItem>
-                  <MenuItem key={"medium"} value={"medium"}>
-                    Medium
-                  </MenuItem>
-                  <MenuItem key={"high"} value={"high"}>
-                    High
-                  </MenuItem>
-                </TextField>
+
+            <Box>
+              <Box mt={2} sx={{ display: "flex", gap: "20px" }}>
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    Severity
+                  </InputLabel>
+                  <TextField
+                    id="outlined-select-currency"
+                    select
+                    size="small"
+                    value={frmData.severity}
+                    name="severity"
+                    onChange={handleOnChange}
+                    sx={{ width: "120px" }}
+                  >
+                    <MenuItem key={"low"} value={"low"}>
+                      Low
+                    </MenuItem>
+                    <MenuItem key={"medium"} value={"medium"}>
+                      Medium
+                    </MenuItem>
+                    <MenuItem key={"high"} value={"high"}>
+                      High
+                    </MenuItem>
+                  </TextField>
+                </Box>
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    start date
+                  </InputLabel>
+                  <BasicDateField
+                    value={dayjs(frmData.startDate)}
+                    onChange={handleOnChange}
+                    name="startDate"
+                  />
+                </Box>
+
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    end date
+                  </InputLabel>
+                  <BasicDateField
+                    value={dayjs(frmData.dueDate)}
+                    onChange={handleOnChange}
+                    name="dueDate"
+                  />
+                </Box>
+                {/* <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    start date
+                  </InputLabel>
+                  <input
+                    type="date"
+                    value={frmData.startDate}
+                    onChange={handleOnChange}
+                    name="startDate"
+                  />
+                </Box>
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    end date
+                  </InputLabel>
+                  <input
+                    type="date"
+                    value={frmData.dueDate}
+                    onChange={handleOnChange}
+                    name="dueDate"
+                  />
+                </Box> */}
               </Box>
             </Box>
             <Box mt={2}>
