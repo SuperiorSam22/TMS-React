@@ -11,6 +11,8 @@ import axios from "axios";
 import { Close, Edit } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BasicDateField from "../date/basicDateField";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -35,12 +37,19 @@ export default function ViewTaskModal({
   comments,
   setCommennt,
 }) {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const authToken = sessionStorage.getItem("accessJWT");
   const [reply, setReply] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const commentsRef = React.useRef(null);
+  const [editedStartDate, setEditedStartDate] = React.useState(
+    ticket.startDate ? dayjs(ticket.startDate) : dayjs() // Initialize with a valid date value
+  );
+  
+  const [editedDueDate, setEditedDueDate] = React.useState(
+    ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() // Initialize with a valid date value
+  );
   // State to manage edit mode
   const [isEditMode, setIsEditMode] = React.useState(false);
 
@@ -73,8 +82,10 @@ export default function ViewTaskModal({
     const updatedDescription = editedDescription;
     const updatedSeverity = editedSeverity;
     const updatedStatus = editedStatus;
+    const startDate = editedStartDate;
+    const dueDate = editedDueDate;
 
-    const user = sessionStorage.getItem('user');
+    const user = sessionStorage.getItem("user");
     const userName = JSON.parse(user).name;
 
     if (reply.trim() === "") {
@@ -96,6 +107,8 @@ export default function ViewTaskModal({
             description: updatedDescription,
             severity: updatedSeverity,
             status: updatedStatus,
+            startDate: startDate,
+            dueDate: dueDate,
           },
           {
             headers: {
@@ -311,8 +324,8 @@ export default function ViewTaskModal({
                   disabled={!isEditMode}
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      border:isEditMode ? "1px solid" : "none",
-                      color: isEditMode ? "black" : "grey"
+                      border: isEditMode ? "1px solid" : "none",
+                      color: isEditMode ? "black" : "grey",
                     },
                   }}
                 >
@@ -320,6 +333,42 @@ export default function ViewTaskModal({
                   <MenuItem value="medium">Medium</MenuItem>
                   <MenuItem value="high">High</MenuItem>
                 </Select>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Typography
+                  sx={{
+                    paddingLeft: 1,
+                    paddingTop: 2,
+                    paddingRight: 1,
+                    color: isEditMode ? "black" : "grey",
+                  }}
+                >
+                  Start Date
+                </Typography>
+                <BasicDateField
+                  value={editedStartDate}
+                  onChange={(e) => setEditedStartDate(e.target.value)}
+                  name="startDate"
+                  disabled={!isEditMode}
+                />
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Typography
+                  sx={{
+                    paddingLeft: 1,
+                    paddingTop: 2,
+                    paddingRight: 1,
+                    color: isEditMode ? "black" : "grey",
+                  }}
+                >
+                  Due Date
+                </Typography>
+                <BasicDateField
+                  value={editedDueDate}
+                  onChange={(e) => setEditedDueDate(e.target.value)}
+                  name="dueDate"
+                  disabled={!isEditMode}
+                />
               </Box>
             </Box>
 
@@ -387,9 +436,10 @@ export default function ViewTaskModal({
                     }}
                   >
                     <Typography variant="body2" color="textPrimary">
-                    <strong>{comment.name} ({comment.role.toUpperCase()}):</strong>{" "}
+                      <strong>
+                        {comment.name} ({comment.role.toUpperCase()}):
+                      </strong>{" "}
                       {comment.text}
-                      
                     </Typography>
                     <Typography
                       variant="caption"
@@ -421,7 +471,6 @@ export default function ViewTaskModal({
           <Box
             className="reply-section"
             sx={{
-             
               paddingBottom: "20px",
               maxWidth: "735px",
               display: "flex",
@@ -432,7 +481,6 @@ export default function ViewTaskModal({
             }}
           >
             <TextField
-            
               id="reply"
               label="Reply"
               multiline
@@ -440,7 +488,7 @@ export default function ViewTaskModal({
               value={reply}
               onChange={handleReplyChange}
               variant="outlined"
-              sx={{ width: "100%", background: "#eaeaea", }}
+              sx={{ width: "100%", background: "#eaeaea" }}
             />
             {error && (
               <Typography color="error" sx={{ marginTop: "8px" }}>

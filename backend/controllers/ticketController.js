@@ -114,7 +114,7 @@ const createNewTicket = async (req, res) => {
 //Upadate a ticket
 //route PUT /api/tickets/:id
 const updateTicket = async (req, res) => {
-  const { severity, status, title, description } = req.body;
+  const { severity, status, title, description, startDate, dueDate } = req.body;
 
   try {
     const ticket = await Ticket.findById(req.params.id);
@@ -124,9 +124,10 @@ const updateTicket = async (req, res) => {
     }
     ticket.severity = severity || ticket.severity;
     ticket.status = status || ticket.status;
-    // ticket.date = date || Date.now();
     ticket.title = title || ticket.title;
     ticket.description = description || ticket.description;
+    ticket.startDate = startDate || ticket.startDate;
+    ticket.dueDate = dueDate || ticket.dueDate;
 
     const updatedTicket = await ticket.save();
     res.status(200).json(updatedTicket);
