@@ -11,6 +11,8 @@ import axios from "axios";
 import { Close, Edit } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BasicDateField from "../date/basicDateField";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -35,12 +37,19 @@ export default function ViewTaskModal({
   comments,
   setCommennt,
 }) {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const authToken = sessionStorage.getItem("accessJWT");
   const [reply, setReply] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const commentsRef = React.useRef(null);
+  const [editedStartDate, setEditedStartDate] = React.useState(
+    ticket.startDate ? dayjs(ticket.startDate) : dayjs() // Initialize with a valid date value
+  );
+
+  const [editedDueDate, setEditedDueDate] = React.useState(
+    ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() // Initialize with a valid date value
+  );
   // State to manage edit mode
   const [isEditMode, setIsEditMode] = React.useState(false);
 
@@ -73,8 +82,10 @@ export default function ViewTaskModal({
     const updatedDescription = editedDescription;
     const updatedSeverity = editedSeverity;
     const updatedStatus = editedStatus;
+    const startDate = editedStartDate;
+    const dueDate = editedDueDate;
 
-    const user = sessionStorage.getItem('user');
+    const user = sessionStorage.getItem("user");
     const userName = JSON.parse(user).name;
 
     if (reply.trim() === "") {
@@ -96,6 +107,8 @@ export default function ViewTaskModal({
             description: updatedDescription,
             severity: updatedSeverity,
             status: updatedStatus,
+            startDate: startDate,
+            dueDate: dueDate,
           },
           {
             headers: {
@@ -156,6 +169,8 @@ export default function ViewTaskModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Close  sx={{marginLeft: 90,}}
+            onClick={handleCloseModal} />
           <Box display="flex" justifyContent="space-between">
             <Typography
               variant="h6"
@@ -164,8 +179,14 @@ export default function ViewTaskModal({
             >
               Ticket Id: {ticket.ticketId}
             </Typography>
-            <Close onClick={handleCloseModal} />
-            <Button onClick={handleViewClick}>View</Button>
+            <Box display="flex">
+
+            <Button sx={{marginRight: 0,}} 
+            variant="contained"
+                  color="primary"
+            onClick={handleViewClick}>View</Button>
+            
+            </Box>
           </Box>
 
           <Box
@@ -251,7 +272,7 @@ export default function ViewTaskModal({
               className="info"
               mt={1}
               display="flex"
-              justifyContent="space-around"
+              flexDirection="column"
               gap={1}
               sx={{
                 backgroundColor: "#f7f7f7",
@@ -261,65 +282,116 @@ export default function ViewTaskModal({
               }}
             >
               <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Status
-                </Typography>
-                <TextField
-                  select
-                  value={editedStatus}
-                  onChange={(e) => setEditedStatus(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.status}
-                  disabled={!isEditMode}
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                    },
-                    "& .MuiInputBase-input": {
-                      height: 20, // adjust the height to your liking
-                    },
-                  }}
-                >
-                  <MenuItem value="open">Open</MenuItem>
-                  <MenuItem value="closed">Closed</MenuItem>
-                  <MenuItem value="in progress">In Progress</MenuItem>
-                </TextField>
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Select Status
+                  </Typography>
+                  <Select
+                    value={editedStatus}
+                    onChange={(e) => setEditedStatus(e.target.value)}
+                    fullWidth={false}
+                    defaultValue={ticket.status}
+                    disabled={!isEditMode}
+                    sx={{
+                      fontSize: '16px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '50px', // reduce height
+                  
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
+                  >
+                    <MenuItem value="open">Open</MenuItem>
+                    <MenuItem value="closed">Closed</MenuItem>
+                    <MenuItem value="in progress">In Progress</MenuItem>
+                  </Select>
+                </Box>
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Select Severity
+                  </Typography>
+                  <Select
+                    value={editedSeverity}
+                    onChange={(e) => setEditedSeverity(e.target.value)}
+                    fullWidth={false}
+                    defaultValue={ticket.severity}
+                    disabled={!isEditMode}
+                    sx={{
+                      fontSize: '16px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '50px', // reduce height
+                  
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
+                  >
+                    <MenuItem value="low">Low</MenuItem>
+                    <MenuItem value="medium">Medium</MenuItem>
+                    <MenuItem value="high">High</MenuItem>
+                  </Select>
+                </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Severity
-                </Typography>
-                <Select
-                  value={editedSeverity}
-                  onChange={(e) => setEditedSeverity(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.severity}
-                  disabled={!isEditMode}
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border:isEditMode ? "1px solid" : "none",
-                      color: isEditMode ? "black" : "grey"
-                    },
-                  }}
-                >
-                  <MenuItem value="low">Low</MenuItem>
-                  <MenuItem value="medium">Medium</MenuItem>
-                  <MenuItem value="high">High</MenuItem>
-                </Select>
+              <Box display="flex" justifyContent="space-around"
+              width="530px"
+              >
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Start Date
+                  </Typography>
+                  <BasicDateField
+                    value={editedStartDate}
+                    onChange={(e) => setEditedStartDate(e.target.value)}
+                    name="startDate"
+                    disabled={!isEditMode}
+                  />
+                </Box>
+                <Box display="flex" gap={2}>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingRight: 1,
+                      paddingLeft: 5.5,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Due Date
+                  </Typography>
+                  <BasicDateField
+                    value={editedDueDate}
+                    onChange={(e) => setEditedDueDate(e.target.value)}
+                    name="dueDate"
+                    disabled={!isEditMode}
+                    sx={{
+                      fontSize: '12px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '20px', // reduce height
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
 
@@ -353,8 +425,8 @@ export default function ViewTaskModal({
                     src={require("../../assets/img/chat.png")}
                     alt="No comments"
                     style={{
-                      width: 250,
-                      height: 250,
+                      width: 120,
+                      height: 120,
                       opacity: 0.2,
                     }}
                   />
@@ -387,9 +459,10 @@ export default function ViewTaskModal({
                     }}
                   >
                     <Typography variant="body2" color="textPrimary">
-                    <strong>{comment.name} ({comment.role.toUpperCase()}):</strong>{" "}
+                      <strong>
+                        {comment.name} ({comment.role.toUpperCase()}):
+                      </strong>{" "}
                       {comment.text}
-                      
                     </Typography>
                     <Typography
                       variant="caption"
@@ -421,7 +494,6 @@ export default function ViewTaskModal({
           <Box
             className="reply-section"
             sx={{
-             
               paddingBottom: "20px",
               maxWidth: "735px",
               display: "flex",
@@ -432,7 +504,6 @@ export default function ViewTaskModal({
             }}
           >
             <TextField
-            
               id="reply"
               label="Reply"
               multiline
@@ -440,7 +511,7 @@ export default function ViewTaskModal({
               value={reply}
               onChange={handleReplyChange}
               variant="outlined"
-              sx={{ width: "100%", background: "#eaeaea", }}
+              sx={{ width: "100%", background: "#eaeaea" }}
             />
             {error && (
               <Typography color="error" sx={{ marginTop: "8px" }}>
