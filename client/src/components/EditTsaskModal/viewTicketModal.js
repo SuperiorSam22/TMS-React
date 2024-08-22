@@ -169,6 +169,8 @@ export default function ViewTaskModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Close  sx={{marginLeft: 90,}}
+            onClick={handleCloseModal} />
           <Box display="flex" justifyContent="space-between">
             <Typography
               variant="h6"
@@ -177,8 +179,14 @@ export default function ViewTaskModal({
             >
               Ticket Id: {ticket.ticketId}
             </Typography>
-            <Close onClick={handleCloseModal} />
-            <Button onClick={handleViewClick}>View</Button>
+            <Box display="flex">
+
+            <Button sx={{marginRight: 0,}} 
+            variant="contained"
+                  color="primary"
+            onClick={handleViewClick}>View</Button>
+            
+            </Box>
           </Box>
 
           <Box
@@ -260,117 +268,6 @@ export default function ViewTaskModal({
                 },
               }}
             />
-            {/* <Box
-              className="info"
-              mt={1}
-              display="flex"
-              justifyContent="space-between"
-              gap={1}
-              sx={{
-                backgroundColor: "#f7f7f7",
-                padding: 1,
-                borderRadius: 1,
-                width: 550,
-              }}
-            >
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Status
-                </Typography>
-                <TextField
-                  select
-                  value={editedStatus}
-                  onChange={(e) => setEditedStatus(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.status}
-                  disabled={!isEditMode}
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                    },
-                    "& .MuiInputBase-input": {
-                      height: 20, // adjust the height to your liking
-                    },
-                  }}
-                >
-                  <MenuItem value="open">Open</MenuItem>
-                  <MenuItem value="closed">Closed</MenuItem>
-                  <MenuItem value="in progress">In Progress</MenuItem>
-                </TextField>
-              </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Severity
-                </Typography>
-                <Select
-                  value={editedSeverity}
-                  onChange={(e) => setEditedSeverity(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.severity}
-                  disabled={!isEditMode}
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                      color: isEditMode ? "black" : "grey",
-                    },
-                  }}
-                >
-                  <MenuItem value="low">Low</MenuItem>
-                  <MenuItem value="medium">Medium</MenuItem>
-                  <MenuItem value="high">High</MenuItem>
-                </Select>
-              </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Start Date
-                </Typography>
-                <BasicDateField
-                  value={editedStartDate}
-                  onChange={(e) => setEditedStartDate(e.target.value)}
-                  name="startDate"
-                  disabled={!isEditMode}
-                />
-              </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Due Date
-                </Typography>
-                <BasicDateField
-                  value={editedDueDate}
-                  onChange={(e) => setEditedDueDate(e.target.value)}
-                  name="dueDate"
-                  disabled={!isEditMode}
-                />
-              </Box>
-            </Box> */}
             <Box
               className="info"
               mt={1}
@@ -396,26 +293,27 @@ export default function ViewTaskModal({
                   >
                     Select Status
                   </Typography>
-                  <TextField
-                    select
+                  <Select
                     value={editedStatus}
                     onChange={(e) => setEditedStatus(e.target.value)}
                     fullWidth={false}
                     defaultValue={ticket.status}
                     disabled={!isEditMode}
                     sx={{
+                      fontSize: '16px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '50px', // reduce height
+                  
                       "& .MuiOutlinedInput-notchedOutline": {
                         border: isEditMode ? "1px solid" : "none",
-                      },
-                      "& .MuiInputBase-input": {
-                        height: 20, // adjust the height to your liking
+                        color: isEditMode ? "black" : "grey",
                       },
                     }}
                   >
                     <MenuItem value="open">Open</MenuItem>
                     <MenuItem value="closed">Closed</MenuItem>
                     <MenuItem value="in progress">In Progress</MenuItem>
-                  </TextField>
+                  </Select>
                 </Box>
                 <Box display="flex" gap={2}>
                   <Typography
@@ -435,6 +333,10 @@ export default function ViewTaskModal({
                     defaultValue={ticket.severity}
                     disabled={!isEditMode}
                     sx={{
+                      fontSize: '16px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '50px', // reduce height
+                  
                       "& .MuiOutlinedInput-notchedOutline": {
                         border: isEditMode ? "1px solid" : "none",
                         color: isEditMode ? "black" : "grey",
@@ -447,12 +349,13 @@ export default function ViewTaskModal({
                   </Select>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between">
+              <Box display="flex" justifyContent="space-around"
+              width="530px"
+              >
                 <Box display="flex" gap={2}>
                   <Typography
                     sx={{
                       paddingLeft: 1,
-                      paddingTop: 2,
                       paddingRight: 1,
                       color: isEditMode ? "black" : "grey",
                     }}
@@ -470,8 +373,8 @@ export default function ViewTaskModal({
                   <Typography
                     sx={{
                       paddingLeft: 1,
-                      paddingTop: 2,
                       paddingRight: 1,
+                      paddingLeft: 5.5,
                       color: isEditMode ? "black" : "grey",
                     }}
                   >
@@ -482,6 +385,11 @@ export default function ViewTaskModal({
                     onChange={(e) => setEditedDueDate(e.target.value)}
                     name="dueDate"
                     disabled={!isEditMode}
+                    sx={{
+                      fontSize: '12px', // reduce font size
+                      padding: '2px 4px', // reduce padding
+                      height: '20px', // reduce height
+                    }}
                   />
                 </Box>
               </Box>
@@ -517,8 +425,8 @@ export default function ViewTaskModal({
                     src={require("../../assets/img/chat.png")}
                     alt="No comments"
                     style={{
-                      width: 250,
-                      height: 250,
+                      width: 120,
+                      height: 120,
                       opacity: 0.2,
                     }}
                   />

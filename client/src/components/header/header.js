@@ -17,7 +17,7 @@ function Header() {
   return (
     <Box className="header">
       {/* <h1>Dashboard</h1> */}
-      <SearchBar />
+      {/* <SearchBar /> */}
       <Box className="header-group">
         <Box className="notify">
           <NotificationsNoneOutlinedIcon />
