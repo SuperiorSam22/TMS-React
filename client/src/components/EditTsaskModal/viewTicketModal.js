@@ -155,9 +155,29 @@ export default function ViewTaskModal({
   };
 
   const handleViewClick = () => {
-    localStorage.removeItem("ticket");
-    localStorage.setItem("ticket", JSON.stringify(ticket));
-    navigate("/ticket-details");
+    // localStorage.removeItem("ticket");
+    // localStorage.setItem("ticket", JSON.stringify(ticket));
+    // navigate("/ticket-details");
+    const ticketData = {
+      tId: ticket._id,
+      ticketId: ticket.ticketId,
+      title: ticket.title,
+      description: ticket.description,
+      severity: ticket.severity,
+      status: ticket.status,
+      startDate: ticket.startDate,
+      dueDate: ticket.dueDate,
+      // comments: comments,
+    };
+    console.log("ticketData: ",ticketData)
+  
+    navigate({
+      pathname:"/ticket-details",
+      search:`?${Object.keys(ticketData).map((key) => `${key}=${ticketData[key]}`).join('&')}`,
+    
+    })
+    // const url = `ticket-details?${Object.keys(ticketData).map((key) => `${key}=${ticketData[key]}`).join('&')}`;
+    // window.open(url, '_blank');
   };
 
   return (

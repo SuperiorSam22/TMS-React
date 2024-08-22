@@ -16,6 +16,7 @@ import Board from "./pages/Board/board";
 import TicketDetails from "./components/ticketdetails/TicketDetails";
 import { ToastContainer } from "react-toastify";
 import TicketViewDetails from "./components/ticketView/ticketViewDetails";
+import TicketDetailsPage from "./components/ticketdetails/TicketDetails";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
             <Route path="add-ticket" element={<AddTicket />} />
             <Route path="ticket/:tId" element={<Ticket />} />
             <Route path="ticket" element={<TicketLists />} />
-            <Route path="/ticket-details" element={<TicketViewDetails />} />
+            <Route path="/ticket-details" element={<TicketDetailsPage />} />
           </Route>
 
           {/* <Route path="*">
