@@ -109,9 +109,30 @@ const logoutUser = async (req, res) => {
   });
 };
 
+
+const getAllUsers = async (req, res) => {
+  try {
+      const users = await User.find({ role: 'user' }); // Assuming you have a 'role' field to distinguish between users and operators
+      return res.status(200).json(users);
+  } catch (error) {
+      return res.status(500).json({ message: 'Error fetching users', error });
+  }
+};
+
+const getAllOperators = async (req, res) => {
+  try {
+      const operators = await User.find({ role: 'operator' }); // Assuming you have a 'role' field to distinguish between users and operators
+      return res.status(200).json(operators);
+  } catch (error) {
+      return res.status(500).json({ message: 'Error fetching operators', error });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   userProfile,
   logoutUser,
+  getAllUsers,
+  getAllOperators,
 };

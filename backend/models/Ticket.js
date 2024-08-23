@@ -63,6 +63,14 @@ const ticketSchema = new mongoose.Schema({
       },
     },
   ],
+  assignedUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  assignedOperator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
