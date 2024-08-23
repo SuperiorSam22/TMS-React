@@ -252,6 +252,18 @@ const getCommentsByTicketId = async (req, res) => {
   }
 };
 
+//assign user/operator to the ticket 
+const assignUserToTicket = async (req, res) => {
+  const { assignedUser, assignedOperator } = req.body;
+    try {
+        const ticket = await Ticket.findByIdAndUpdate(req.params.id, { assignedUser, assignedOperator }, { new: true });
+        res.json(ticket);
+    } catch (error) {
+        res.status(400).json({ error: 'Error assigning user/operator to ticket' });
+    }
+}
+
+
 //export all
 module.exports = {
   getAllTickets,
@@ -262,4 +274,5 @@ module.exports = {
   getTicketByTicketId,
   addCommentToTicket,
   getCommentsByTicketId,
+  assignUserToTicket,
 };

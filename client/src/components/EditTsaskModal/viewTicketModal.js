@@ -66,7 +66,10 @@ export default function ViewTaskModal({
   const [editedStatus, setEditedStatus] = React.useState(ticket.status);
   const [editedSeverity, setEditedSeverity] = React.useState(ticket.severity);
 
-  const [hasComments, setHasComments] = React.useState(false);
+  const [users, setUsers] = React.useState([]);
+  const [operators, setOperators] = React.useState([]);
+  const [assignedUser, setAssignedUser] = React.useState("");
+  const [assignedOperator, setAssignedOperator] = React.useState("");
 
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
@@ -76,6 +79,84 @@ export default function ViewTaskModal({
     setReply(event.target.value);
     setError(null);
   };
+
+  // const handleReplySubmit = async () => {
+  //   const updatedTitle = editedTitle;
+  //   const updatedDescription = editedDescription;
+  //   const updatedSeverity = editedSeverity;
+  //   const updatedStatus = editedStatus;
+  //   const startDate = editedStartDate;
+  //   const dueDate = editedDueDate;
+
+  //   const user = sessionStorage.getItem("user");
+  //   const userName = JSON.parse(user).name;
+
+  //   if (reply.trim() === "") {
+  //     setError("Reply cannot be empty");
+  //     setTimeout(() => {
+  //       setError(null);
+  //     }, 2000);
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     // Update ticket details if in edit mode
+  //     if (isEditMode) {
+  //       await axios.patch(
+  //         `http://localhost:8000/api/tickets/${ticket._id}`,
+  //         {
+  //           title: updatedTitle,
+  //           description: updatedDescription,
+  //           severity: updatedSeverity,
+  //           status: updatedStatus,
+  //           startDate: startDate,
+  //           dueDate: dueDate,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //         }
+  //       );
+  //       // Set edit mode back to false after saving
+  //       setIsEditMode(false);
+  //     }
+
+  //     // Add the comment to the ticket
+  //     const commentResponse = await axios.post(
+  //       `http://localhost:8000/api/tickets/${ticket._id}/comments`,
+  //       {
+  //         text: reply,
+  //         role: "user",
+  //         name: userName,
+  //         date: new Date().toISOString(),
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (commentResponse.status === 200) {
+  //       setCommennt(commentResponse.data.comments);
+  //       setReply("");
+  //       commentsRef.current.scrollTo({
+  //         top: commentsRef.current.scrollHeight,
+  //         behavior: "smooth",
+  //       });
+  //       handleCloseModal();
+  //       toast.success("Ticket updated successfully!");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error updating ticket. Please try again.");
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
 
   const handleReplySubmit = async () => {
     const updatedTitle = editedTitle;
@@ -89,70 +170,80 @@ export default function ViewTaskModal({
     const userName = JSON.parse(user).name;
 
     if (reply.trim() === "") {
-      setError("Reply cannot be empty");
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
-      return;
+        setError("Reply cannot be empty");
+        setTimeout(() => {
+            setError(null);
+        }, 2000);
+        return;
     }
 
     setLoading(true);
     try {
-      // Update ticket details if in edit mode
-      if (isEditMode) {
-        await axios.patch(
-          `http://localhost:8000/api/tickets/${ticket._id}`,
-          {
-            title: updatedTitle,
-            description: updatedDescription,
-            severity: updatedSeverity,
-            status: updatedStatus,
-            startDate: startDate,
-            dueDate: dueDate,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        // Set edit mode back to false after saving
-        setIsEditMode(false);
-      }
-
-      // Add the comment to the ticket
-      const commentResponse = await axios.post(
-        `http://localhost:8000/api/tickets/${ticket._id}/comments`,
-        {
-          text: reply,
-          role: "user",
-          name: userName,
-          date: new Date().toISOString(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+        // Update ticket details if in edit mode
+        if (isEditMode) {
+            await axios.patch(
+                `http://localhost:8000/api/tickets/${ticket._id}`,
+                {
+                    title: updatedTitle,
+                    description: updatedDescription,
+                    severity: updatedSeverity,
+                    status: updatedStatus,
+                    startDate: startDate,
+                    dueDate: dueDate,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                }
+            );
+            // Set edit mode back to false after saving
+            setIsEditMode(false);
         }
-      );
 
-      if (commentResponse.status === 200) {
-        setCommennt(commentResponse.data.comments);
-        setReply("");
-        commentsRef.current.scrollTo({
-          top: commentsRef.current.scrollHeight,
-          behavior: "smooth",
+        // Assign user and operator to the ticket
+        await fetch(`http://localhost:8000/api/tickets/${ticket._id}/assign`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ assignedUser, assignedOperator }),
         });
-        handleCloseModal();
-        toast.success("Ticket updated successfully!");
-      }
+
+        // Add the comment to the ticket
+        const commentResponse = await axios.post(
+            `http://localhost:8000/api/tickets/${ticket._id}/comments`,
+            {
+                text: reply,
+                role: "user",
+                name: userName,
+                date: new Date().toISOString(),
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            }
+        );
+
+        if (commentResponse.status === 200) {
+            setCommennt(commentResponse.data.comments);
+            setReply("");
+            commentsRef.current.scrollTo({
+                top: commentsRef.current.scrollHeight,
+                behavior: "smooth",
+            });
+            handleCloseModal();
+            toast.success("Ticket updated successfully!");
+        }
     } catch (error) {
-      toast.error("Error updating ticket. Please try again.");
-      console.error(error);
+        toast.error("Error updating ticket. Please try again.");
+        console.error(error);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   const handleViewClick = () => {
     // localStorage.removeItem("ticket");
@@ -181,6 +272,38 @@ export default function ViewTaskModal({
     // window.open(url, '_blank');
   };
 
+  React.useEffect(() => {
+    // Fetch users and operators from the backend
+    const fetchUsersAndOperators = async () => {
+      try {
+        console.log("checking checking")
+        const usersResponse = await axios.get(
+          "http://localhost:8000/api/users/getOperators"
+        );
+        console.log(usersResponse.data[0].name);
+        setUsers(usersResponse.data);
+
+        const operatorsResponse = await axios.get(
+          "http://localhost:8000/api/users/getUsers"
+        );
+        setOperators(operatorsResponse.data);
+      } catch (error) {
+        console.error("Error fetching users and operators:", error);
+      }
+    };
+
+    fetchUsersAndOperators();
+  }, []);
+
+  const handleAssign = async () => {
+    console.log(ticket._id)
+    await fetch(`http://localhost:8000/api/tickets/${ticket._id}/assign`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ assignedUser, assignedOperator }),
+    });
+  };
+
   return (
     <div className="ViewTicket">
       <Modal
@@ -190,8 +313,7 @@ export default function ViewTaskModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Close  sx={{marginLeft: 90,}}
-            onClick={handleCloseModal} />
+          <Close sx={{ marginLeft: 90 }} onClick={handleCloseModal} />
           <Box display="flex" justifyContent="space-between">
             <Typography
               variant="h6"
@@ -201,12 +323,14 @@ export default function ViewTaskModal({
               Ticket Id: {ticket.ticketId}
             </Typography>
             <Box display="flex">
-
-            <Button sx={{marginRight: 0,}} 
-            variant="contained"
-                  color="primary"
-            onClick={handleViewClick}>View</Button>
-            
+              <Button
+                sx={{ marginRight: 0 }}
+                variant="contained"
+                color="primary"
+                onClick={handleViewClick}
+              >
+                View
+              </Button>
             </Box>
           </Box>
 
@@ -321,10 +445,10 @@ export default function ViewTaskModal({
                     defaultValue={ticket.status}
                     disabled={!isEditMode}
                     sx={{
-                      fontSize: '16px', // reduce font size
-                      padding: '2px 4px', // reduce padding
-                      height: '50px', // reduce height
-                  
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+
                       "& .MuiOutlinedInput-notchedOutline": {
                         border: isEditMode ? "1px solid" : "none",
                         color: isEditMode ? "black" : "grey",
@@ -354,10 +478,10 @@ export default function ViewTaskModal({
                     defaultValue={ticket.severity}
                     disabled={!isEditMode}
                     sx={{
-                      fontSize: '16px', // reduce font size
-                      padding: '2px 4px', // reduce padding
-                      height: '50px', // reduce height
-                  
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+
                       "& .MuiOutlinedInput-notchedOutline": {
                         border: isEditMode ? "1px solid" : "none",
                         color: isEditMode ? "black" : "grey",
@@ -369,10 +493,35 @@ export default function ViewTaskModal({
                     <MenuItem value="high">High</MenuItem>
                   </Select>
                 </Box>
+                <div>
+                  <select
+                    value={assignedUser}
+                    onChange={(e) => setAssignedUser(e.target.value)}
+                  >
+                    <option value="">Select User</option>
+                    {users.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={assignedOperator}
+                    onChange={(e) => setAssignedOperator(e.target.value)}
+                  >
+                    <option value="">Select Operator</option>
+                    {operators.map((operator) => (
+                      <option key={operator._id} value={operator._id}>
+                        {operator.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button onClick={handleAssign}>Assign</button>
+                </div>
               </Box>
-              <Box display="flex" justifyContent="space-around"
-              width="530px"
-              >
+              <Box display="flex" justifyContent="space-around" width="530px">
                 <Box display="flex" gap={2}>
                   <Typography
                     sx={{
@@ -406,9 +555,9 @@ export default function ViewTaskModal({
                     name="dueDate"
                     disabled={!isEditMode}
                     sx={{
-                      fontSize: '12px', // reduce font size
-                      padding: '2px 4px', // reduce padding
-                      height: '20px', // reduce height
+                      fontSize: "12px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "20px", // reduce height
                     }}
                   />
                 </Box>

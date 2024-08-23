@@ -11,6 +11,7 @@ const {
   getTicketByTicketId,
   addCommentToTicket,
   getCommentsByTicketId,
+  assignUserToTicket,
 } = require("../controllers/ticketController");
 
 const TicketRouter = express.Router();
@@ -41,5 +42,8 @@ TicketRouter.route("/:id/ticketdetails")
 TicketRouter.route("/:id/comments")
   .get(authMiddleware, getCommentsByTicketId)
   .post(authMiddleware, addCommentToTicket);
+
+TicketRouter.route("/:id/assign")
+  .put(authMiddleware, assignUserToTicket)
 
 module.exports = TicketRouter;
