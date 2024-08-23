@@ -13,20 +13,20 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import BasicDateField from "../date/basicDateField";
 import dayjs from "dayjs";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
-  height: 880,
+  width: 1200,
+  height: 900,
   bgcolor: "background.paper",
-  borderRadius: 8,
+  borderRadius: 2,
   boxShadow: 24,
   p: 4,
   display: "flex",
-  flexDirection: "column",
   // alignItems: "center",
 };
 
@@ -227,6 +227,15 @@ export default function ViewTaskModal({
     });
   };
 
+  function getCommentTime(commentDate) {
+    const commentDateTime = new Date(commentDate);
+    const currentDateTime = new Date();
+    const diffTime = Math.abs(currentDateTime - commentDateTime);
+    const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+
+    return diffHours;
+  }
+
   return (
     <div className="ViewTicket">
       <Modal
@@ -236,16 +245,25 @@ export default function ViewTaskModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Close sx={{ marginLeft: 90 }} onClick={handleCloseModal} />
-          <Box display="flex" justifyContent="space-between">
-            <Typography
-              variant="h6"
-              color="textSecondary"
-              sx={{ fontSize: 18 }}
-            >
-              Ticket Id: {ticket.ticketId}
-            </Typography>
-            <Box display="flex">
+          <Box display="flex" flexDirection="column" width="60%">
+            <Box display="flex" justifyContent="space-between">
+              <Box width="70%">
+                <Typography
+                  variant="h6"
+                  color="textSecondary"
+                  sx={{ fontSize: 18 }}
+                >
+                  Ticket Id: {ticket.ticketId}
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleEditToggle}
+                startIcon={<Edit />}
+              >
+                {isEditMode ? "Save" : "Edit"}
+              </Button>
               <Button
                 sx={{ marginRight: 0 }}
                 variant="contained"
@@ -255,63 +273,30 @@ export default function ViewTaskModal({
                 View
               </Button>
             </Box>
-          </Box>
 
-          <Box
-            className="ViewTicketModalBox"
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Box
-              sx={{ cursor: "pointer", ml: 2, paddingLeft: 88 }}
-              onClick={handleClose}
-            ></Box>
-            <Box
-              className="heading"
-              mt={2}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
+            <Typography
+              sx={{
+                color: isEditMode ? "black" : "grey",
+              }}
             >
-              <Box marginBottom="10px">
-                <Typography
-                  sx={{
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Title:
-                </Typography>
-                <TextField
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                  variant="outlined"
-                  disabled={!isEditMode}
-                  defaultValue={ticket.title}
-                  size="small"
-                  sx={{
-                    background: "#eaeaea",
-                    width: 600,
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                    },
-                  }}
-                />
-              </Box>
+              Title:
+            </Typography>
+            <TextField
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              variant="outlined"
+              disabled={!isEditMode}
+              defaultValue={ticket.title}
+              size="small"
+              sx={{
+                background: "#eaeaea",
+                width: 600,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: isEditMode ? "1px solid" : "none",
+                },
+              }}
+            />
 
-              <Box
-                sx={{ display: "flex", alignItems: "center", paddingTop: 1.5 }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleEditToggle}
-                  startIcon={<Edit />}
-                >
-                  {isEditMode ? "Save" : "Edit"}
-                </Button>
-              </Box>
-            </Box>
             <Typography
               sx={{
                 color: isEditMode ? "black" : "grey",
@@ -336,6 +321,152 @@ export default function ViewTaskModal({
                 },
               }}
             />
+
+            <Box
+              className="comment-section"
+              mt={1}
+              sx={{
+                background: "#eaeaea",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                padding: "8px",
+                maxHeight: "320px",
+                overflowY: "auto",
+                width: "100%",
+              }}
+              ref={commentsRef}
+            >
+              {comments.length === 0 ? (
+                <Box
+                  display="flex"
+                  justifyContent="space-evenly"
+                  sx={{
+                    // alignItems: "center",
+                    paddingTop: 2,
+                    paddingBottom: 2,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={require("../../assets/img/chat.png")}
+                    alt="No comments"
+                    style={{
+                      width: 120,
+                      height: 120,
+                      opacity: 0.2,
+                    }}
+                  />
+                  <Typography
+                    display="flex"
+                    alignItems="center"
+                    fontSize="25px"
+                    fontWeight="bold"
+                    color="grey"
+                    sx={{ opacity: 0.5 }}
+                  >
+                    No comments yet!
+                  </Typography>
+                </Box>
+              ) : (
+                comments.map((comment, index) => (
+                  <Box
+                    key={index}
+                    className="comment-box"
+                    mb={1}
+                    display="flex"
+                    flexDirection="row"
+                   
+                  >
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      sx={{
+
+                        width: "5%",
+                      }}
+                    >
+                      <AccountCircleIcon />
+                    </Box>
+                    <Box display="flex" flexDirection="column">
+                      <Typography>
+                        {comment.role.toUpperCase()}:{" "}
+                        {new Date(comment.date).toLocaleDateString("en-GB")}
+                      </Typography>
+                      <Typography>{comment.text}</Typography>
+                      <Typography sx={{fontSize: 12}}>
+                      Commented {getCommentTime(comment.date)} hours ago
+                      </Typography>
+                    </Box>
+
+                    {/* <Box display="flex">
+                      <Typography variant="body2" color="textPrimary">
+                        <strong>({comment.role.toUpperCase()}):</strong>{" "}
+                        {comment.text}
+                      </Typography>
+                    </Box> */}
+                    {/* <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      sx={{ alignSelf: "flex-end" }}
+                    >
+                      {new Date(comment.date).toLocaleDateString("en-GB")}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      sx={{ alignSelf: "flex-start" }}
+                    >
+                      {new Date(comment.date).toLocaleTimeString("en-GB")}
+                    </Typography> */}
+                    {/* <hr
+                      style={{
+                        border: "none",
+                        height: "1px",
+                        backgroundColor: "#ddd",
+                        margin: "8px 0",
+                      }}
+                    /> */}
+                  </Box>
+                ))
+              )}
+            </Box>
+
+            {/* 60% box */}
+          </Box>
+          <Box width="40%">something</Box>
+
+          {/* <Close sx={{ marginLeft: 90 }} onClick={handleCloseModal} />
+          
+
+          <Box
+            className="ViewTicketModalBox"
+            sx={{
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{ cursor: "pointer", ml: 2, paddingLeft: 88 }}
+              onClick={handleClose}
+            ></Box>
+            <Box
+              className="heading"
+              mt={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Box marginBottom="10px">
+                
+              </Box>
+
+              <Box
+                sx={{ display: "flex", alignItems: "center", paddingTop: 1.5 }}
+              >
+                
+              </Box>
+            </Box>
+            
             <Box
               className="info"
               mt={1}
@@ -525,101 +656,7 @@ export default function ViewTaskModal({
               </Box>
             </Box>
 
-            <Box
-              className="comment-section"
-              mt={1}
-              sx={{
-                background: "#eaeaea",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                padding: "8px",
-                maxHeight: "320px",
-                overflowY: "auto",
-                width: "100%",
-              }}
-              ref={commentsRef}
-            >
-              {comments.length === 0 ? (
-                <Box
-                  display="flex"
-                  justifyContent="space-evenly"
-                  sx={{
-                    // alignItems: "center",
-                    paddingTop: 2,
-                    paddingBottom: 2,
-                    height: "100%",
-                    width: "100%",
-                  }}
-                >
-                  <img
-                    src={require("../../assets/img/chat.png")}
-                    alt="No comments"
-                    style={{
-                      width: 120,
-                      height: 120,
-                      opacity: 0.2,
-                    }}
-                  />
-                  <Typography
-                    display="flex"
-                    alignItems="center"
-                    fontSize="25px"
-                    fontWeight="bold"
-                    color="grey"
-                    sx={{ opacity: 0.5 }}
-                  >
-                    No comments yet!
-                  </Typography>
-                </Box>
-              ) : (
-                comments.map((comment, index) => (
-                  <Box
-                    key={index}
-                    className="comment-box"
-                    mb={1}
-                    display="flex"
-                    flexDirection="column"
-                    sx={{
-                      backgroundColor: "#fff",
-                      padding: "8px",
-                      borderRadius: "4px",
-                      border: "1px solid #ddd",
-                      marginBottom: "16px",
-                      width: "100%",
-                    }}
-                  >
-                    <Typography variant="body2" color="textPrimary">
-                      <strong>
-                        {comment.name} ({comment.role.toUpperCase()}):
-                      </strong>{" "}
-                      {comment.text}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="textSecondary"
-                      sx={{ alignSelf: "flex-end" }}
-                    >
-                      {new Date(comment.date).toLocaleDateString("en-GB")}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="textSecondary"
-                      sx={{ alignSelf: "flex-start" }}
-                    >
-                      {new Date(comment.date).toLocaleTimeString("en-GB")}
-                    </Typography>
-                    <hr
-                      style={{
-                        border: "none",
-                        height: "1px",
-                        backgroundColor: "#ddd",
-                        margin: "8px 0",
-                      }}
-                    />
-                  </Box>
-                ))
-              )}
-            </Box>
+            
           </Box>
           <Box
             className="reply-section"
@@ -672,7 +709,7 @@ export default function ViewTaskModal({
                 />
               )}
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Modal>
     </div>
