@@ -9,7 +9,14 @@ function MyPieChart() {
     const fetchTickets = async () => {
       const userId =  JSON.parse(sessionStorage.getItem('user')).id;
       try {
-        const response = await axios.get(`http://localhost:8000/api/tickets/${userId}`);
+        const response = await axios.get(`http://localhost:8000/api/tickets/${userId}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${sessionStorage.getItem('accessJWT')}`
+            }
+          }
+        );
         const tickets = response.data;
         const pieChartData = [
           { id: 0, value: tickets.filter(ticket => ticket.status === "open").length, label: "Open" },
