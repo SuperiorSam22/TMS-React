@@ -21,7 +21,7 @@ const getAllTickets = async (req, res) => {
 
     const tickets = await Ticket.find().populate("user", "name email");
 
-    res.status(200).json(tickets);
+    return res.status(200).json(tickets);
   } catch (error) {
     return res.status(500).json({ message: "server error!" });
   }
@@ -45,10 +45,10 @@ const getTicketByUserId = async (req, res) => {
       if (sort === 'date' && order === 'desc') {
         tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       }
-      res.status(200).json(tickets);
+      return res.status(200).json(tickets);
     }
     catch (err) {
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -103,10 +103,10 @@ const createNewTicket = async (req, res) => {
     console.log("Email sent successfully!");
 
     // Send the newly created ticket as the response
-    res.status(200).json(ticket);
+    return res.status(200).json(ticket);
   } catch (error) {
     console.error("Error creating ticket:", error);
-    res.status(400).json({ message: `Invalid Ticket Data` });
+    return res.status(400).json({ message: `Invalid Ticket Data` });
   }
 };
 
@@ -166,18 +166,14 @@ const deleteTicket = async (req, res) => {
 //route /api/tickets/:id
 const getTicketByTicketId = async (req, res) => {
   try {
-    const ticket = await Ticket.findById(req.params.id).populate(
-      "user",
-      "name email"
-    );
-
+    const ticket = await Ticket.findById(req.params.id).populate("user", "name email");
     if (!ticket) {
       return res.status(404).json({ message: "Ticket not found" });
     }
-
-    res.status(200).json(ticket);
+    return res.status(200).json(ticket);
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
