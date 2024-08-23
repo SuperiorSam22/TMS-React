@@ -16,14 +16,11 @@ const {
 
 const TicketRouter = express.Router();
 
-TicketRouter.route("/getAll").get(
-  // authMiddleware,
-  getAllTickets
-);
+TicketRouter.route("/:id/getAll").get(authMiddleware, getAllTickets);
 
 TicketRouter.route("/:userId")
   .get(
-    // authMiddleware,
+    authMiddleware,
     getTicketByUserId
   )
   .post(authMiddleware, upload.single("image"), createNewTicket);
@@ -43,7 +40,6 @@ TicketRouter.route("/:id/comments")
   .get(authMiddleware, getCommentsByTicketId)
   .post(authMiddleware, addCommentToTicket);
 
-TicketRouter.route("/:id/assign")
-  .put(authMiddleware, assignUserToTicket)
+TicketRouter.route("/:id/assign").put(authMiddleware, assignUserToTicket);
 
 module.exports = TicketRouter;

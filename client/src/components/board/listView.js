@@ -44,26 +44,26 @@ const getAllUserTickets = async () => {
 
 const getAllTickets = async () => {
   try {
-    const authToken = sessionStorage.getItem('accessJWT');
-    console.log(authToken)
+    const userId = JSON.parse(sessionStorage.getItem('user')).id;
+    const authToken = sessionStorage.getItem("accessJWT");
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://localhost:8000/api/tickets/getAll',
-      headers: {
-        Authorization: `Bearer ${authToken}`
+      url: `http://localhost:8000/api/tickets/${userId}/getAll?sort=date&order=desc`,
+      headers: { 
+        Authorization: `Bearer ${authToken}`,
       }
-    }
+    };
 
     const response = await axios.request(config);
     const tickets = response.data;
-    const reversedTickets = [...tickets].reverse();
+    const reversedTickets = [...tickets].reverse(); // create a copy of the array before reversing
     return reversedTickets;
-
   } catch (error) {
-    console.log("operator side",error);
+    console.log(error);
+    return [];
   }
-}
+};
 
 
 
@@ -158,16 +158,19 @@ export default function ListView({newTicket, setNewTicket}) {
   React.useEffect(() => {
     const user = sessionStorage.getItem('user');
     const userRole = JSON.parse(user).role;
+    console.log(userRole)
 
     if(userRole === 'operator'){
       const fetchTickets = async() => {
-        const ticket = await getAllTickets();
-        setTodoList(ticket)
+        const tickets = await getAllTickets();
+         console.log("get All tickets", tickets)
+        setTodoList(tickets)
       }
       fetchTickets();
-    } else if (userRole === 'user'){
+    } else {
       const fetchTickets = async () => {
         const tickets = await getAllUserTickets();
+        console.log("get all user tickets", tickets)
         setTodoList(tickets);
       }
       fetchTickets();

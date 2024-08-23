@@ -157,7 +157,6 @@ export default function ViewTaskModal({
   //   }
   // };
 
-
   const handleReplySubmit = async () => {
     const updatedTitle = editedTitle;
     const updatedDescription = editedDescription;
@@ -170,80 +169,80 @@ export default function ViewTaskModal({
     const userName = JSON.parse(user).name;
 
     if (reply.trim() === "") {
-        setError("Reply cannot be empty");
-        setTimeout(() => {
-            setError(null);
-        }, 2000);
-        return;
+      setError("Reply cannot be empty");
+      setTimeout(() => {
+        setError(null);
+      }, 2000);
+      return;
     }
 
     setLoading(true);
     try {
-        // Update ticket details if in edit mode
-        if (isEditMode) {
-            await axios.patch(
-                `http://localhost:8000/api/tickets/${ticket._id}`,
-                {
-                    title: updatedTitle,
-                    description: updatedDescription,
-                    severity: updatedSeverity,
-                    status: updatedStatus,
-                    startDate: startDate,
-                    dueDate: dueDate,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`,
-                    },
-                }
-            );
-            // Set edit mode back to false after saving
-            setIsEditMode(false);
-        }
-
-        // Assign user and operator to the ticket
-        await fetch(`http://localhost:8000/api/tickets/${ticket._id}/assign`, {
-            method: "PUT",
+      // Update ticket details if in edit mode
+      if (isEditMode) {
+        await axios.patch(
+          `http://localhost:8000/api/tickets/${ticket._id}`,
+          {
+            title: updatedTitle,
+            description: updatedDescription,
+            severity: updatedSeverity,
+            status: updatedStatus,
+            startDate: startDate,
+            dueDate: dueDate,
+          },
+          {
             headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
+              Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ assignedUser, assignedOperator }),
-        });
-
-        // Add the comment to the ticket
-        const commentResponse = await axios.post(
-            `http://localhost:8000/api/tickets/${ticket._id}/comments`,
-            {
-                text: reply,
-                role: "user",
-                name: userName,
-                date: new Date().toISOString(),
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                },
-            }
+          }
         );
+        // Set edit mode back to false after saving
+        setIsEditMode(false);
+      }
 
-        if (commentResponse.status === 200) {
-            setCommennt(commentResponse.data.comments);
-            setReply("");
-            commentsRef.current.scrollTo({
-                top: commentsRef.current.scrollHeight,
-                behavior: "smooth",
-            });
-            handleCloseModal();
-            toast.success("Ticket updated successfully!");
+      // Assign user and operator to the ticket
+      await fetch(`http://localhost:8000/api/tickets/${ticket._id}/assign`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ assignedUser, assignedOperator }),
+      });
+
+      // Add the comment to the ticket
+      const commentResponse = await axios.post(
+        `http://localhost:8000/api/tickets/${ticket._id}/comments`,
+        {
+          text: reply,
+          role: "user",
+          name: userName,
+          date: new Date().toISOString(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
         }
+      );
+
+      if (commentResponse.status === 200) {
+        setCommennt(commentResponse.data.comments);
+        setReply("");
+        commentsRef.current.scrollTo({
+          top: commentsRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+        handleCloseModal();
+        toast.success("Ticket updated successfully!");
+      }
     } catch (error) {
-        toast.error("Error updating ticket. Please try again.");
-        console.error(error);
+      toast.error("Error updating ticket. Please try again.");
+      console.error(error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   const handleViewClick = () => {
     // localStorage.removeItem("ticket");
@@ -276,7 +275,7 @@ export default function ViewTaskModal({
     // Fetch users and operators from the backend
     const fetchUsersAndOperators = async () => {
       try {
-        console.log("checking checking")
+        console.log("checking checking");
         const usersResponse = await axios.get(
           "http://localhost:8000/api/users/getOperators"
         );
@@ -296,7 +295,7 @@ export default function ViewTaskModal({
   }, []);
 
   const handleAssign = async () => {
-    console.log(ticket._id)
+    console.log(ticket._id);
     await fetch(`http://localhost:8000/api/tickets/${ticket._id}/assign`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -493,33 +492,71 @@ export default function ViewTaskModal({
                     <MenuItem value="high">High</MenuItem>
                   </Select>
                 </Box>
-                <div>
-                  <select
+                <Typography
+                  sx={{
+                    paddingLeft: 1,
+                    paddingTop: 2,
+                    paddingRight: 1,
+                    color: isEditMode ? "black" : "grey",
+                  }}
+                >
+                  Assignee
+                </Typography>
+                <Box display="flex">
+                  <Select
                     value={assignedUser}
                     onChange={(e) => setAssignedUser(e.target.value)}
+                    sx={{
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
                   >
                     <option value="">Select User</option>
                     {users.map((user) => (
-                      <option key={user._id} value={user._id}>
+                      <MenuItem key={user._id} value={user._id}>
                         {user.name}
-                      </option>
+                      </MenuItem>
                     ))}
-                  </select>
+                  </Select>
+                  <Typography
+                    sx={{
+                      paddingLeft: 1,
+                      paddingTop: 2,
+                      paddingRight: 1,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Reporter
+                  </Typography>
 
-                  <select
+                  <Select
                     value={assignedOperator}
                     onChange={(e) => setAssignedOperator(e.target.value)}
+                    sx={{
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
                   >
                     <option value="">Select Operator</option>
                     {operators.map((operator) => (
-                      <option key={operator._id} value={operator._id}>
+                      <MenuItem key={operator._id} value={operator._id}>
                         {operator.name}
-                      </option>
+                      </MenuItem>
                     ))}
-                  </select>
-
-                  <button onClick={handleAssign}>Assign</button>
-                </div>
+                  </Select>
+                </Box>
               </Box>
               <Box display="flex" justifyContent="space-around" width="530px">
                 <Box display="flex" gap={2}>

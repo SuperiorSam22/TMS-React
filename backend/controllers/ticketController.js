@@ -12,18 +12,16 @@ dotenv.config();
 //get all tickets of all users
 const getAllTickets = async (req, res) => {
   try {
-    // check if the logged in person is operator
     if (req.user.role !== "operator") {
-      return res
-        .status(403)
-        .json({ message: "You do not have permissoin to view all tickets" });
+      return res.status(403).json({ message: "You do not have permission to view all tickets" });
     }
 
     const tickets = await Ticket.find().populate("user", "name email");
 
     return res.status(200).json(tickets);
   } catch (error) {
-    return res.status(500).json({ message: "server error!" });
+    console.error(error); // log the error for debugging purposes
+    res.status(500).json({ message: "Server error!" });
   }
 };
 
@@ -48,7 +46,8 @@ const getTicketByUserId = async (req, res) => {
       return res.status(200).json(tickets);
     }
     catch (err) {
-    return res.status(500).json({ message: "Server Error" });
+      console.error(err);
+     res.status(500).json({ message: "Server Error" });
   }
 };
 
