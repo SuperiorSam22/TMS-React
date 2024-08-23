@@ -27,9 +27,9 @@ TicketRouter.route("/:userId")
   )
   .post(authMiddleware, upload.single("image"), createNewTicket);
 
-TicketRouter.route("/:id")
+TicketRouter.route("/:id/ticketdetails")
   .get(
-    // authMiddleware,
+    authMiddleware,
     getTicketByTicketId
   )
   .patch(authMiddleware, updateTicket)

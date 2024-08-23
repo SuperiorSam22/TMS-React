@@ -169,6 +169,7 @@ export default function ViewTaskModal({
       dueDate: ticket.dueDate,
       // comments: comments,
     };
+    localStorage.setItem("ticket", JSON.stringify(ticketData));
     console.log("ticketData: ",ticketData)
   
     navigate({
@@ -394,7 +395,6 @@ export default function ViewTaskModal({
                     sx={{
                       paddingLeft: 1,
                       paddingRight: 1,
-                      paddingLeft: 5.5,
                       color: isEditMode ? "black" : "grey",
                     }}
                   >
