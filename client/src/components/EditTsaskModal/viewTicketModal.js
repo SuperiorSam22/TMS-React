@@ -80,83 +80,6 @@ export default function ViewTaskModal({
     setError(null);
   };
 
-  // const handleReplySubmit = async () => {
-  //   const updatedTitle = editedTitle;
-  //   const updatedDescription = editedDescription;
-  //   const updatedSeverity = editedSeverity;
-  //   const updatedStatus = editedStatus;
-  //   const startDate = editedStartDate;
-  //   const dueDate = editedDueDate;
-
-  //   const user = sessionStorage.getItem("user");
-  //   const userName = JSON.parse(user).name;
-
-  //   if (reply.trim() === "") {
-  //     setError("Reply cannot be empty");
-  //     setTimeout(() => {
-  //       setError(null);
-  //     }, 2000);
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     // Update ticket details if in edit mode
-  //     if (isEditMode) {
-  //       await axios.patch(
-  //         `http://localhost:8000/api/tickets/${ticket._id}`,
-  //         {
-  //           title: updatedTitle,
-  //           description: updatedDescription,
-  //           severity: updatedSeverity,
-  //           status: updatedStatus,
-  //           startDate: startDate,
-  //           dueDate: dueDate,
-  //         },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${authToken}`,
-  //           },
-  //         }
-  //       );
-  //       // Set edit mode back to false after saving
-  //       setIsEditMode(false);
-  //     }
-
-  //     // Add the comment to the ticket
-  //     const commentResponse = await axios.post(
-  //       `http://localhost:8000/api/tickets/${ticket._id}/comments`,
-  //       {
-  //         text: reply,
-  //         role: "user",
-  //         name: userName,
-  //         date: new Date().toISOString(),
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (commentResponse.status === 200) {
-  //       setCommennt(commentResponse.data.comments);
-  //       setReply("");
-  //       commentsRef.current.scrollTo({
-  //         top: commentsRef.current.scrollHeight,
-  //         behavior: "smooth",
-  //       });
-  //       handleCloseModal();
-  //       toast.success("Ticket updated successfully!");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error updating ticket. Please try again.");
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleReplySubmit = async () => {
     const updatedTitle = editedTitle;
     const updatedDescription = editedDescription;
@@ -260,13 +183,14 @@ export default function ViewTaskModal({
       // comments: comments,
     };
     localStorage.setItem("ticket", JSON.stringify(ticketData));
-    console.log("ticketData: ",ticketData)
-  
+    console.log("ticketData: ", ticketData);
+
     navigate({
-      pathname:"/ticket-details",
-      search:`?${Object.keys(ticketData).map((key) => `${key}=${ticketData[key]}`).join('&')}`,
-    
-    })
+      pathname: "/ticket-details",
+      search: `?${Object.keys(ticketData)
+        .map((key) => `${key}=${ticketData[key]}`)
+        .join("&")}`,
+    });
     // const url = `ticket-details?${Object.keys(ticketData).map((key) => `${key}=${ticketData[key]}`).join('&')}`;
     // window.open(url, '_blank');
   };
