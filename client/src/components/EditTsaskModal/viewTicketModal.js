@@ -241,6 +241,13 @@ export default function ViewTaskModal({
     }
   }
 
+  const getLastCommentDate = () => {
+    if (comments.length === 0) return null;
+    return comments[comments.length - 1].date;
+  };
+
+  const lastCommentDate = getLastCommentDate();
+
   return (
     <div className="ViewTicket">
       <Modal
@@ -653,7 +660,21 @@ export default function ViewTaskModal({
                   year: "numeric",
                 })}
               </Typography>
-              <Typography>Updated at</Typography>
+              <Typography sx={{ color: "#706e6e", pl: 2, pt: 2 }}>
+                {lastCommentDate ? (
+                  <>
+                    Updated at{" "}
+                    {new Date(lastCommentDate).toLocaleDateString("en-GB", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </>
+                ) : (
+                  "No comments yet!"
+                )}
+              </Typography>
             </Box>
 
             <Box sx={{ position: "absolute", bottom: 0, right: 0, padding: 2 }}>

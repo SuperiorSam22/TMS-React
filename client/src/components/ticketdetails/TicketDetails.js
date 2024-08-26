@@ -8,11 +8,9 @@
 
 // const TicketDetailsPage = () => {
 
-
 //   const [comments, setComments] = React.useState([]);
 //   const commentsRef = React.useRef(null);
 //   const [dummyData, setDummyData] = React.useState([]);
-
 
 //   const [reply, setReply] = React.useState("");
 
@@ -30,24 +28,22 @@
 //     }
 //     setDummyData(localStorage.getItem("ticket"));
 //     console.log("This is dummy Data", dummyData);
-    
+
 //     setData(newData);
 //   }, []);
 
 //   const ticketId = data.tId;
 
-
 //   const handleReplyChange = (event) => {
 //     setReply(event.target.value);
-    
+
 //   };
 
 //   const handleReplySubmit = async () => {
 
 //   }
-  
 
-//   //fetch all comments 
+//   //fetch all comments
 //   const getAllComments = async (id) => {
 //     const authToken = sessionStorage.getItem("accessJWT");
 //     try {
@@ -55,11 +51,11 @@
 //         method: 'get',
 //         maxBodyLength: Infinity,
 //         url: `http://localhost:8000/api/tickets/${id}/comments`,
-//         headers: { 
+//         headers: {
 //           Authorization: `Bearer ${authToken}`,
 //         }
 //       };
-      
+
 //       const response = await axios.request(config);
 //       return response.data;
 //     } catch (error) {
@@ -72,7 +68,7 @@
 //     const fetchComments = async () => {
 //       const comments = await getAllComments(ticketId);
 //       console.log(comments)
-//       setComments(comments);  
+//       setComments(comments);
 //     };
 //     fetchComments(ticketId);
 //   }, [ticketId]);
@@ -86,13 +82,12 @@
 //           <p>{data.description}</p>
 //           <p>Severity: {data.severity}</p>
 //           <p>Status: {data.status}</p>
-          
+
 //           <h2>Comments:</h2>
 //         </div> */}
 //         <Box display="flex" width="50%" height="100%">
-//           Ticket Detail section 
+//           Ticket Detail section
 //         </Box>
-
 
 //         <Box display="flex" flexDirection="column" width="50%" height="100%">
 //           <Typography
@@ -209,21 +204,6 @@
 //             }}
 //           >
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //             <TextField
 //               id="reply"
 //               label="Reply"
@@ -245,15 +225,14 @@
 //                 variant="contained"
 //                 color="primary"
 //                 onClick={handleReplySubmit}
-               
+
 //               >
 //                 Submit
 //               </Button>
-              
+
 //             </Box>
 //           </Box>
 //         </Box>
-
 
 //     </Box>
 //   );
@@ -277,7 +256,12 @@ import { useNavigate } from "react-router-dom";
 import BasicDateField from "../date/basicDateField";
 import dayjs from "dayjs";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+} from "@mui/material";
 
 const style = {
   padding: 4,
@@ -286,9 +270,8 @@ const style = {
   // alignItems: "center",
 };
 
-export default function TicketDetailsPage(
-  setComment) {
-  const ticket = JSON.parse(sessionStorage.getItem('ticketDetails'));
+export default function TicketDetailsPage(setComment) {
+  const ticket = JSON.parse(sessionStorage.getItem("ticketDetails"));
   // console.log(ticket._id);
 
   const comments = ticket.comments;
@@ -297,7 +280,6 @@ export default function TicketDetailsPage(
   });
 
   if (!ticket) return <div>No ticket details available.</div>;
-
 
   const [comments1, setComments] = React.useState([]);
 
@@ -317,7 +299,6 @@ export default function TicketDetailsPage(
   );
   // State to manage edit mode
   const [isEditMode, setIsEditMode] = React.useState(false);
-
 
   const [editedTitle, setEditedTitle] = React.useState(ticket.title);
   const [editedDescription, setEditedDescription] = React.useState(
@@ -350,7 +331,6 @@ export default function TicketDetailsPage(
 
     const user = sessionStorage.getItem("user");
     const userName = JSON.parse(user).name;
-
 
     if (reply.trim() === "") {
       setError("Reply cannot be empty");
@@ -392,7 +372,7 @@ export default function TicketDetailsPage(
           { assignedUser, assignedOperator },
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${authToken}`,
             },
           }
@@ -434,7 +414,6 @@ export default function TicketDetailsPage(
       setLoading(false);
     }
   };
-
 
   React.useEffect(() => {
     // Fetch users and operators from the backend
@@ -481,464 +460,491 @@ export default function TicketDetailsPage(
     }
   }
 
+  const lastComment = comments[comments.length - 1];
+  const updatedAt = new Date(lastComment.date).toISOString();
+ 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 
   return (
-
     <Box sx={style}>
-          <Box display="flex" flexDirection="column" width="60%">
-            <Box display="flex" justifyContent="space-between">
-              <Box width="70%">
-                <Typography
-                  variant="h6"
-                  color="textSecondary"
-                  sx={{ fontSize: 18, paddingTop: 2 }}
-                >
-                  Ticket Id: {ticket.ticketId}
-                </Typography>
-              </Box>
-            </Box>
-            <TextField
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              variant="outlined"
-              disabled={!isEditMode}
-              defaultValue={ticket.title}
-              size="small"
-              sx={{
-                width: 600,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: isEditMode ? "none" : "none",
-                },
-                "& .MuiInputBase-input": {
-                  fontSize: 22, // increase font size
-                  fontWeight: "bold", // make text bold
-                  pl: 0,
-                },
-              }}
-            />
-
-            <Typography sx={{ mt: 2, color: isEditMode ? "black" : "grey" }}>
-              Description:
-            </Typography>
-            <TextField
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              variant="outlined"
-              rows={3}
-              fullWidth
-              defaultValue={ticket.description}
-              disabled={!isEditMode}
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: isEditMode ? "none" : "none",
-                  padding: 0,
-                },
-                "& .MuiInputBase-input": {
-                  fontSize: 18, // increase font size
-                  pl: 0,
-                },
-              }}
-            />
-
-            {/* Attachment section  */}
-            <Typography sx={{ color: "grey", fontWeight: "bold", pt: 1 }}>
-              Attachments
-            </Typography>
-            <Box
-              className="attachment-section"
-              sx={{
-                mt: 1,
-
-                height: "210px",
-              }}
+      <Box display="flex" flexDirection="column" width="60%">
+        <Box display="flex" justifyContent="space-between">
+          <Box width="70%">
+            <Typography
+              variant="h6"
+              color="textSecondary"
+              sx={{ fontSize: 18, paddingTop: 2 }}
             >
-              <Box
-                className="attachment-section"
-                mt={1}
-                sx={{
-                  background: "#fff",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  padding: "8px",
-                }}
-              >
-                {ticket.image}
-              </Box>
-            </Box>
-
-            <Box
-              className="comment-section"
-              mt={1}
-              sx={{
-                background: "#fff",
-
-                borderRadius: "4px",
-                padding: "8px",
-                maxHeight: "320px",
-                overflowY: "auto",
-                width: "100%",
-              }}
-              ref={commentsRef}
-            >
-              {comments.length === 0 ? (
-                <Box
-                  display="flex"
-                  justifyContent="space-evenly"
-                  sx={{
-                    // alignItems: "center",
-                    paddingTop: 2,
-                    paddingBottom: 2,
-                    height: "100%",
-                    width: "100%",
-                  }}
-                >
-                  <img
-                    src={require("../../assets/img/chat.png")}
-                    alt="No comments"
-                    style={{
-                      width: 120,
-                      height: 120,
-                      opacity: 0.2,
-                    }}
-                  />
-                  <Typography
-                    display="flex"
-                    alignItems="center"
-                    fontSize="25px"
-                    fontWeight="bold"
-                    color="grey"
-                    sx={{ opacity: 0.5 }}
-                  >
-                    No comments yet!
-                  </Typography>
-                </Box>
-              ) : (
-                comments.map((comment, index) => (
-                  <Box
-                    key={index}
-                    className="comment-box"
-                    mb={1}
-                    display="flex"
-                    flexDirection="row"
-                  >
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      sx={{
-                        width: "5%",
-                      }}
-                    >
-                      <AccountCircleIcon />
-                    </Box>
-                    <Box display="flex" flexDirection="column">
-                      <Typography>
-                        {comment.role.toUpperCase()}:{" "}
-                        {new Date(comment.date).toLocaleDateString("en-GB")}
-                      </Typography>
-                      <Typography>{comment.text}</Typography>
-                      <Typography sx={{ fontSize: 12 }}>
-                        Commented {getCommentTime(comment.date)}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))
-              )}
-            </Box>
-            <TextField
-              id="reply"
-              placeholder="add a comment"
-              multiline
-              rows={1}
-              value={reply}
-              onChange={handleReplyChange}
-              variant="outlined"
-              sx={{ mt: 1, width: "100%" }}
-            />
-            {error && (
-              <Typography color="error" sx={{ marginTop: "8px" }}>
-                {error}
-              </Typography>
-            )}
-
-            {/* REPLY SECTION  */}
-
-            {/* 60% box */}
+              Ticket Id: {ticket.ticketId}
+            </Typography>
           </Box>
-          <Box width="40%">
-            <Box display="flex" justifyContent="end">
-            </Box>
+        </Box>
+        <TextField
+          value={editedTitle}
+          onChange={(e) => setEditedTitle(e.target.value)}
+          variant="outlined"
+          disabled={!isEditMode}
+          defaultValue={ticket.title}
+          size="small"
+          sx={{
+            width: 600,
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: isEditMode ? "none" : "none",
+            },
+            "& .MuiInputBase-input": {
+              fontSize: 22, // increase font size
+              fontWeight: "bold", // make text bold
+              pl: 0,
+            },
+          }}
+        />
+
+        <Typography sx={{ mt: 2, color: isEditMode ? "black" : "grey" }}>
+          Description:
+        </Typography>
+        <TextField
+          value={editedDescription}
+          onChange={(e) => setEditedDescription(e.target.value)}
+          variant="outlined"
+          rows={3}
+          fullWidth
+          defaultValue={ticket.description}
+          disabled={!isEditMode}
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: isEditMode ? "none" : "none",
+              padding: 0,
+            },
+            "& .MuiInputBase-input": {
+              fontSize: 18, // increase font size
+              pl: 0,
+            },
+          }}
+        />
+
+        {/* Attachment section  */}
+        <Typography sx={{ color: "grey", fontWeight: "bold", pt: 1 }}>
+          Attachments
+        </Typography>
+        <Box
+          className="attachment-section"
+          sx={{
+            mt: 1,
+
+            height: "210px",
+          }}
+        >
+          <Box
+            className="attachment-section"
+            mt={1}
+            sx={{
+              background: "#fff",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              padding: "8px",
+            }}
+          >
+            {ticket.image}
+          </Box>
+        </Box>
+
+        <Box
+          className="comment-section"
+          mt={1}
+          sx={{
+            background: "#fff",
+
+            borderRadius: "4px",
+            padding: "8px",
+            maxHeight: "380px",
+            overflowY: "auto",
+            width: "100%",
+          }}
+          ref={commentsRef}
+        >
+          {comments.length === 0 ? (
             <Box
               display="flex"
-              flexDirection="row"
-              justifyContent="end"
-              gap={2}
-              sx={{ paddingTop: 2 }}
+              justifyContent="space-evenly"
+              sx={{
+                // alignItems: "center",
+                paddingTop: 2,
+                paddingBottom: 2,
+                height: "100%",
+                width: "100%",
+              }}
             >
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleEditToggle}
-                startIcon={<Edit />}
+              <img
+                src={require("../../assets/img/chat.png")}
+                alt="No comments"
+                style={{
+                  width: 120,
+                  height: 120,
+                  opacity: 0.2,
+                }}
+              />
+              <Typography
+                display="flex"
+                alignItems="center"
+                fontSize="25px"
+                fontWeight="bold"
+                color="grey"
+                sx={{ opacity: 0.5 }}
               >
-                {isEditMode ? "Save" : "Edit"}
-              </Button>
-            </Box>
-            <Box display="flex" flexDirection="row" gap={8.5}>
-              <Box paddingLeft="20px" display="flex" flexDirection="column">
-                <Typography
-                  sx={{
-                    paddingTop: 2,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Status
-                </Typography>
-                <Select
-                  value={editedStatus}
-                  onChange={(e) => setEditedStatus(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.status}
-                  disabled={!isEditMode}
-                  sx={{
-                    fontSize: "16px", // reduce font size
-                    padding: "2px 4px", // reduce padding
-                    height: "50px", // reduce height
-                    width: "195px",
-
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                      color: isEditMode ? "black" : "grey",
-                    },
-                  }}
-                >
-                  <MenuItem value="open">Open</MenuItem>
-                  <MenuItem value="closed">Closed</MenuItem>
-                  <MenuItem value="in progress">In Progress</MenuItem>
-                </Select>
-              </Box>
-              <Box display="flex" flexDirection="column">
-                <Typography
-                  sx={{
-                    paddingTop: 2,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Select Severity
-                </Typography>
-                <Select
-                  value={editedSeverity}
-                  onChange={(e) => setEditedSeverity(e.target.value)}
-                  fullWidth={false}
-                  defaultValue={ticket.severity}
-                  disabled={!isEditMode}
-                  sx={{
-                    fontSize: "16px", // reduce font size
-                    padding: "2px 4px", // reduce padding
-                    height: "50px", // reduce height
-                    width: "175px",
-
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: isEditMode ? "1px solid" : "none",
-                      color: isEditMode ? "black" : "grey",
-                    },
-                  }}
-                >
-                  <MenuItem value="low">Low</MenuItem>
-                  <MenuItem value="medium">Medium</MenuItem>
-                  <MenuItem value="high">High</MenuItem>
-                </Select>
-              </Box>
-            </Box>
-
-            <Box display="flex" flexDirection="row" gap={6}>
-              <Box paddingLeft="20px" display="flex" flexDirection="column">
-                <Typography
-                  sx={{
-                    paddingTop: 2,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Start Date
-                </Typography>
-                <BasicDateField
-                  value={editedStartDate}
-                  onChange={(e) => setEditedStartDate(e.target.value)}
-                  name="startDate"
-                  disabled={!isEditMode}
-                />
-              </Box>
-              <Box display="flex" flexDirection="column">
-                <Typography
-                  sx={{
-                    paddingTop: 2,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Due Date
-                </Typography>
-                <BasicDateField
-                  value={editedDueDate}
-                  onChange={(e) => setEditedDueDate(e.target.value)}
-                  name="dueDate"
-                  disabled={!isEditMode}
-                />
-              </Box>
-            </Box>
-            <Box sx={{ paddingTop: 2, marginLeft: 2 }}>
-              <Accordion fullWidth>
-                <AccordionSummary
-                  expandIcon={<ArrowDropDownCircleOutlined />}
-                  aria-controls="panel1-content"
-                  id="panel1-header"
-                >
-                  <Typography>Details</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box display="flex" flexDirection="column">
-                    <Box
-                      display="flex"
-                      flexDirection="row"
-                      sx={{ paddingBottom: 2 }}
-                    >
-                      <Typography
-                        sx={{
-                          paddingTop: 1,
-                          paddingRight: 2,
-                          color: isEditMode ? "black" : "grey",
-                        }}
-                      >
-                        Assignee
-                      </Typography>
-                      <Select
-                        value={assignedUser}
-                        onChange={(e) => setAssignedUser(e.target.value)}
-                        sx={{
-                          fontSize: "16px", // reduce font size
-                          padding: "2px 4px", // reduce padding
-                          height: "50px", // reduce height
-                          width: "150px",
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            border: isEditMode ? "1px solid" : "none",
-                            color: isEditMode ? "black" : "grey",
-                          },
-                        }}
-                      >
-                        <option value="">Select User</option>
-                        {users.map((user) => (
-                          <MenuItem key={user._id} value={user._id}>
-                            {user.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Box>
-                    <Box display="flex" flexDirection="row">
-                      <Typography
-                        sx={{
-                          paddingTop: 1,
-                          paddingRight: 2,
-                          color: isEditMode ? "black" : "grey",
-                        }}
-                      >
-                        Reporter
-                      </Typography>
-
-                      <Select
-                        value={assignedOperator}
-                        onChange={(e) => setAssignedOperator(e.target.value)}
-                        sx={{
-                          fontSize: "16px", // reduce font size
-                          padding: "2px 4px", // reduce padding
-                          height: "50px", // reduce height
-                          width: "150px",
-
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            border: isEditMode ? "1px solid" : "none",
-                            color: isEditMode ? "black" : "grey",
-                          },
-                        }}
-                      >
-                        <option value="">Select Operator</option>
-                        {operators.map((operator) => (
-                          <MenuItem key={operator._id} value={operator._id}>
-                            {operator.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Box>
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            </Box>
-            <Box>
-              <Typography sx={{ color: "#706e6e", pl: 2, pt: 2 }}>
-                Created at{" "}
-                {new Date(ticket.startDate).toLocaleDateString("en-GB", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
+                No comments yet!
               </Typography>
-              <Typography>Updated at</Typography>
             </Box>
-
-            <Box sx={{ position: "absolute", bottom: 0, right: 0, padding: 2 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleReplySubmit}
-                disabled={loading}
+          ) : (
+            comments.map((comment, index) => (
+              <Box
+                key={index}
+                className="comment-box"
+                mb={1}
+                display="flex"
+                flexDirection="row"
               >
-                Submit
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
+                <Box
+                  display="flex"
+                  justifyContent="center"
                   sx={{
-                    marginLeft: "16px",
+                    width: "5%",
                   }}
-                />
-              )}
-            </Box>
+                >
+                  <AccountCircleIcon />
+                </Box>
+                <Box display="flex" flexDirection="column">
+                  <Typography>
+                    {comment.role.toUpperCase()}:{" "}
+                    {new Date(comment.date).toLocaleDateString("en-GB")}
+                  </Typography>
+                  <Typography>{comment.text}</Typography>
+                  <Typography sx={{ fontSize: 12 }}>
+                    Commented {getCommentTime(comment.date)}
+                  </Typography>
+                </Box>
+              </Box>
+            ))
+          )}
+        </Box>
+        <TextField
+          id="reply"
+          placeholder="add a comment"
+          multiline
+          rows={1}
+          value={reply}
+          onChange={handleReplyChange}
+          variant="outlined"
+          sx={{ mt: 1, width: "100%" }}
+        />
+        {error && (
+          <Typography color="error" sx={{ marginTop: "8px" }}>
+            {error}
+          </Typography>
+        )}
 
-            {/* 40% box */}
+        {/* REPLY SECTION  */}
+
+        {/* 60% box */}
+      </Box>
+      <Box width="40%">
+        <Box display="flex" justifyContent="end"></Box>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="end"
+          gap={2}
+          sx={{ paddingTop: 2 }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleEditToggle}
+            startIcon={<Edit />}
+          >
+            {isEditMode ? "Save" : "Edit"}
+          </Button>
+        </Box>
+        <Box display="flex" flexDirection="row" gap={8.5}>
+          <Box paddingLeft="20px" display="flex" flexDirection="column">
+            <Typography
+              sx={{
+                paddingTop: 2,
+                color: isEditMode ? "black" : "grey",
+              }}
+            >
+              Select Status
+            </Typography>
+            <Select
+              value={editedStatus}
+              onChange={(e) => setEditedStatus(e.target.value)}
+              fullWidth={false}
+              defaultValue={ticket.status}
+              disabled={!isEditMode}
+              sx={{
+                fontSize: "16px", // reduce font size
+                padding: "2px 4px", // reduce padding
+                height: "50px", // reduce height
+                width: "195px",
+
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: isEditMode ? "1px solid" : "none",
+                  color: isEditMode ? "black" : "grey",
+                },
+              }}
+            >
+              <MenuItem value="open">Open</MenuItem>
+              <MenuItem value="closed">Closed</MenuItem>
+              <MenuItem value="in progress">In Progress</MenuItem>
+            </Select>
           </Box>
-        </Box>                                          
-    // <Box p={3}>
-    //   <Typography variant="h4">{ticket.title}</Typography>
-    //   <Typography variant="body1">{ticket.description}</Typography>
-    //   <Chip
-    //     label={ticket.severity.charAt(0).toUpperCase() + ticket.severity.slice(1)}
-    //     sx={{ background: getPriorityColor(ticket.severity), mt: 2 }}
-    //   />
-    //   <Chip
-    //     label={ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
-    //     sx={{ background: getStatusColor(ticket.status), mt: 2 }}
-    //   />
-    //   <Typography variant="body2">
-    //     Start Date: {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.startDate))}
-    //   </Typography>
-    //   <Typography variant="body2">
-    //     Due Date: {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.dueDate))}
-    //   </Typography>
-    //   {/* Add more details and comments */}
-    // </Box>
+          <Box display="flex" flexDirection="column">
+            <Typography
+              sx={{
+                paddingTop: 2,
+                color: isEditMode ? "black" : "grey",
+              }}
+            >
+              Select Severity
+            </Typography>
+            <Select
+              value={editedSeverity}
+              onChange={(e) => setEditedSeverity(e.target.value)}
+              fullWidth={false}
+              defaultValue={ticket.severity}
+              disabled={!isEditMode}
+              sx={{
+                fontSize: "16px", // reduce font size
+                padding: "2px 4px", // reduce padding
+                height: "50px", // reduce height
+                width: "175px",
+
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: isEditMode ? "1px solid" : "none",
+                  color: isEditMode ? "black" : "grey",
+                },
+              }}
+            >
+              <MenuItem value="low">Low</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="high">High</MenuItem>
+            </Select>
+          </Box>
+        </Box>
+
+        <Box display="flex" flexDirection="row" gap={6}>
+          <Box paddingLeft="20px" display="flex" flexDirection="column">
+            <Typography
+              sx={{
+                paddingTop: 2,
+                color: isEditMode ? "black" : "grey",
+              }}
+            >
+              Start Date
+            </Typography>
+            <BasicDateField
+              value={editedStartDate}
+              onChange={(e) => setEditedStartDate(e.target.value)}
+              name="startDate"
+              disabled={!isEditMode}
+            />
+          </Box>
+          <Box display="flex" flexDirection="column">
+            <Typography
+              sx={{
+                paddingTop: 2,
+                color: isEditMode ? "black" : "grey",
+              }}
+            >
+              Due Date
+            </Typography>
+            <BasicDateField
+              value={editedDueDate}
+              onChange={(e) => setEditedDueDate(e.target.value)}
+              name="dueDate"
+              disabled={!isEditMode}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ paddingTop: 2, marginLeft: 2 }}>
+          <Accordion fullWidth>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownCircleOutlined />}
+              id="panel1-header"
+            >
+              <Typography>Details</Typography>
+            </AccordionSummary>
+            <Box
+              sx={{
+                borderTop: "1px solid #ddd",
+                margin: "0 16px",
+              }}
+            />
+            <AccordionDetails>
+              <Box display="flex" flexDirection="column">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  sx={{ paddingBottom: 2 }}
+                >
+                  <Typography
+                    sx={{
+                      paddingTop: 1,
+                      paddingRight: 2,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Assignee
+                  </Typography>
+                  <Select
+                    value={assignedUser}
+                    onChange={(e) => setAssignedUser(e.target.value)}
+                    sx={{
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+                      width: "150px",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
+                  >
+                    <option value="">Select User</option>
+                    {users.map((user) => (
+                      <MenuItem key={user._id} value={user._id}>
+                        {user.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
+                <Box display="flex" flexDirection="row">
+                  <Typography
+                    sx={{
+                      paddingTop: 1,
+                      paddingRight: 2,
+                      color: isEditMode ? "black" : "grey",
+                    }}
+                  >
+                    Reporter
+                  </Typography>
+
+                  <Select
+                    value={assignedOperator}
+                    onChange={(e) => setAssignedOperator(e.target.value)}
+                    sx={{
+                      fontSize: "16px", // reduce font size
+                      padding: "2px 4px", // reduce padding
+                      height: "50px", // reduce height
+                      width: "150px",
+
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: isEditMode ? "1px solid" : "none",
+                        color: isEditMode ? "black" : "grey",
+                      },
+                    }}
+                  >
+                    <option value="">Select Operator</option>
+                    {operators.map((operator) => (
+                      <MenuItem key={operator._id} value={operator._id}>
+                        {operator.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+        <Box>
+          <Typography sx={{ color: "#706e6e", pl: 2, pt: 2 }}>
+            Created at{" "}
+            {new Date(ticket.startDate).toLocaleDateString("en-GB", {
+              weekday: "long",
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </Typography>
+          <Typography sx={{ color: "#706e6e", pl: 2, pt: 2 }}>
+            Updated at{" "}
+            {new Date(updatedAt).toLocaleDateString("en-GB", {
+              weekday: "long",
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </Typography>
+        </Box>
+
+        <Box sx={{ position: "absolute", bottom: 0, right: 0, padding: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleReplySubmit}
+            disabled={loading}
+          >
+            Submit
+          </Button>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                marginLeft: "16px",
+              }}
+            />
+          )}
+        </Box>
+        <Box sx={{ paddingLeft: 2 }}>
+          <Accordion fullWidth>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownCircleOutlined />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography>Comment History</Typography>
+            </AccordionSummary>
+            <Box
+              sx={{
+                borderTop: "1px solid #ddd",
+                margin: "0 16px",
+              }}
+            />
+            <AccordionDetails
+              sx={{
+                overflow: "auto",
+                maxHeight: "382px",
+              }}
+            >
+              {comments.map((comment, index) => (
+                <Box key={index} sx={{ pl: 2, pt: 1 }}>
+                  <Typography sx={{ fontSize: 14 }}>
+                    Comment {index + 1}:
+                  </Typography>
+                  <Typography sx={{ fontSize: 14 }}>
+                    Date: {new Date(comment.date).toLocaleString()}
+                  </Typography>
+                  <Typography sx={{ fontSize: 14 }}>
+                    Role: {comment.role}
+                  </Typography>
+                  <Typography sx={{ fontSize: 14 }}>
+                    Text: {comment.text}
+                  </Typography>
+                  <hr
+                    style={{
+                      border: "none",
+                      height: "1px",
+                      backgroundColor: "#ddd",
+                      margin: "8px 0",
+                    }}
+                  />
+                </Box>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+
+        {/* 40% box */}
+      </Box>
+    </Box>
   );
 }
