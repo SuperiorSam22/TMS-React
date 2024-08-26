@@ -264,14 +264,14 @@ export default function ViewTaskModal({
               </Box>
             </Box>
 
-            <Typography
+            {/* <Typography
               sx={{
                 paddingTop: 2,
                 color: isEditMode ? "black" : "grey",
               }}
             >
               Title:
-            </Typography>
+            </Typography> */}
             <TextField
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
@@ -280,16 +280,20 @@ export default function ViewTaskModal({
               defaultValue={ticket.title}
               size="small"
               sx={{
-                background: "#eaeaea",
                 width: 600,
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: isEditMode ? "1px solid" : "none",
+                  border: isEditMode ? "none" : "none",
                 },
+                "& .MuiInputBase-input": {
+                  fontSize: 22, // increase font size
+                  fontWeight: "bold", // make text bold
+                  pl:0,
+                }, 
               }}
             />
 
             <Typography
-              sx={{
+              sx={{ mt: 2,
                 color: isEditMode ? "black" : "grey",
               }}
             >
@@ -299,17 +303,19 @@ export default function ViewTaskModal({
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
               variant="outlined"
-              multiline
               rows={3}
               fullWidth
               defaultValue={ticket.description}
               disabled={!isEditMode}
               sx={{
-                marginTop: 0.05,
-                background: "#eaeaea",
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: isEditMode ? "1px solid" : "none",
+                  border: isEditMode ? "none" : "none",
+                  padding:0,
                 },
+                "& .MuiInputBase-input": {
+                  fontSize: 18, // increase font size
+                  pl:0,
+                }, 
               }}
             />
 
@@ -327,12 +333,12 @@ export default function ViewTaskModal({
               }}
               
             >
-                <Box className="attachment-section" mt={1} sx={{ background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "8px" }}>
-            {imageUrl && (
-              <img src="../../" alt="Attachment" style={{ width: 100, height: 100}} />
+                {/* <Box className="attachment-section" mt={1} sx={{ background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "8px" }}>
+            {ticket.imageUrl && (
+              <img src={`http://localhost:8000/${ticket.imageUrl}`} alt="Attachment" style={{ width: 100, height: 100}} />
             )}
             {ticket.image}
-          </Box>
+          </Box> */}
 
 
             </Box>
@@ -342,7 +348,7 @@ export default function ViewTaskModal({
               mt={1}
               sx={{
                 background: "#fff",
-                border: "1px solid #ddd",
+                
                 borderRadius: "4px",
                 padding: "8px",
                 maxHeight: "320px",
