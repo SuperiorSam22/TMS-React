@@ -321,24 +321,23 @@ export default function ViewTaskModal({
 
             {/* Attachment section  */}
               <Typography sx={{color: "grey", fontWeight: "bold", pt: 1}}> 
-                Attachment
+              Attachments
+
               </Typography>
             <Box
               className="attachment-section"
               sx={{
-                background: "#000",
                 mt: 1,
 
-                height: "200px",
+                height: "210px",
               }}
               
             >
-                {/* <Box className="attachment-section" mt={1} sx={{ background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "8px" }}>
-            {ticket.imageUrl && (
-              <img src={`http://localhost:8000/${ticket.imageUrl}`} alt="Attachment" style={{ width: 100, height: 100}} />
-            )}
+            <Box className="attachment-section" mt={1} sx={{ background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "8px" }}>
+            
             {ticket.image}
-          </Box> */}
+          </Box>
+          
 
 
             </Box>
