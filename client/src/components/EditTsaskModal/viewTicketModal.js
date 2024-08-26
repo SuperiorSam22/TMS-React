@@ -48,7 +48,7 @@ export default function ViewTaskModal({
     ticket.startDate ? dayjs(ticket.startDate) : dayjs() // Initialize with a valid date value
   );
 
-  const [imageUrl, setImageUrl] = React.useState('');
+  const [imageUrl, setImageUrl] = React.useState("");
 
   const [editedDueDate, setEditedDueDate] = React.useState(
     ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() // Initialize with a valid date value
@@ -77,7 +77,6 @@ export default function ViewTaskModal({
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
   };
-
 
   const handleReplyChange = (event) => {
     setReply(event.target.value);
@@ -172,24 +171,24 @@ export default function ViewTaskModal({
   };
 
   const handleViewClick = () => {
-    const ticketData = {
-      tId: ticket._id,
-      ticketId: ticket.ticketId,
-      title: ticket.title,
-      description: ticket.description,
-      severity: ticket.severity,
-      status: ticket.status,
-      startDate: ticket.startDate,
-      dueDate: ticket.dueDate,
-    };
-    localStorage.setItem("ticket", JSON.stringify(ticketData));
-    console.log("ticketData: ", ticketData);
+    // const ticketData = {
+    //   tId: ticket._id,
+    //   ticketId: ticket.ticketId,
+    //   title: ticket.title,
+    //   description: ticket.description,
+    //   severity: ticket.severity,
+    //   status: ticket.status,
+    //   startDate: ticket.startDate,
+    //   dueDate: ticket.dueDate,
+    // };
+    // localStorage.setItem("ticket", JSON.stringify(ticketData));
+    // console.log("ticketData: ", ticketData);
 
     navigate({
       pathname: "/ticket-details",
-      search: `?${Object.keys(ticketData)
-        .map((key) => `${key}=${ticketData[key]}`)
-        .join("&")}`,
+      // search: `?${Object.keys(ticketData)
+      //   .map((key) => `${key}=${ticketData[key]}`)
+      //   .join("&")}`,
     });
     // const url = `ticket-details?${Object.keys(ticketData).map((key) => `${key}=${ticketData[key]}`).join('&')}`;
     // window.open(url, '_blank');
@@ -263,15 +262,6 @@ export default function ViewTaskModal({
                 </Typography>
               </Box>
             </Box>
-
-            {/* <Typography
-              sx={{
-                paddingTop: 2,
-                color: isEditMode ? "black" : "grey",
-              }}
-            >
-              Title:
-            </Typography> */}
             <TextField
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
@@ -287,16 +277,12 @@ export default function ViewTaskModal({
                 "& .MuiInputBase-input": {
                   fontSize: 22, // increase font size
                   fontWeight: "bold", // make text bold
-                  pl:0,
-                }, 
+                  pl: 0,
+                },
               }}
             />
 
-            <Typography
-              sx={{ mt: 2,
-                color: isEditMode ? "black" : "grey",
-              }}
-            >
+            <Typography sx={{ mt: 2, color: isEditMode ? "black" : "grey" }}>
               Description:
             </Typography>
             <TextField
@@ -310,20 +296,19 @@ export default function ViewTaskModal({
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
                   border: isEditMode ? "none" : "none",
-                  padding:0,
+                  padding: 0,
                 },
                 "& .MuiInputBase-input": {
                   fontSize: 18, // increase font size
-                  pl:0,
-                }, 
+                  pl: 0,
+                },
               }}
             />
 
             {/* Attachment section  */}
-              <Typography sx={{color: "grey", fontWeight: "bold", pt: 1}}> 
+            <Typography sx={{ color: "grey", fontWeight: "bold", pt: 1 }}>
               Attachments
-
-              </Typography>
+            </Typography>
             <Box
               className="attachment-section"
               sx={{
@@ -331,15 +316,19 @@ export default function ViewTaskModal({
 
                 height: "210px",
               }}
-              
             >
-            <Box className="attachment-section" mt={1} sx={{ background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "8px" }}>
-            
-            {ticket.image}
-          </Box>
-          
-
-
+              <Box
+                className="attachment-section"
+                mt={1}
+                sx={{
+                  background: "#fff",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  padding: "8px",
+                }}
+              >
+                {ticket.image}
+              </Box>
             </Box>
 
             <Box
@@ -347,7 +336,7 @@ export default function ViewTaskModal({
               mt={1}
               sx={{
                 background: "#fff",
-                
+
                 borderRadius: "4px",
                 padding: "8px",
                 maxHeight: "320px",
@@ -437,7 +426,6 @@ export default function ViewTaskModal({
             )}
 
             {/* REPLY SECTION  */}
-            
 
             {/* 60% box */}
           </Box>
@@ -689,205 +677,6 @@ export default function ViewTaskModal({
 
             {/* 40% box */}
           </Box>
-
-          {/*
-          
-
-          <Box
-            className="ViewTicketModalBox"
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Box
-              sx={{ cursor: "pointer", ml: 2, paddingLeft: 88 }}
-              onClick={handleClose}
-            ></Box>
-            <Box
-              className="heading"
-              mt={2}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Box marginBottom="10px">
-                
-              </Box>
-
-              <Box
-                sx={{ display: "flex", alignItems: "center", paddingTop: 1.5 }}
-              >
-                
-              </Box>
-            </Box>
-            
-            <Box
-              className="info"
-              mt={1}
-              display="flex"
-              flexDirection="column"
-              gap={1}
-              sx={{
-                backgroundColor: "#f7f7f7",
-                padding: 1,
-                borderRadius: 1,
-                width: 550,
-              }}
-            >
-              <Box display="flex" justifyContent="space-between">
-                
-                <Box display="flex" gap={2}>
-                  
-                </Box>
-                <Typography
-                  sx={{
-                    paddingLeft: 1,
-                    paddingTop: 2,
-                    paddingRight: 1,
-                    color: isEditMode ? "black" : "grey",
-                  }}
-                >
-                  Assignee
-                </Typography>
-                <Box display="flex">
-                  <Select
-                    value={assignedUser}
-                    onChange={(e) => setAssignedUser(e.target.value)}
-                    sx={{
-                      fontSize: "16px", // reduce font size
-                      padding: "2px 4px", // reduce padding
-                      height: "50px", // reduce height
-
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: isEditMode ? "1px solid" : "none",
-                        color: isEditMode ? "black" : "grey",
-                      },
-                    }}
-                  >
-                    <option value="">Select User</option>
-                    {users.map((user) => (
-                      <MenuItem key={user._id} value={user._id}>
-                        {user.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Typography
-                    sx={{
-                      paddingLeft: 1,
-                      paddingTop: 2,
-                      paddingRight: 1,
-                      color: isEditMode ? "black" : "grey",
-                    }}
-                  >
-                    Reporter
-                  </Typography>
-
-                  <Select
-                    value={assignedOperator}
-                    onChange={(e) => setAssignedOperator(e.target.value)}
-                    sx={{
-                      fontSize: "16px", // reduce font size
-                      padding: "2px 4px", // reduce padding
-                      height: "50px", // reduce height
-
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: isEditMode ? "1px solid" : "none",
-                        color: isEditMode ? "black" : "grey",
-                      },
-                    }}
-                  >
-                    <option value="">Select Operator</option>
-                    {operators.map((operator) => (
-                      <MenuItem key={operator._id} value={operator._id}>
-                        {operator.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
-              </Box>
-              <Box display="flex" justifyContent="space-around" width="530px">
-                <Box display="flex" gap={2}>
-                  
-                </Box>
-                <Box display="flex" gap={2}>
-                  <Typography
-                    sx={{
-                      paddingLeft: 1,
-                      paddingRight: 1,
-                      color: isEditMode ? "black" : "grey",
-                    }}
-                  >
-                    Due Date
-                  </Typography>
-                  <BasicDateField
-                    value={editedDueDate}
-                    onChange={(e) => setEditedDueDate(e.target.value)}
-                    name="dueDate"
-                    disabled={!isEditMode}
-                    sx={{
-                      fontSize: "12px", // reduce font size
-                      padding: "2px 4px", // reduce padding
-                      height: "20px", // reduce height
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Box>
-
-            
-          </Box>
-          <Box
-            className="reply-section"
-            sx={{
-              paddingBottom: "20px",
-              maxWidth: "735px",
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              position: "absolute",
-              bottom: 0,
-            }}
-          >
-            <TextField
-              id="reply"
-              label="Reply"
-              multiline
-              rows={2}
-              value={reply}
-              onChange={handleReplyChange}
-              variant="outlined"
-              sx={{ width: "100%", background: "#eaeaea" }}
-            />
-            {error && (
-              <Typography color="error" sx={{ marginTop: "8px" }}>
-                {error}
-              </Typography>
-            )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginTop: "16px",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleReplySubmit}
-                disabled={loading}
-              >
-                Submit
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    marginLeft: "16px",
-                  }}
-                />
-              )}
-            </Box>
-          </Box> */}
         </Box>
       </Modal>
     </div>
