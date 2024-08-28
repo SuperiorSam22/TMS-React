@@ -113,41 +113,36 @@ export default function ticketDetailsPage(setComment) {
 
     setLoading(true);
     try {
-      console.log(ticket?._id);
-      // Update ticket? details if in edit mode
-      if (isEditMode) {
-        await axios.patch(
-          `http://localhost:8000/api/tickets/${ticket?._id}`,
-          {
-            title: updatedTitle,
-            description: updatedDescription,
-            severity: updatedSeverity,
-            status: updatedStatus,
-            startDate: startDate,
-            dueDate: dueDate,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
+      // Update ticket details if in edit mode
+      // if (isEditMode) {
+        try {
+          await axios.patch(
+            `http://localhost:8000/api/tickets/${ticket._id}/ticketdetails`,
+            {
+              title: updatedTitle,
+              description: updatedDescription,
+              severity: updatedSeverity,
+              status: updatedStatus,
+              startDate: startDate,
+              dueDate: dueDate,
             },
-          }
-        );
-        // Set edit mode back to false after saving
-        const updatedTicket = {
-          title: updatedTitle,
-          description: updatedDescription,
-          severity: updatedSeverity,
-          status: updatedStatus,
-          startDate: startDate,
-          dueDate: dueDate,
-        };
-        sessionStorage.setItem("ticketDetails", JSON.stringify(updatedTicket));
-        setIsEditMode(false);
-      }
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+          );
+          // Set edit mode back to false after saving
+          setIsEditMode(false);
+        } catch (error) {
+          console.error(error);
+          toast.error("Error updating ticket. Please try again.");
+        }
+      // }
 
-      // Assign user and operator to the ticket?
+      // Assign user and operator to the ticket
       try {
-        await axios.put(
+        const response = await axios.put(
           `http://localhost:8000/api/tickets/${ticket._id}/assign`,
           {
             assignedUser: assignedUser?._id,
@@ -160,39 +155,51 @@ export default function ticketDetailsPage(setComment) {
             },
           }
         );
+        // handle success response
+        console.log(response);
       } catch (error) {
-        toast.error("Error updating Assignie. Please try again.");
-        console.error("Error assigning ticket?:", error);
+        console.error(error);
+        if (error.response) {
+          console.error(error.response);
+          toast.error("Error updating Assignie. Please try again.");
+        } else {
+          console.error(error.message);
+        }
       }
 
-      // Add the comment to the ticket?
-      const commentResponse = await axios.post(
-        `http://localhost:8000/api/tickets/${ticket?._id}/comments`,
-        {
-          text: reply,
-          role: "user",
-          name: userName,
-          date: new Date().toISOString(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
+      // Add the comment to the ticket
+      try {
+        const commentResponse = await axios.post(
+          `http://localhost:8000/api/tickets/${ticket._id}/comments`,
+          {
+            text: reply,
+            role: "user",
+            name: userName,
+            date: new Date().toISOString(),
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
 
-      if (commentResponse.status === 200) {
-        setComments(commentResponse.data.comments);
-        setReply("");
-        commentsRef.current.scrollTo({
-          top: commentsRef.current.scrollHeight,
-          behavior: "smooth",
-        });
-        toast.success("ticket updated successfully!");
+        if (commentResponse.status === 200) {
+          // setCommennt(commentResponse.data.comments);
+          setReply("");
+          commentsRef.current.scrollTo({
+            top: commentsRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+          toast.success("Ticket updated successfully!");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error adding comment. Please try again.");
       }
     } catch (error) {
-      toast.error("Error updating ticket. Please try again.");
       console.error(error);
+      toast.error("Error updating ticket. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -514,7 +521,7 @@ export default function ticketDetailsPage(setComment) {
 
             borderRadius: "4px",
             padding: "8px",
-            height: "3a00px",
+            height: "320px",
             overflowY: "clip",
             width: "100%",
           }}
@@ -669,6 +676,7 @@ export default function ticketDetailsPage(setComment) {
             bottom: 10,
             "& .MuiOutlinedInput-root": {
               height: "45px",
+              
             },
           }}
         />
@@ -685,7 +693,7 @@ export default function ticketDetailsPage(setComment) {
    
         {/* 60% box */}
       </Box>
-      <Box height={780} width="2px" sx={{backgroundColor: "rgba(179, 177, 177, 0.7)"}} >
+      <Box height={800} width="2px" sx={{backgroundColor: "rgba(179, 177, 177, 0.7)"}} >
       </Box>
 
       
