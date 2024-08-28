@@ -27,6 +27,7 @@ import {
   MenuItem,
   Button,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -230,9 +231,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
 
           <Box className="input-fields" mt={2}>
             <FormControl variant="standard" fullWidth>
-              <InputLabel shrink htmlFor="bootstrap-input">
-                Title
-              </InputLabel>
+            <Typography sx={{fontSize: 14}}>
+                      Title
+                    </Typography>
               <BootstrapInput
                 id="bootstrap-input"
                 name="title"
@@ -241,11 +242,11 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
             </FormControl>
 
             <Box>
-              <Box mt={2} sx={{ display: "flex", gap: "20px" }}>
+              <Box mt={2}>
                 <Box>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    Severity
-                  </InputLabel>
+                <Typography sx={{fontSize: 14}}>
+                      Severity
+                    </Typography>
                   <TextField
                     id="outlined-select-currency"
                     select
@@ -266,27 +267,29 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                     </MenuItem>
                   </TextField>
                 </Box>
-                <Box>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    start date
-                  </InputLabel>
-                  <BasicDateField
-                    value={dayjs(frmData.startDate)}
-                    onChange={handleOnChange}
-                    name="startDate"
-                  />
+                <Box mt={2} display="flex" justifyContent="space-between" flexDirection="row" width="60%">
+                  <Box>
+                  <Typography sx={{fontSize: 14}}>
+                      Start date
+                    </Typography>
+                    <BasicDateField
+                      value={dayjs(frmData.startDate)}
+                      onChange={handleOnChange}
+                      name="startDate"
+                    />
+                  </Box>
+                  <Box>
+                    <Typography sx={{fontSize: 14}}>
+                      End date
+                    </Typography>
+                    <BasicDateField
+                      value={dayjs(frmData.dueDate)}
+                      onChange={handleOnChange}
+                      name="dueDate"
+                    />
+                  </Box>
                 </Box>
 
-                <Box>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    end date
-                  </InputLabel>
-                  <BasicDateField
-                    value={dayjs(frmData.dueDate)}
-                    onChange={handleOnChange}
-                    name="dueDate"
-                  />
-                </Box>
                 {/* <Box>
                   <InputLabel shrink htmlFor="bootstrap-input">
                     start date
@@ -313,9 +316,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
             </Box>
             <Box mt={2}>
               <FormControl variant="standard" fullWidth>
-                <InputLabel shrink htmlFor="bootstrap-input">
-                  Description
-                </InputLabel>
+              <Typography sx={{fontSize: 14}}>
+                      Description
+                    </Typography>
                 <BootstrapInput
                   id="bootstrap-input"
                   name="description"
@@ -326,9 +329,11 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
               </FormControl>
             </Box>
           </Box>
-          <Box mt={2} sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box mt={1}>
+            <Typography>Attach image</Typography>
+          </Box>
+          <Box mt={0} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>
-              <InputLabel>Upload Image</InputLabel>
               <input
                 type="file"
                 id="image"

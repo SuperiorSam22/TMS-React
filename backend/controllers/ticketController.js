@@ -207,7 +207,7 @@ const addCommentToTicket = async (req, res) => {
       
       from: process.env.EMAIL_USER,
       to: 'sandeep.lal@credextechnology.com',
-      subject: `Ticket #${ticket._id} updated`,
+      subject: `Ticket #${ticket.ticketId} ${ticket.title} updated`,
       text: 
       `Dear ${username},
 

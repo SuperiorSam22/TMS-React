@@ -346,8 +346,8 @@ export default function ListView({ newTicket, setNewTicket }) {
         comments={comments}
         setCommennt={setComments}
       />
-      <TicketDetailsPage  ticket={ticketVal}
-        comments={comments} setCommennt={setComments}/>
+      {/* <TicketDetailsPage  ticket={ticketVal}
+        comments={comments} setCommennt={setComments}/> */}
       {/* <TicketViewDetails handleClose={handleTaskModalClose} open={openTaskModal} ticket={ticketVal} comments={comments} setCommennt={setComments}/> */}
     </Box>
   );
