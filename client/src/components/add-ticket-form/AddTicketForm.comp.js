@@ -214,8 +214,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
           <Box display="flex" justifyContent="space-between">
             <h3> Add new ticket</h3>
             <Box sx={{cursor: "pointer"}}>
-            <IconButton onClick={handleClose} sx={{
-              '&:hover':{ cursor: "pointer"}}}>
+            <IconButton onClick={handleClose} >
               <Close />
             </IconButton>
                </Box>
