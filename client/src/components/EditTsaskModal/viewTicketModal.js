@@ -61,20 +61,20 @@ export default function ViewTaskModal({
   const [error, setError] = React.useState(null);
   const commentsRef = React.useRef(null);
   const [editedStartDate, setEditedStartDate] = React.useState(
-    ticket.startDate ? dayjs(ticket.startDate) : dayjs() // Initialize with a valid date value
+    ticket.startDate ? dayjs(ticket.startDate) : dayjs() 
   );
   
   const [imageUrl, setImageUrl] = React.useState("");
 
   const [editedDueDate, setEditedDueDate] = React.useState(
-    ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() // Initialize with a valid date value
+    ticket.dueDate ? dayjs(ticket.dueDate) : dayjs() 
   );
   // State to manage edit mode
   const [isEditMode, setIsEditMode] = React.useState(false);
 
   const handleCloseModal = () => {
-    setIsEditMode(false); // Reset isEditMode to false when the modal is closed
-    handleClose(); // Call the parent handleClose function to close the modal
+    setIsEditMode(false); 
+    handleClose(); 
   };
 
   React.useEffect(() => {
@@ -105,15 +105,6 @@ export default function ViewTaskModal({
     setError(null);
   };
 
-  // const handleSelectChange = (e, type) => {
-  //   if (type === "user") {
-  //     setAssignedUser(e.target.value);
-  //     localStorage.setItem("assignedUser", e.target.value);
-  //   } else if (type === "operator") {
-  //     setAssignedOperator(e.target.value);
-  //     localStorage.setItem("assignedOperator", e.target.value);
-  //   }
-  // };
 
   const handleSelectChange = (e, type) => {
     if (type === "user") {
@@ -1109,15 +1100,23 @@ export default function ViewTaskModal({
                 disabled={loading}
               >
                 Submit
+                {loading && (
+                <CircularProgress
+                  size={20}
+                  // sx={{
+                  //   marginLeft: "16px",
+                  // }}
+                />
+              )}
               </Button>
-              {loading && (
+              {/* {loading && (
                 <CircularProgress
                   size={24}
                   sx={{
                     marginLeft: "16px",
                   }}
                 />
-              )}
+              )} */}
             </Box>
 
             {/* 40% box */}

@@ -673,7 +673,8 @@ export default function ticketDetailsPage(setComment) {
           variant="outlined"
           sx={{
             width: "100%",
-            bottom: 10,
+            bottom: 5,
+            mt: 1,
             "& .MuiOutlinedInput-root": {
               height: "45px",
               
