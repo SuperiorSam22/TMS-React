@@ -13,7 +13,6 @@ import { shortText } from "../../utils/validation";
 import { restSuccessMSg } from "./addTicketSlicer";
 
 import BasicDateField from "../../components/date/basicDateField";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 import "./add-ticket-form.style.css";
 import {
@@ -28,7 +27,6 @@ import {
   MenuItem,
   Button,
   IconButton,
-  Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -232,10 +230,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
 
           <Box className="input-fields" mt={2}>
             <FormControl variant="standard" fullWidth>
-              <Box display="flex">
-                <Typography sx={{ fontSize: 14 }}>Title </Typography>
-                <span><p style={{ color: 'red'}}>*</p> </span>
-              </Box>
+              <InputLabel shrink htmlFor="bootstrap-input">
+                Title
+              </InputLabel>
               <BootstrapInput
                 id="bootstrap-input"
                 name="title"
@@ -244,9 +241,11 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
             </FormControl>
 
             <Box>
-              <Box mt={2}>
+              <Box mt={2} sx={{ display: "flex", gap: "20px" }}>
                 <Box>
-                  <Typography sx={{ fontSize: 14 }}>Severity</Typography>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    Severity
+                  </InputLabel>
                   <TextField
                     id="outlined-select-currency"
                     select
@@ -254,9 +253,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                     value={frmData.severity}
                     name="severity"
                     onChange={handleOnChange}
-                    sx={{ width: "120px", 
-                      
-                     }}
+                    sx={{ width: "120px" }}
                   >
                     <MenuItem key={"low"} value={"low"}>
                       Low
@@ -269,31 +266,27 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                     </MenuItem>
                   </TextField>
                 </Box>
-                <Box
-                  mt={2}
-                  display="flex"
-                  justifyContent="space-between"
-                  flexDirection="row"
-                  width="60%"
-                >
-                  <Box>
-                    <Typography sx={{ fontSize: 14 }}>Start date</Typography>
-                    <BasicDateField
-                      value={dayjs(frmData.startDate)}
-                      onChange={handleOnChange}
-                      name="startDate"
-                    />
-                  </Box>
-                  <Box>
-                    <Typography sx={{ fontSize: 14 }}>End date</Typography>
-                    <BasicDateField
-                      value={dayjs(frmData.dueDate)}
-                      onChange={handleOnChange}
-                      name="dueDate"
-                    />
-                  </Box>
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    start date
+                  </InputLabel>
+                  <BasicDateField
+                    value={dayjs(frmData.startDate)}
+                    onChange={handleOnChange}
+                    name="startDate"
+                  />
                 </Box>
 
+                <Box>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    end date
+                  </InputLabel>
+                  <BasicDateField
+                    value={dayjs(frmData.dueDate)}
+                    onChange={handleOnChange}
+                    name="dueDate"
+                  />
+                </Box>
                 {/* <Box>
                   <InputLabel shrink htmlFor="bootstrap-input">
                     start date
@@ -320,7 +313,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
             </Box>
             <Box mt={2}>
               <FormControl variant="standard" fullWidth>
-                <Typography sx={{ fontSize: 14 }}>Description</Typography>
+                <InputLabel shrink htmlFor="bootstrap-input">
+                  Description
+                </InputLabel>
                 <BootstrapInput
                   id="bootstrap-input"
                   name="description"
@@ -331,9 +326,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
               </FormControl>
             </Box>
           </Box>
-
           <Box mt={2} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>
+              <InputLabel>Upload Image</InputLabel>
               <input
                 type="file"
                 id="image"
@@ -343,13 +338,8 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                 style={{ display: "none" }}
               />
               <label htmlFor="image">
-                <Button
-                  sx={{ paddingRight: 1 }}
-                  variant="contained"
-                  component="span"
-                >
-                  Attach
-                  <AttachFileIcon fontSize="small" />
+                <Button variant="contained" component="span">
+                  Upload
                 </Button>
                 {fileName && <span style={{ marginLeft: 10 }}>{fileName}</span>}
               </label>

@@ -16,9 +16,7 @@ const {
 
 const TicketRouter = express.Router();
 
-TicketRouter.route("/:id/getAll").get(
-  authMiddleware, 
-  getAllTickets);
+TicketRouter.route("/:id/getAll").get(authMiddleware, getAllTickets);
 
 TicketRouter.route("/:userId")
   .get(

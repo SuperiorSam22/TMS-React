@@ -128,7 +128,7 @@ const completedList = getAllUserTickets.filter((ticket) => ticket.status === "in
                 </p>
               </Box>
             </Box>
-            {/* <Box className="priority-filter">
+            <Box className="priority-filter">
               <p>
                 Priority :{" "}
                 <span
@@ -167,7 +167,7 @@ const completedList = getAllUserTickets.filter((ticket) => ticket.status === "in
                   </Fade>
                 )}
               </Popper>
-            </Box> */}
+            </Box>
             <Box className="assigne-filter">
               <AccountCircleIcon />
               <p>Assignee</p>

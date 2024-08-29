@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const TicketRouter = require('./routes/ticketRoutes')
 const userRouter = require("./routes/userRoutes");
-const path = require('path');
+
 dotenv.config();
 
 const app = express();
@@ -20,8 +20,6 @@ connectDB();
 //routes
 app.use('/api/tickets', TicketRouter);
 app.use('/api/users', userRouter);
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT;
 //start the server
