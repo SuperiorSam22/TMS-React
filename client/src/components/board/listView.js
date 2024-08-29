@@ -1,5 +1,4 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
+import { Box, Chip } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,15 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Chip } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import * as React from "react";
 import EditTaskModal from "../EditTsaskModal/editTaskModal";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ViewTaskModal from "../EditTsaskModal/viewTicketModal";
-import { Delete } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import TicketViewDetails from "../ticketView/ticketViewDetails";
 import TicketDetailsPage from "../ticketdetails/TicketDetails";
 
 const getAllUserTickets = async () => {
@@ -346,8 +340,8 @@ export default function ListView({ newTicket, setNewTicket }) {
         comments={comments}
         setCommennt={setComments}
       />
-      {/* <TicketDetailsPage  ticket={ticketVal}
-        comments={comments} setCommennt={setComments}/> */}
+      <TicketDetailsPage  ticket={ticketVal}
+        comments={comments} setCommennt={setComments}/>
       {/* <TicketViewDetails handleClose={handleTaskModalClose} open={openTaskModal} ticket={ticketVal} comments={comments} setCommennt={setComments}/> */}
     </Box>
   );

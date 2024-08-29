@@ -9,7 +9,8 @@ import {
   Divider,
   Fade,
   Paper,
-  Popper
+  Popper,
+  Typography
 } from "@mui/material";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -116,7 +117,7 @@ const completedList = getAllUserTickets.filter((ticket) => ticket.status === "in
                   List
                 </p>
               </Box>
-              <Box
+              {/* <Box
                 className={`${toggleView === "Board" ? "selected" : ""}`}
                 onClick={() => handleToggleView("Board")}
               >
@@ -126,7 +127,7 @@ const completedList = getAllUserTickets.filter((ticket) => ticket.status === "in
                   </span>
                   Board
                 </p>
-              </Box>
+              </Box> */}
             </Box>
             {/* <Box className="priority-filter">
               <p>

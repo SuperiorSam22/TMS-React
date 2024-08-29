@@ -1,7 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { PageBreadcrumb } from "../../components/breadcrumb/Breadcrumb.comp";
+import { Col, Container, Row } from "react-bootstrap";
 import { AddTicketForm } from "../../components/add-ticket-form/AddTicketForm.comp";
+import { PageBreadcrumb } from "../../components/breadcrumb/Breadcrumb.comp";
 
 export const AddTicket = () => {
   return (

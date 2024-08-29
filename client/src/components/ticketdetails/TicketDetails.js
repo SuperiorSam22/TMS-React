@@ -1,41 +1,37 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
-import { ArrowDropDownCircleOutlined, Close, Edit } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import BasicDateField from "../date/basicDateField";
-import dayjs from "dayjs";
+import { ArrowDropDownCircleOutlined } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import LabelIcon from "@mui/icons-material/Label";
 import LinkIcon from "@mui/icons-material/Link";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import LabelIcon from "@mui/icons-material/Label";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import dayjs from "dayjs";
+import * as React from "react";
+import { toast } from "react-toastify";
+import BasicDateField from "../date/basicDateField";
 
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Divider,
   FormControl,
   Input,
-  InputAdornment,
+  InputAdornment
 } from "@mui/material";
 
 const style = {
   padding: 4,
   bgcolor: "background.paper",
   display: "flex",
-  // alignItems: "center",
 };
 
 export default function ticketDetailsPage(setComment) {
@@ -43,10 +39,7 @@ export default function ticketDetailsPage(setComment) {
   const ticket = JSON.parse(sessionStorage.getItem("ticketDetails"));
   React.useEffect(() => {
     setComments(ticket?.comments);
-    console.log(ticket?.comments);
-    comments?.forEach((comment, index) => {
-      // console.log(comment);
-    });
+    
   }, []);
 
   if (!ticket) return <div>No ticket? details available.</div>;
@@ -665,7 +658,7 @@ export default function ticketDetailsPage(setComment) {
 
         <TextField
           id="reply"
-          placeholder="Add a comment"
+          placeholder={error ? '' : "Add a comment"}
           multiline
           rows={1}
           value={reply}
@@ -684,7 +677,7 @@ export default function ticketDetailsPage(setComment) {
         {error && (
           <Typography
             color="error"
-            sx={{ position: "fixed", marginTop: "8px", bottom: 0 }}
+            sx={{ position: "fixed", bottom: 20, paddingLeft: 2}}
           >
             {error}
           </Typography>
@@ -994,8 +987,7 @@ export default function ticketDetailsPage(setComment) {
               disabled={loading}
             >
               Submit
-            </Button>
-            {loading && (
+              {loading && (
               <CircularProgress
                 size={24}
                 sx={{
@@ -1003,6 +995,8 @@ export default function ticketDetailsPage(setComment) {
                 }}
               />
             )}
+            </Button>
+            
           </Box>
         </Box>
 

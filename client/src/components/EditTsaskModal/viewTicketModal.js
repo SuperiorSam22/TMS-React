@@ -1,37 +1,34 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import axios from "axios";
 import {
   ArrowDropDownCircleOutlined,
   Close,
 } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import BasicDateField from "../date/basicDateField";
-import dayjs from "dayjs";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import LabelIcon from "@mui/icons-material/Label";
+import LinkIcon from "@mui/icons-material/Link";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   FormControl,
-  IconButton,
   Input,
-  InputAdornment,
-  InputLabel,
+  InputAdornment
 } from "@mui/material";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import LinkIcon from "@mui/icons-material/Link";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import LabelIcon from "@mui/icons-material/Label";
-import { cleanLeadingZeros } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
+import Modal from "@mui/material/Modal";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import dayjs from "dayjs";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import BasicDateField from "../date/basicDateField";
 
 const style = {
   position: "absolute",
@@ -750,14 +747,14 @@ export default function ViewTaskModal({
               >
                 {isEditMode ? "Save" : "Edit"}
               </Button> */}
-              <Button
+              {/* <Button
                 sx={{ marginRight: 0, marginTop: 1 }}
                 variant="contained"
                 color="primary"
                 onClick={handleViewClick}
               >
                 View
-              </Button>
+              </Button> */}
             </Box>
             <Box className="parentBox40" sx={{ marginLeft: 6 }}>
               <Box display="flex" flexDirection="row" gap={4}>

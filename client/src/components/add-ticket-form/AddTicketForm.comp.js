@@ -1,42 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import {
-  Form,
-  // Jumbotron,
-  Row,
-  Col,
-  Spinner,
-  Alert,
+  Spinner
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { openNewTicket } from "./addTicketAction";
-import { shortText } from "../../utils/validation";
 import { restSuccessMSg } from "./addTicketSlicer";
 
-import BasicDateField from "../../components/date/basicDateField";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import BasicDateField from "../../components/date/basicDateField";
 
-import "./add-ticket-form.style.css";
+import { Close } from "@mui/icons-material";
 import {
   alpha,
+  Box,
+  Button,
   Divider,
   FormControl,
-  InputBase,
-  InputLabel,
-  styled,
-  Box,
-  TextField,
-  MenuItem,
-  Button,
   IconButton,
-  Typography,
+  InputBase,
+  MenuItem,
+  styled,
+  TextField,
+  Typography
 } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
-import { Close, PhotoCamera } from "@mui/icons-material";
-import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
+import "./add-ticket-form.style.css";
 
 const initialFrmDt = {
   severity: "low",
@@ -223,9 +213,12 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
         <Box className="add-ticket">
           <Box display="flex" justifyContent="space-between">
             <h3> Add new ticket</h3>
-            <IconButton onClick={handleClose}>
+            <Box sx={{cursor: "pointer"}}>
+            <IconButton onClick={handleClose} sx={{
+              '&:hover':{ cursor: "pointer"}}}>
               <Close />
             </IconButton>
+               </Box>
           </Box>
 
           <Divider />
