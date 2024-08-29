@@ -556,29 +556,16 @@ export default function ViewTaskModal({
                 </Button> */}
                 </Box>
               </Box>
-              <Box
-                className="comment-container"
-                mt={1}
-                sx={{
-                  background: "#fff",
-
-                  borderRadius: "4px",
-                  padding: 0,
-                  height: "400px",
-                  overflowY: "clip",
-                  width: "100%",
-                }}
-              >
+              
                 <Box
                   className="comment-section"
                   mt={1}
                   sx={{
                     background: "#fff",
-
                     borderRadius: "4px",
                     padding: "8px",
-                    maxHeight: "290px",
-                    overflowY: "auto",
+                    // maxHeight: "290px",
+                    // overflowY: "auto",
                     width: "100%",
                   }}
                   ref={commentsRef}
@@ -704,7 +691,7 @@ export default function ViewTaskModal({
                     ))
                   )}
                 </Box>
-              </Box>
+              
               <TextField
                 id="reply"
                 placeholder="Add a comment"
