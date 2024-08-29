@@ -74,6 +74,19 @@ export default function ViewTaskModal({
     handleClose();
   };
 
+
+  React.useEffect(() => {
+    setEditedTitle(ticket.title);
+    setEditedDescription(ticket.description);
+    setEditedStatus(ticket.status);
+    setEditedSeverity(ticket.severity);
+    setEditedStartDate(ticket.startDate ? dayjs(ticket.startDate) : dayjs());
+    setEditedDueDate(ticket.dueDate ? dayjs(ticket.dueDate) : dayjs());
+    setAssignedUser(ticket.assignedUser);
+    setAssignedOperator(ticket.assignedOperator);
+    setReply("");
+  }, [open, ticket]);
+
   React.useEffect(() => {
     if (ticket.image) {
       setImageUrl(`http://localhost:8000/uploads/${ticket.image}`);
