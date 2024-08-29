@@ -27,11 +27,11 @@ export const DefaultLayout = ({ children }) => {
       navLink: "/board",
       navIcon: <SpaceDashboardOutlinedIcon />,
     },
-    {
-      navName: "Setting",
-      navLink: "/setting",
-      navIcon: <SettingsIcon />,
-    },
+    // {
+    //   navName: "Setting",
+    //   navLink: "/setting",
+    //   navIcon: <SettingsIcon />,
+    // },
     {
       navName: "Log out",
       navLink: "/",

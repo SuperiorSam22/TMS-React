@@ -30,13 +30,21 @@ const BasicDateField = ({ value, onChange, name }) => {
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          sx={{
+            width: "140px",
+            "& .MuiOutlinedInput-root":{
+              fontSize: "14px",
+              height: "38px",
+              border: "1px solid"
+            },
+          }}
           value={value} // Pass the original value prop (Day.js object or date string)
           onChange={(newValue) => {
             onChange({ target: { name, value: newValue } });
           }}
           inputFormat="ddd MMM DD YYYY HH:mm:ss ZZ" // Specify the input format
           renderInput={(params) => (
-            <TextField {...params} size="small" />
+            <TextField {...params} size="small" sx={{fontSize: 14}}/>
           )}
         />
       </LocalizationProvider>

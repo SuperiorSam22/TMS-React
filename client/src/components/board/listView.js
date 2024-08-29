@@ -11,48 +11,24 @@ import { Box, Chip } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EditTaskModal from "../EditTsaskModal/editTaskModal";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ViewTaskModal from "../EditTsaskModal/viewTicketModal";
 import { Delete } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import TicketViewDetails from "../ticketView/ticketViewDetails";
-
+import TicketDetailsPage from "../ticketdetails/TicketDetails";
 
 const getAllUserTickets = async () => {
   try {
-    const userId =  JSON.parse(sessionStorage.getItem('user')).id;
+    const userId = JSON.parse(sessionStorage.getItem("user")).id;
     const authToken = sessionStorage.getItem("accessJWT");
     const config = {
-      method: 'get',
+      method: "get",
       maxBodyLength: Infinity,
       url: `http://localhost:8000/api/tickets/${userId}?sort=date&order=desc`,
-      headers: { 
+      headers: {
         Authorization: `Bearer ${authToken}`,
-      }
-    };
-
-    const response = await axios.request(config);
-  const tickets = response.data;
-  const reversedTickets = [...tickets].reverse(); // create a copy of the array before reversing
-  return reversedTickets;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
-
-
-const getAllTickets = async () => {
-  try {
-    const userId = JSON.parse(sessionStorage.getItem('user')).id;
-    const authToken = sessionStorage.getItem("accessJWT");
-    const config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `http://localhost:8000/api/tickets/${userId}/getAll?sort=date&order=desc`,
-      headers: { 
-        Authorization: `Bearer ${authToken}`,
-      }
+      },
     };
 
     const response = await axios.request(config);
@@ -65,20 +41,41 @@ const getAllTickets = async () => {
   }
 };
 
+const getAllTickets = async () => {
+  try {
+    const userId = JSON.parse(sessionStorage.getItem("user")).id;
+    const authToken = sessionStorage.getItem("accessJWT");
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `http://localhost:8000/api/tickets/${userId}/getAll?sort=date&order=desc`,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
 
+    const response = await axios.request(config);
+    const tickets = response.data;
+    const reversedTickets = [...tickets].reverse(); // create a copy of the array before reversing
+    return reversedTickets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
 
 const getAllComments = async (ticketId) => {
   const authToken = sessionStorage.getItem("accessJWT");
   try {
     const config = {
-      method: 'get',
+      method: "get",
       maxBodyLength: Infinity,
       url: `http://localhost:8000/api/tickets/${ticketId}/comments`,
-      headers: { 
+      headers: {
         Authorization: `Bearer ${authToken}`,
-      }
+      },
     };
-    
+
     const response = await axios.request(config);
     return response.data;
   } catch (error) {
@@ -87,17 +84,17 @@ const getAllComments = async (ticketId) => {
   }
 };
 
-
 const columns = [
-  { 
-    id: "title", 
-    label: "Title", 
-    minWidth: 150 
+  {
+    id: "title",
+    label: "Title",
+    minWidth: 150,
   },
-  { 
-    id: "detail", 
-    label: "Detail", 
-    minWidth: 500 },
+  {
+    id: "detail",
+    label: "Detail",
+    minWidth: 500,
+  },
   {
     id: "priority",
     label: "Priority",
@@ -108,15 +105,15 @@ const columns = [
     label: "Status",
     minWidth: 100,
   },
-  { 
-    id: "startDate", 
-    label: "Start Date", 
-    minWidth: 150 
+  {
+    id: "startDate",
+    label: "Start Date",
+    minWidth: 150,
   },
-  { 
-    id: "dueDate", 
-    label: "Due Date", 
-    minWidth: 150 
+  {
+    id: "dueDate",
+    label: "Due Date",
+    minWidth: 150,
   },
 ];
 
@@ -140,13 +137,13 @@ const getStatusColor = (status) => {
     case "open":
       return "#ffe082";
     case "closed":
-      return "#cdcdd1"
+      return "#cdcdd1";
     default:
       return "#fff";
   }
 };
 
-export default function ListView({newTicket, setNewTicket}) {
+export default function ListView({ newTicket, setNewTicket }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [todoList, setTodoList] = React.useState([]);
@@ -156,39 +153,33 @@ export default function ListView({newTicket, setNewTicket}) {
   const [openTaskModal, setOpenTaskModal] = React.useState(false);
 
   React.useEffect(() => {
-    const user = sessionStorage.getItem('user');
+    const user = sessionStorage.getItem("user");
     const userRole = JSON.parse(user).role;
-    console.log(userRole)
 
-    if(userRole === 'operator'){
-      const fetchTickets = async() => {
+    if (userRole === "operator") {
+      const fetchTickets = async () => {
         const tickets = await getAllTickets();
-         console.log("get All tickets", tickets)
-        setTodoList(tickets)
-      }
+        console.log("get All tickets", tickets);
+        setTodoList(tickets);
+      };
       fetchTickets();
     } else {
       const fetchTickets = async () => {
         const tickets = await getAllUserTickets();
-        console.log("get all user tickets", tickets)
+        console.log("get all user tickets", tickets);
         setTodoList(tickets);
-      }
+      };
       fetchTickets();
     }
   }, [newTicket, openModal, openTaskModal]);
 
-  
-
-
   React.useEffect(() => {
     const fetchComments = async () => {
       const comments = await getAllComments(ticketVal._id);
-      setComments(comments);  
+      setComments(comments);
     };
     fetchComments(ticketVal._id);
   }, [ticketVal]);
-
-  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -199,44 +190,55 @@ export default function ListView({newTicket, setNewTicket}) {
     setPage(0);
   };
 
-  const handleShow=(ticket)=>{
+  const handleShow = (ticket) => {
     setTicketVal(ticket);
     setOpenModal(true);
-  }
-  const handleShowTaskModal=(ticket)=>{
+  };
+  const handleShowTaskModal = (ticket) => {
     setTicketVal(ticket);
     setOpenTaskModal(true);
-  }
+  };
 
-  const handleModalClose=()=>{
+  const handlePageRedirect = (ticket) => {
+    sessionStorage.setItem("ticketDetails", JSON.stringify(ticket));
+    sessionStorage.setItem("ticketComments", JSON.stringify(comments));
+    window.open("/ticket-details", "_blank");
+  };
+
+  const handleModalClose = () => {
     setOpenModal(false);
-  }
+  };
 
-  const handleTaskModalClose=()=>{
+  const handleTaskModalClose = () => {
     setOpenTaskModal(false);
-  }
+  };
 
   const [error, setError] = React.useState(null);
 
-const handleDelete = async (ticketId) => {
-  try {
-    const response = await fetch(`http://localhost:8000/api/tickets/${ticketId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
+  const handleDelete = async (ticketId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/tickets/${ticketId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        // Remove the ticket from the view
+        const updatedTodoList = todoList?.filter(
+          (ticket) => ticket._id !== ticketId
+        );
+        setTodoList(updatedTodoList);
+      } else {
+        setError(response.statusText);
       }
-    })
-    if (response.ok) {
-      // Remove the ticket from the view
-      const updatedTodoList = todoList?.filter((ticket) => ticket._id !== ticketId);
-      setTodoList(updatedTodoList);
-    } else {
-      setError(response.statusText);
+    } catch (error) {
+      setError(error.message);
     }
-  } catch (error) {
-    setError(error.message);
-  }
-}
+  };
 
   return (
     <Box sx={{ width: "100%" }} mt={3}>
@@ -260,26 +262,53 @@ const handleDelete = async (ticketId) => {
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((ticket) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={ticket._id} >
-                    <TableCell onClick={() => handleShowTaskModal(ticket)} sx={{cursor:"pointer"}}>{ticket.title}</TableCell>
-                    <TableCell>{ticket.description}</TableCell>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={ticket._id}
+                  >
+                    <TableCell
+                      onClick={() => handleShowTaskModal(ticket)}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      {ticket.title}
+                    </TableCell>
+                    <TableCell
+                    onClick={()=> handlePageRedirect(ticket)}
+                    sx={{cursor: "pointer"}}
+                    >{ticket.description}</TableCell>
                     <TableCell>
                       <Chip
-                        label={ticket.severity.charAt(0).toUpperCase() + ticket.severity.slice(1)}
+                        label={
+                          ticket.severity.charAt(0).toUpperCase() +
+                          ticket.severity.slice(1)
+                        }
                         sx={{ background: getPriorityColor(ticket.severity) }}
                       />
                     </TableCell>
                     <TableCell>
                       <Chip
-                        label={ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                        label={
+                          ticket.status.charAt(0).toUpperCase() +
+                          ticket.status.slice(1)
+                        }
                         sx={{ background: getStatusColor(ticket.status) }}
                       />
                     </TableCell>
                     <TableCell>
-                    {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.startDate))}
+                      {new Intl.DateTimeFormat("en-US", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        year: "numeric",
+                      }).format(new Date(ticket.startDate))}
                     </TableCell>
                     <TableCell>
-                    {new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(ticket.dueDate))}
+                      {new Intl.DateTimeFormat("en-US", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        year: "numeric",
+                      }).format(new Date(ticket.dueDate))}
                     </TableCell>
                     {/* <TableCell>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -304,11 +333,22 @@ const handleDelete = async (ticketId) => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      <EditTaskModal handleClose={handleModalClose} open={openModal} ticket={ticketVal} setTodoList={setTodoList}/>
-      <ViewTaskModal handleClose={handleTaskModalClose} open={openTaskModal} ticket={ticketVal} comments={comments} setCommennt={setComments}/>
+      <EditTaskModal
+        handleClose={handleModalClose}
+        open={openModal}
+        ticket={ticketVal}
+        setTodoList={setTodoList}
+      />
+      <ViewTaskModal
+        handleClose={handleTaskModalClose}
+        open={openTaskModal}
+        ticket={ticketVal}
+        comments={comments}
+        setCommennt={setComments}
+      />
+      {/* <TicketDetailsPage  ticket={ticketVal}
+        comments={comments} setCommennt={setComments}/> */}
       {/* <TicketViewDetails handleClose={handleTaskModalClose} open={openTaskModal} ticket={ticketVal} comments={comments} setCommennt={setComments}/> */}
-
-
     </Box>
   );
 }
