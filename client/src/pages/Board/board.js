@@ -128,50 +128,7 @@ const completedList = getAllUserTickets.filter((ticket) => ticket.status === "in
                 </p>
               </Box>
             </Box>
-            {/* <Box className="priority-filter">
-              <p>
-                Priority :{" "}
-                <span
-                  onBlur={() => setPopperOpen(false)}
-                  onClick={handleClick("bottom")}
-                >
-                  {priority}
-                </span>
-                <span>
-                  <KeyboardArrowDownIcon />
-                </span>
-              </p>
-              <Popper
-                sx={{ zIndex: 1200, width: "200px", padding: "10px" }}
-                open={popperOpen}
-                anchorEl={anchorEl}
-                placement={placement}
-                transition
-                onBlur={()=>setPopperOpen(false)}
-              >
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={350}>
-                    <Paper sx={{ padding: "10px" }}>
-                      <Box onClick={() => handlePriority("High")}>
-                        <p style={{cursor:"pointer"}}>High</p>
-                        <Divider />
-                      </Box>
-                      <Box onClick={() => handlePriority("Medium")}>
-                        <p style={{cursor:"pointer"}}>Medium</p>
-                        <Divider />
-                      </Box>
-                      <Box onClick={() => handlePriority("Low")}>
-                        <p style={{cursor:"pointer"}}>Low</p>
-                      </Box>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
-            </Box> */}
-            <Box className="assigne-filter">
-              <AccountCircleIcon />
-              <p>Assignee</p>
-            </Box>
+            
           </Box>
         </Box>
         {toggleView === "Board" ? (

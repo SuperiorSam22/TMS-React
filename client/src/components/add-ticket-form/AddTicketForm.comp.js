@@ -14,6 +14,7 @@ import { restSuccessMSg } from "./addTicketSlicer";
 
 import BasicDateField from "../../components/date/basicDateField";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import AttachmentIcon from '@mui/icons-material/Attachment';
 
 import "./add-ticket-form.style.css";
 import {
@@ -111,7 +112,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
     setFileName(e.target.files[0].name);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     return () => {
       successMsg && dispatch(restSuccessMSg());
     };
@@ -344,12 +345,12 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
               />
               <label htmlFor="image">
                 <Button
-                  sx={{ paddingRight: 1 }}
+                  sx={{ paddingRight: 2}}
                   variant="contained"
                   component="span"
                 >
-                  Attach
-                  <AttachFileIcon fontSize="small" />
+
+                  <AttachmentIcon fontSize="medium" />
                 </Button>
                 {fileName && <span style={{ marginLeft: 10 }}>{fileName}</span>}
               </label>

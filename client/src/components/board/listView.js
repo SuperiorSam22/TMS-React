@@ -277,7 +277,7 @@ export default function ListView({ newTicket, setNewTicket }) {
                     <TableCell
                     onClick={()=> handlePageRedirect(ticket)}
                     sx={{cursor: "pointer"}}
-                    >{ticket.description}</TableCell>
+                    >{ticket.description.length > 100 ? ticket.description.substring(0, 100) + "..." : ticket.description}</TableCell>
                     <TableCell>
                       <Chip
                         label={

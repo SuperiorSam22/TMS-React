@@ -18,6 +18,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Divider,
   FormControl,
   IconButton,
   Input,
@@ -73,7 +74,6 @@ export default function ViewTaskModal({
     setIsEditMode(false);
     handleClose();
   };
-
 
   React.useEffect(() => {
     setEditedTitle(ticket.title);
@@ -439,13 +439,13 @@ export default function ViewTaskModal({
                 onChange={(e) => setEditedDescription(e.target.value)}
                 variant="outlined"
                 multiline
-                fullWidth
                 defaultValue={ticket.description}
                 // disabled={!isEditMode}
                 sx={{
                   "& .MuiOutlinedInput-notchedOutline": {
                     border: isEditMode ? "none" : "none",
                     padding: 0,
+                    width: "80%",
                   },
                   "& .MuiInputBase-root": {
                     fontSize: 14, // increase font size
@@ -569,142 +569,142 @@ export default function ViewTaskModal({
                 </Button> */}
                 </Box>
               </Box>
-              
-                <Box
-                  className="comment-section"
-                  mt={1}
-                  sx={{
-                    background: "#fff",
-                    borderRadius: "4px",
-                    padding: "8px",
-                    // maxHeight: "290px",
-                    // overflowY: "auto",
-                    width: "100%",
-                  }}
-                  ref={commentsRef}
-                >
-                  {comments.length === 0 ? (
+
+              <Box
+                className="comment-section"
+                mt={1}
+                sx={{
+                  background: "#fff",
+                  borderRadius: "4px",
+                  padding: "8px",
+                  // maxHeight: "290px",
+                  // overflowY: "auto",
+                  width: "100%",
+                }}
+                ref={commentsRef}
+              >
+                {comments.length === 0 ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: 10,
+                    }}
+                  >
                     <Box
+                      display="flex"
+                      justifyContent="space-evenly"
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: 10,
+                        // alignItems: "center",
+                        paddingTop: 2,
+                        paddingBottom: 2,
+                        height: "100%",
+                        width: "100%",
                       }}
+                    >
+                      <img
+                        src={require("../../assets/img/chat.png")}
+                        alt="No comments"
+                        style={{
+                          width: 100,
+                          height: 100,
+                          opacity: 0.2,
+                        }}
+                      />
+                      <Typography
+                        display="flex"
+                        alignItems="center"
+                        fontSize="25px"
+                        fontWeight="bold"
+                        color="grey"
+                        sx={{ opacity: 0.5 }}
+                      >
+                        No comments yet!
+                      </Typography>
+                    </Box>
+                  </Box>
+                ) : (
+                  comments.map((comment, index) => (
+                    <Box
+                      key={index}
+                      className="comment-box"
+                      mb={1}
+                      display="flex"
+                      flexDirection="row"
                     >
                       <Box
                         display="flex"
-                        justifyContent="space-evenly"
+                        justifyContent="start"
                         sx={{
-                          // alignItems: "center",
-                          paddingTop: 2,
-                          paddingBottom: 2,
-                          height: "100%",
-                          width: "100%",
+                          width: "5%",
                         }}
                       >
-                        <img
-                          src={require("../../assets/img/chat.png")}
-                          alt="No comments"
-                          style={{
-                            width: 100,
-                            height: 100,
-                            opacity: 0.2,
-                          }}
+                        <AccountCircleIcon
+                          sx={{ color: "#543d7a" }}
+                          fontSize="large"
                         />
-                        <Typography
-                          display="flex"
-                          alignItems="center"
-                          fontSize="25px"
-                          fontWeight="bold"
-                          color="grey"
-                          sx={{ opacity: 0.5 }}
-                        >
-                          No comments yet!
+                      </Box>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        sx={{ marginLeft: 2 }}
+                      >
+                        <Box display="flex">
+                          <Typography sx={{ fontSize: 14 }}>
+                            {comment.role.toUpperCase()}{" "}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: 14,
+                              color: "grey",
+                              paddingLeft: "7px",
+                            }}
+                          >
+                            {getCommentTime(comment.date)} ago
+                          </Typography>
+                        </Box>
+                        <Typography sx={{ fontSize: 14 }}>
+                          {comment.text}
                         </Typography>
+                        <Box
+                          display="flex"
+                          width="40%"
+                          justifyContent="space-between"
+                        >
+                          <Typography
+                            sx={{
+                              borderRadius: 2,
+                              padding: "2px",
+                              fontSize: 14,
+                              "&:hover": {
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                              },
+                            }}
+                          >
+                            Edit
+                          </Typography>
+                          <Typography>.</Typography>
+                          <Typography
+                            sx={{
+                              borderRadius: 2,
+                              padding: "2px",
+                              fontSize: 14,
+                              "&:hover": {
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                              },
+                            }}
+                          >
+                            Delete
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
-                  ) : (
-                    comments.map((comment, index) => (
-                      <Box
-                        key={index}
-                        className="comment-box"
-                        mb={1}
-                        display="flex"
-                        flexDirection="row"
-                      >
-                        <Box
-                          display="flex"
-                          justifyContent="start"
-                          sx={{
-                            width: "5%",
-                          }}
-                        >
-                          <AccountCircleIcon
-                            sx={{ color: "#543d7a" }}
-                            fontSize="large"
-                          />
-                        </Box>
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          sx={{ marginLeft: 2 }}
-                        >
-                          <Box display="flex">
-                            <Typography sx={{ fontSize: 14 }}>
-                              {comment.role.toUpperCase()}{" "}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: 14,
-                                color: "grey",
-                                paddingLeft: "7px",
-                              }}
-                            >
-                              {getCommentTime(comment.date)} ago
-                            </Typography>
-                          </Box>
-                          <Typography sx={{ fontSize: 14 }}>
-                            {comment.text}
-                          </Typography>
-                          <Box
-                            display="flex"
-                            width="40%"
-                            justifyContent="space-between"
-                          >
-                            <Typography
-                              sx={{
-                                borderRadius: 2,
-                                padding: "2px",
-                                fontSize: 14,
-                                "&:hover": {
-                                  textDecoration: "underline",
-                                  cursor: "pointer",
-                                },
-                              }}
-                            >
-                              Edit
-                            </Typography>
-                            <Typography>.</Typography>
-                            <Typography
-                              sx={{
-                                borderRadius: 2,
-                                padding: "2px",
-                                fontSize: 14,
-                                "&:hover": {
-                                  textDecoration: "underline",
-                                  cursor: "pointer",
-                                },
-                              }}
-                            >
-                              Delete
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-                    ))
-                  )}
-                </Box>
-              
+                  ))
+                )}
+              </Box>
+
               <TextField
                 id="reply"
                 placeholder="Add a comment"
@@ -766,7 +766,7 @@ export default function ViewTaskModal({
                 View
               </Button> */}
             </Box>
-            <Box className="parentBox40" sx={{ marginLeft: 6 }}>
+            <Box className="parentBox40" sx={{ marginLeft: 4, marginRight: 4 }}>
               <Box display="flex" flexDirection="row" gap={4}>
                 <Box paddingLeft="20px" display="flex" flexDirection="column">
                   <Typography
@@ -882,14 +882,98 @@ export default function ViewTaskModal({
                 </Box>
               </Box>
               <Box
+                display="flex"
+                flexDirection="column"
+                gap={2}
                 sx={{
-                  paddingTop: 2,
                   marginLeft: 2.5,
-                  width: "80%",
-                  marginTop: 1,
+                  width: "95%",
+                  marginTop: 2,
+                  border: "1px solid",
+                  borderRadius: "4px",
                 }}
               >
-                <Accordion fullWidth>
+                <Typography sx={{marginLeft: 2, paddingTop: 1.5}}>Details</Typography>
+                <Box sx={{backgroundColor: "rgba(165, 166, 168, 0.7)", height: "2px" }}> </Box>
+                <Box display="flex">
+                  <Box>
+                    <Typography
+                      sx={{
+                        paddingTop: 1,
+                        paddingRight: 2,
+                        paddingLeft: 2,
+                        color: isEditMode ? "black" : "black",
+                        fontSize: "14px",
+                      }}
+                    >
+                      Assignee
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Select
+                      value={assignedUser}
+                      onChange={(e) => handleSelectChange(e, "user")}
+                      sx={{
+                        fontSize: "14px",
+                        padding: "2px 2px",
+                        height: "35px",
+                        width: "160px",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: isEditMode ? "1px solid" : "1px solid",
+                          color: isEditMode ? "black" : "black",
+                        },
+                      }}
+                    >
+                      {users.map((user) => (
+                        <MenuItem key={user._id} value={user._id}>
+                          {user.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                </Box>
+                <Box display="flex">
+                  <Box>
+                    <Typography
+                      sx={{
+                        paddingTop: 1,
+                        paddingRight: 2,
+                        paddingLeft: 2,
+                        paddingBottom: 2,
+                        color: isEditMode ? "black" : "black",
+                        fontSize: "14px",
+                      }}
+                    >
+                      Reporter
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ paddingLeft: 0.4 }}>
+                    <Select
+                      value={assignedOperator}
+                      onChange={(e) => handleSelectChange(e, "operator")}
+                      sx={{
+                        fontSize: "14px",
+                        padding: "2px 2px",
+                        height: "35px",
+                        width: "160px",
+
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: isEditMode ? "1px solid" : "1px solid",
+                          color: isEditMode ? "black" : "black",
+                        },
+                      }}
+                    >
+                      {operators.map((operator) => (
+                        <MenuItem key={operator._id} value={operator._id}>
+                          {operator.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                </Box>
+
+                {/* <Accordion fullWidth>
                   <AccordionSummary
                     sx={{ border: "1px solid", borderRadius: 1 }}
                     expandIcon={<ArrowDropDownCircleOutlined />}
@@ -1016,7 +1100,7 @@ export default function ViewTaskModal({
                       </Box>
                     </Box>
                   </AccordionDetails>
-                </Accordion>
+                </Accordion> */}
               </Box>
               <Box>
                 <Typography
