@@ -188,6 +188,7 @@ const addCommentToTicket = async (req, res) => {
 
     const newComment = {
       user: user,
+      userName: username,
       text: req.body.text,
       role: role,
     };
