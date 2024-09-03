@@ -187,6 +187,9 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
 
   return (
     // <Jumbotron className="mt-3 add-new-ticket bg-light">
+    <Box className="css-b8tju9" sx={{width: "800px"}}>
+
+    
       <form onSubmit={handleOnSubmit}>
         <Box className="add-ticket" sx={{height: "600px"}}>
           <Box display="flex" justifyContent="space-between">
@@ -314,5 +317,6 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
           </Box>
         </Box>
       </form>
+      </Box>
   );
 };

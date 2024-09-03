@@ -115,6 +115,7 @@ export default function ViewTaskModal({
     ticket.assignedOperator
   );
   const [selectedFile, setSelectedFile] = React.useState(null);
+  const [reRender, setReRender] = React.useState(0);
 
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
@@ -142,6 +143,7 @@ export default function ViewTaskModal({
       .then((data) => console.log(data))
       .catch((error) => console.error(error));
   };
+
 
   const handleSelectChange = (e, type) => {
     if (type === "user") {
@@ -346,15 +348,34 @@ export default function ViewTaskModal({
     return comments[comments.length - 1].date;
   };
 
+  // const handleRemoveFile = async () => {
+  //   try {
+  //     await axios.delete(`/api/tickets/deleteAttachment/${ticket._id}/${filename}`)
+  //   } catch (error) {
+  //     console.error("error removing file", error);
+  //   }
+  // }
+
   const lastCommentDate = getLastCommentDate();
 
+
+  const deleteComment = async (commentId) => {
+    try {
+      const ticketId = ticket._id;
+      const response = await axios.delete(`http://localhost:8000/api/comments/${ticketId}/comments/${commentId}`);
+      setReRender(prev => prev + 1);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Delete comment error", error);
+    }
+  }
   return (
     <div className="ViewTicket">
       <Modal
         open={open}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-describedby="modal-modal-description"  
       >
         <Box sx={style}>
           <Box width="100%" display="flex" flexDirection="row" overflow="auto">
@@ -727,7 +748,7 @@ export default function ViewTaskModal({
                         <Typography sx={{ fontSize: 14 }}>
                           {comment.text}
                         </Typography>
-                        {/* <Box
+                        <Box
                           display="flex"
                           width="40%"
                           justifyContent="space-between"
@@ -747,6 +768,7 @@ export default function ViewTaskModal({
                           </Typography>
                           <Typography>.</Typography>
                           <Typography
+                          onClick={()=> deleteComment(comment._id)}
                             sx={{
                               borderRadius: 2,
                               padding: "2px",
@@ -759,7 +781,7 @@ export default function ViewTaskModal({
                           >
                             Delete
                           </Typography>
-                        </Box> */}
+                        </Box>
                       </Box>
                     </Box>
                   ))

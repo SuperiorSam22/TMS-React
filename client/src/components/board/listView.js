@@ -317,7 +317,7 @@ export default function ListView({ newTicket, setNewTicket }) {
                           </Box>
                         </Box>
                     </TableCell> */}
-                  </TableRow>
+                  </TableRow> 
                 );
               })}
           </TableBody>
