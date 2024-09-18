@@ -14,6 +14,7 @@ import { restSuccessMSg } from "./addTicketSlicer";
 
 import BasicDateField from "../../components/date/basicDateField";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import AttachmentIcon from '@mui/icons-material/Attachment';
 
 import "./add-ticket-form.style.css";
 import {
@@ -111,7 +112,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
     setFileName(e.target.files[0].name);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     return () => {
       successMsg && dispatch(restSuccessMSg());
     };
@@ -120,43 +121,11 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
-    // if (name === 'startDate') {
-    //   const currentDate = new Date();
-    //   if (value < currentDate) {
-    //     toast.error("Start date cannot be earlier than today's date");
-    //     return;
-    //   }
-    // }
-
     setFrmData({
       ...frmData,
       [name]: value,
     });
   };
-
-  // const handleOnChange = (e) => {
-  //   const { name, value } = e.target;
-  //   console.log("value: ",value)
-  //   if (name === 'startDate') {
-  //     // Set the start date to the current date and time
-  //     setFrmData({
-  //       ...frmData,
-  //       startDate: new Date(),
-  //     });
-  //   } else if (name === 'dueDate') {
-  //     // Update the due date with the selected value
-  //     setFrmData({
-  //       ...frmData,
-  //       dueDate: value.toString(),
-  //     });
-  //   } else {
-  //     // Update other fields as usual
-  //     setFrmData({
-  //       ...frmData,
-  //       [name]: value,
-  //     });
-  //   }
-  // };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -218,9 +187,11 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
 
   return (
     // <Jumbotron className="mt-3 add-new-ticket bg-light">
-    <>
+    <Box className="css-b8tju9" sx={{width: "800px"}}>
+
+    
       <form onSubmit={handleOnSubmit}>
-        <Box className="add-ticket">
+        <Box className="add-ticket" sx={{height: "600px"}}>
           <Box display="flex" justifyContent="space-between">
             <h3> Add new ticket</h3>
             <IconButton onClick={handleClose}>
@@ -293,29 +264,6 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                     />
                   </Box>
                 </Box>
-
-                {/* <Box>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    start date
-                  </InputLabel>
-                  <input
-                    type="date"
-                    value={frmData.startDate}
-                    onChange={handleOnChange}
-                    name="startDate"
-                  />
-                </Box>
-                <Box>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    end date
-                  </InputLabel>
-                  <input
-                    type="date"
-                    value={frmData.dueDate}
-                    onChange={handleOnChange}
-                    name="dueDate"
-                  />
-                </Box> */}
               </Box>
             </Box>
             <Box mt={2}>
@@ -326,7 +274,7 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
                   name="description"
                   onChange={handleOnChange}
                   multiline
-                  rows={5}
+                  rows={9}
                 />
               </FormControl>
             </Box>
@@ -336,20 +284,20 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
             <Box>
               <input
                 type="file"
-                id="image"
-                name="image"
-                accept="image/*"
+                id="file"
+                name="file"
+                accept="/*"
                 onChange={handleFileChange}
                 style={{ display: "none" }}
               />
-              <label htmlFor="image">
+              <label htmlFor="file">
                 <Button
-                  sx={{ paddingRight: 1 }}
+                  sx={{ paddingRight: 2}}
                   variant="contained"
                   component="span"
                 >
-                  Attach
-                  <AttachFileIcon fontSize="small" />
+
+                  <AttachmentIcon fontSize="medium" />
                 </Button>
                 {fileName && <span style={{ marginLeft: 10 }}>{fileName}</span>}
               </label>
@@ -369,6 +317,6 @@ export const AddTicketForm = ({ setNewTicket, handleClose }) => {
           </Box>
         </Box>
       </form>
-    </>
+      </Box>
   );
 };

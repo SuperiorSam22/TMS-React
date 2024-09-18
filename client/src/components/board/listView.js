@@ -277,7 +277,7 @@ export default function ListView({ newTicket, setNewTicket }) {
                     <TableCell
                     onClick={()=> handlePageRedirect(ticket)}
                     sx={{cursor: "pointer"}}
-                    >{ticket.description}</TableCell>
+                    >{ticket.description.length > 100 ? ticket.description.substring(0, 100) + "..." : ticket.description}</TableCell>
                     <TableCell>
                       <Chip
                         label={
@@ -316,15 +316,15 @@ export default function ListView({ newTicket, setNewTicket }) {
                             <EditOutlinedIcon />
                           </Box>
                         </Box>
-                    </TableCell> */}
-                  </TableRow>
+                        </TableCell> */}
+                        </TableRow> 
                 );
               })}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer>       
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={todoList?.length}
         rowsPerPage={rowsPerPage}

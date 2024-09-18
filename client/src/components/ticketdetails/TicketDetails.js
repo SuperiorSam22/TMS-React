@@ -83,6 +83,8 @@ export default function ticketDetailsPage(setComment) {
   const [assignedUser, setAssignedUser] = React.useState("");
   const [assignedOperator, setAssignedOperator] = React.useState("");
 
+  
+
   const handleEditToggle = () => {
     setIsEditMode(!isEditMode);
   };
@@ -309,7 +311,7 @@ export default function ticketDetailsPage(setComment) {
 
         <Box display="flex" flexDirection="row" sx={{ marginBottom: 3 }}>
           <Box width="100%">
-            <Button
+            {/* <Button
               type="button"
               variant="text"
               sx={{
@@ -331,9 +333,9 @@ export default function ticketDetailsPage(setComment) {
                 <AttachFileIcon fontSize="small" />
               </span>
               Attach
-            </Button>
+            </Button> */}
 
-            <Button
+            {/* <Button
               type="button"
               variant="text"
               sx={{
@@ -367,7 +369,7 @@ export default function ticketDetailsPage(setComment) {
             </Button>
             <span display="flex" alignItems="center">
               <MoreHorizIcon />
-            </span>
+            </span> */}
           </Box>
         </Box>
 
@@ -468,7 +470,7 @@ export default function ticketDetailsPage(setComment) {
             Show:
           </Typography>
           <Box display="flex" justifyContent="space-between" width="35%">
-            <Button
+            {/* <Button
               type="button"
               variant="text"
               sx={{
@@ -481,7 +483,7 @@ export default function ticketDetailsPage(setComment) {
               }}
             >
               <span>All</span>
-            </Button>
+            </Button> */}
             <Button
               type="button"
               variant="text"
@@ -496,7 +498,7 @@ export default function ticketDetailsPage(setComment) {
             >
               <span>Comments</span>
             </Button>
-            <Button
+            {/* <Button
               type="button"
               variant="text"
               sx={{
@@ -509,7 +511,7 @@ export default function ticketDetailsPage(setComment) {
               }}
             >
               <span>Activity</span>
-            </Button>
+            </Button> */}
           </Box>
         </Box>
 

@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const TicketRouter = require('./routes/ticketRoutes')
 const userRouter = require("./routes/userRoutes");
 const path = require('path');
+const commentsRouter = require("./routes/commentsRoutes");
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,7 @@ connectDB();
 //routes
 app.use('/api/tickets', TicketRouter);
 app.use('/api/users', userRouter);
+app.use('/api/comments', commentsRouter)
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
