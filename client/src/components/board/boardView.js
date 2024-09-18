@@ -20,7 +20,7 @@ const getAllUserTickets = async () => {
     const response = await axios.request(config);
     console.log(response)
     return response.data;
-  } catch (error) {
+  } catch (error) { 
     console.log(error);
     return [];
   }

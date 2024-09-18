@@ -316,15 +316,15 @@ export default function ListView({ newTicket, setNewTicket }) {
                             <EditOutlinedIcon />
                           </Box>
                         </Box>
-                    </TableCell> */}
-                  </TableRow> 
+                        </TableCell> */}
+                        </TableRow> 
                 );
               })}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer>       
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={todoList?.length}
         rowsPerPage={rowsPerPage}

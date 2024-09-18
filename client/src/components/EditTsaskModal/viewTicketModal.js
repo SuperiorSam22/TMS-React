@@ -753,7 +753,7 @@ export default function ViewTaskModal({
                           width="40%"
                           justifyContent="space-between"
                         >
-                          <Typography
+                          {/* <Typography
                             sx={{
                               borderRadius: 2,
                               padding: "2px",
@@ -766,7 +766,7 @@ export default function ViewTaskModal({
                           >
                             Edit
                           </Typography>
-                          <Typography>.</Typography>
+                          <Typography>.</Typography> */}
                           <Typography
                           onClick={()=> deleteComment(comment._id)}
                             sx={{
